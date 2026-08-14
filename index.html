@@ -5,9 +5,156 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>freeprojectapi-sandbox-project-dashboard</title>
+    <link rel="stylesheet" href="/assets/basecoat.css" />
+    <script src="/assets/js/all.min.js" defer></script>
   </head>
   <body>
-    <div id="app"></div>
+    <div class="flex justify-center">
+      <button
+        type="button"
+        aria-label="Toggle dark mode"
+        data-tooltip="Toggle dark mode"
+        data-side="bottom"
+        onclick="toggleTheme()"
+        class="btn size-8"
+        data-variant="outline"
+        data-size="icon"
+      >
+        <span class="hidden dark:block">
+          <svg
+            class="lucide lucide-sun"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2v2" />
+            <path d="M12 20v2" />
+            <path d="m4.93 4.93 1.41 1.41" />
+            <path d="m17.66 17.66 1.41 1.41" />
+            <path d="M2 12h2" />
+            <path d="M20 12h2" />
+            <path d="m6.34 17.66-1.41 1.41" />
+            <path d="m19.07 4.93-1.41 1.41" />
+          </svg>
+        </span>
+        <span class="block dark:hidden">
+          <svg
+            class="lucide lucide-moon"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"
+            />
+          </svg>
+        </span>
+      </button>
+    </div>
+    <div class="flex flex-wrap items-center gap-2">
+      <button type="button" class="btn">Button</button>
+      <button
+        type="button"
+        class="btn"
+        data-variant="outline"
+        data-size="icon"
+        aria-label="Submit"
+      >
+        <svg
+          class="lucide lucide-arrow-up"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="m5 12 7-7 7 7" />
+          <path d="M12 19V5" />
+        </svg>
+      </button>
+    </div>
+    <div class="card">
+      <header>
+        <h2>Login to your account</h2>
+        <p>Enter your email below to login to your account</p>
+        <div class="card-action">
+          <button type="button" class="btn" data-variant="link">Sign Up</button>
+        </div>
+      </header>
+      <section>
+        <form class="grid gap-6">
+          <div class="grid gap-2">
+            <label class="label" for="demo-card-email">Email</label>
+            <input
+              class="input"
+              type="email"
+              id="demo-card-email"
+              placeholder="m@example.com"
+              required
+            />
+          </div>
+          <div class="grid gap-2">
+            <div class="flex items-center">
+              <label class="label" for="demo-card-password">Password</label>
+              <a
+                href="#"
+                class="ms-auto inline-block text-sm underline-offset-4 hover:underline"
+                >Forgot your password?</a
+              >
+            </div>
+            <input
+              class="input"
+              type="password"
+              id="demo-card-password"
+              required
+            />
+          </div>
+        </form>
+      </section>
+      <footer class="flex-col gap-2">
+        <button type="button" class="btn w-full">Login</button>
+        <button type="button" class="btn w-full" data-variant="outline">
+          Login with Google
+        </button>
+      </footer>
+    </div>
+    <!-- <div id="app"></div> -->
     <script type="module" src="src/main.js"></script>
+    <script>
+      (() => {
+        try {
+          const stored = localStorage.getItem("themeMode");
+          if (
+            stored
+              ? stored === "dark"
+              : matchMedia("(prefers-color-scheme: dark)").matches
+          ) {
+            document.documentElement.classList.add("dark");
+          }
+        } catch (_) {}
+      })();
+      const toggleTheme = () => {
+        document.documentElement.classList.toggle("dark");
+        const isDark = document.documentElement.classList.contains("dark");
+        localStorage.setItem("theme", isDark ? "dark" : "light");
+      };
+    </script>
   </body>
 </html>
