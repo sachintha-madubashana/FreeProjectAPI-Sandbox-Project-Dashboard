@@ -5,136 +5,297 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>freeprojectapi-sandbox-project-dashboard</title>
-    <link rel="stylesheet" href="/assets/basecoat.css" />
-    <script src="/assets/js/all.min.js" defer></script>
   </head>
   <body>
-    <div class="flex justify-center">
-      <button
-        type="button"
-        aria-label="Toggle dark mode"
-        data-tooltip="Toggle dark mode"
-        data-side="bottom"
-        onclick="toggleTheme()"
-        class="btn size-8"
-        data-variant="outline"
-        data-size="icon"
-      >
-        <span class="hidden dark:block">
-          <svg
-            class="lucide lucide-sun"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <circle cx="12" cy="12" r="4" />
-            <path d="M12 2v2" />
-            <path d="M12 20v2" />
-            <path d="m4.93 4.93 1.41 1.41" />
-            <path d="m17.66 17.66 1.41 1.41" />
-            <path d="M2 12h2" />
-            <path d="M20 12h2" />
-            <path d="m6.34 17.66-1.41 1.41" />
-            <path d="m19.07 4.93-1.41 1.41" />
-          </svg>
-        </span>
-        <span class="block dark:hidden">
-          <svg
-            class="lucide lucide-moon"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path
-              d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"
-            />
-          </svg>
-        </span>
-      </button>
-    </div>
-    <div class="flex flex-wrap items-center gap-2">
-      <button type="button" class="btn">Button</button>
-      <button
-        type="button"
-        class="btn"
-        data-variant="outline"
-        data-size="icon"
-        aria-label="Submit"
-      >
-        <svg
-          class="lucide lucide-arrow-up"
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="m5 12 7-7 7 7" />
-          <path d="M12 19V5" />
-        </svg>
-      </button>
-    </div>
-    <div class="card">
-      <header>
-        <h2>Login to your account</h2>
-        <p>Enter your email below to login to your account</p>
-        <div class="card-action">
-          <button type="button" class="btn" data-variant="link">Sign Up</button>
-        </div>
-      </header>
-      <section>
-        <form class="grid gap-6">
-          <div class="grid gap-2">
-            <label class="label" for="demo-card-email">Email</label>
-            <input
-              class="input"
-              type="email"
-              id="demo-card-email"
-              placeholder="m@example.com"
-              required
-            />
-          </div>
-          <div class="grid gap-2">
-            <div class="flex items-center">
-              <label class="label" for="demo-card-password">Password</label>
-              <a
-                href="#"
-                class="ms-auto inline-block text-sm underline-offset-4 hover:underline"
-                >Forgot your password?</a
-              >
+    <aside
+      id="sidebar"
+      class="sidebar bg-sidebar-ring"
+      data-side="left"
+      data-initial-open="true"
+    >
+      <nav aria-label="Sidebar navigation">
+        <section class="scrollbar-thin scrollbar-thumb-accent">
+          <div role="group" aria-labelledby="group-label-content-1">
+            <div id="group-label-content-1" class="p-4">
+              <div class="flex items-center">
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 100 100"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    class="fill-accent-foreground"
+                    d="M50.4473 49.6826C44.959 44.1684 39.4707 38.6539 33.9307 33.1914C34.1113 32.7772 34.4999 32.5445 34.7852 32.208C38.7714 28.247 42.7583 24.2334 46.7451 20.2725C48.0395 19.0298 49.2819 17.6317 50.6016 16.4668C52.4913 18.1753 54.226 20.0912 56.0645 21.8516C59.7918 25.5795 63.4943 29.3077 67.248 33.0098C67.1963 33.1132 67.1445 33.2685 67.0928 33.3721C61.6304 38.8346 56.1421 44.2977 50.6797 49.7861L50.4473 49.6826ZM84.2246 83.5332C82.6449 81.721 80.8585 80.1154 79.1758 78.3809L67.7334 66.9385V66.7314C73.2729 61.2171 78.7881 55.651 84.3281 50.1367C89.894 55.6769 95.4341 61.2431 101 66.7832C100.715 67.3268 100.171 67.6888 99.7568 68.1289C94.6569 73.2808 89.4798 78.3555 84.4316 83.5332H84.2246ZM50.4209 83.5332C50.2651 83.3002 50.1104 83.0928 49.9033 82.8857C44.6255 77.6588 39.4221 72.3568 34.0977 67.1523C31.3622 69.821 28.696 72.5595 25.9814 75.249C23.2374 78.019 20.4413 80.7114 17.749 83.5332H17.542C16.5065 82.2906 15.2899 81.2293 14.1768 80.0645C9.98288 75.8705 5.81445 71.7018 1.62109 67.5078C1.41351 67.2749 1.07722 67.0679 1 66.7314C6.61763 61.269 12.0538 55.5992 17.6973 50.1367L33.6191 66.0586C33.7747 66.2296 33.9586 66.3725 34.1084 66.5381C34.2319 66.4067 34.373 66.2881 34.499 66.1621C39.8573 60.8291 45.191 55.4697 50.5498 50.1367C56.1416 55.651 61.6304 61.2685 67.248 66.7568C61.8115 72.4265 56.0903 77.8895 50.6279 83.5332H50.4209Z"
+                    aria-hidden="true"
+                  />
+                </svg>
+                <h3 id="group-label-content-1" class="text-lg">
+                  FreeProjectAPI
+                </h3>
+              </div>
+              <span class="text-xs font-normal">14 Sandbox Applications</span>
             </div>
-            <input
-              class="input"
-              type="password"
-              id="demo-card-password"
-              required
-            />
+            <ul>
+              <li>
+                <a href="#" class="item-selected">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-layout-dashboard-icon lucide-layout-dashboard"
+                  >
+                    <rect width="7" height="9" x="3" y="3" rx="1" />
+                    <rect width="7" height="5" x="14" y="3" rx="1" />
+                    <rect width="7" height="9" x="14" y="12" rx="1" />
+                    <rect width="7" height="5" x="3" y="16" rx="1" />
+                  </svg>
+                  <span class="text-accent font-normal">Dashboard</span>
+                </a>
+              </li>
+            </ul>
           </div>
-        </form>
-      </section>
-      <footer class="flex-col gap-2">
-        <button type="button" class="btn w-full">Login</button>
-        <button type="button" class="btn w-full" data-variant="outline">
-          Login with Google
-        </button>
-      </footer>
-    </div>
+        </section>
+      </nav>
+    </aside>
+    <main class="p-6 gap-5 flex flex-col">
+      <header class="flex flex-col items-center gap-3">
+        <div class="flex justify-between pb-0 w-full">
+          <nav class="breadcrumb inline-flex gap-2" aria-label="Breadcrumb">
+            <button
+              class="btn"
+              type="button"
+              data-variant="outline"
+              onclick="document.getElementById('sidebar')?.toggle()"
+              data-tooltip="Toggle sidebar"
+              data-side="bottom"
+              data-align="start"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-panel-left-icon lucide-panel-left"
+                aria-hidden="true"
+              >
+                <rect width="18" height="18" x="3" y="3" rx="2" />
+                <path d="M9 3v18" />
+              </svg>
+            </button>
+            <hr class="border border-accent my-2" aria-hidden="true" />
+            <ol>
+              <li class="block md:hidden">
+                <span aria-hidden="true">
+                  <svg
+                    class="lucide lucide-ellipsis"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="1" />
+                    <circle cx="19" cy="12" r="1" />
+                    <circle cx="5" cy="12" r="1" />
+                  </svg>
+                </span>
+              </li>
+              <li class="hidden md:block">
+                <span>Dashboard</span>
+              </li>
+              <li aria-hidden="true">
+                <svg
+                  data-rtl-flip
+                  class="lucide lucide-chevron-right"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="m9 18 6-6-6-6" />
+                </svg>
+              </li>
+              <li><span aria-current="page">Home</span></li>
+            </ol>
+          </nav>
+          <div class="flex gap-2">
+            <button
+              id="adminMode"
+              type="button"
+              class="btn"
+              data-variant="outline"
+              data-size="sm"
+              data-tooltip="Admin mode"
+              data-side="inline-start"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-shield-minus-icon lucide-shield-minus"
+              >
+                <path
+                  d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
+                />
+                <path d="M9 12h6" />
+              </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-shield-icon lucide-shield"
+                aria-hidden="true"
+              >
+                <path
+                  d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
+                />
+              </svg>
+              Admin Mode
+            </button>
+            <button
+              type="button"
+              aria-label="Toggle dark mode"
+              data-tooltip="Toggle dark mode"
+              data-side="inline-start"
+              onclick="toggleTheme()"
+              class="btn size-8"
+              data-variant="outline"
+              data-size="icon"
+            >
+              <span class="hidden dark:block">
+                <svg
+                  class="lucide lucide-sun"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <circle cx="12" cy="12" r="4" />
+                  <path d="M12 2v2" />
+                  <path d="M12 20v2" />
+                  <path d="m4.93 4.93 1.41 1.41" />
+                  <path d="m17.66 17.66 1.41 1.41" />
+                  <path d="M2 12h2" />
+                  <path d="M20 12h2" />
+                  <path d="m6.34 17.66-1.41 1.41" />
+                  <path d="m19.07 4.93-1.41 1.41" />
+                </svg>
+              </span>
+              <span class="block dark:hidden">
+                <svg
+                  class="lucide lucide-moon"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"
+                  />
+                </svg>
+              </span>
+            </button>
+          </div>
+        </div>
+        <hr
+          class="border border-accent w-full rounded-full"
+          aria-hidden="true"
+        />
+      </header>
+      <div class="card">
+        <header>
+          <h2>Login to your account</h2>
+          <p>Enter your email below to login to your account</p>
+          <div class="card-action">
+            <button type="button" class="btn" data-variant="link">
+              Sign Up
+            </button>
+          </div>
+        </header>
+        <section>
+          <form class="grid gap-6">
+            <div class="grid gap-2">
+              <label class="label" for="demo-card-email">Email</label>
+              <input
+                class="input"
+                type="email"
+                id="demo-card-email"
+                placeholder="m@example.com"
+                required
+              />
+            </div>
+            <div class="grid gap-2">
+              <div class="flex items-center">
+                <label class="label" for="demo-card-password">Password</label>
+                <a
+                  href="#"
+                  class="ms-auto inline-block text-sm underline-offset-4 hover:underline"
+                  >Forgot your password?</a
+                >
+              </div>
+              <input
+                class="input"
+                type="password"
+                id="demo-card-password"
+                required
+              />
+            </div>
+          </form>
+        </section>
+        <footer class="flex-col gap-2">
+          <button type="button" class="btn w-full">Login</button>
+          <button type="button" class="btn w-full" data-variant="outline">
+            Login with Google
+          </button>
+        </footer>
+      </div>
+    </main>
     <!-- <div id="app"></div> -->
     <script type="module" src="src/main.js"></script>
     <script>
@@ -155,6 +316,55 @@
         const isDark = document.documentElement.classList.contains("dark");
         localStorage.setItem("theme", isDark ? "dark" : "light");
       };
+      (() => {
+        const adminModeButton = document.getElementById("adminMode");
+        if (adminModeButton) {
+          adminModeButton.addEventListener("click", () => {
+            const buttonMode =
+              adminModeButton.attributes.getNamedItem("data-variant")?.value;
+            if (buttonMode === "primary") {
+              adminModeButton.attributes.getNamedItem("data-variant").value =
+                "outline";
+              adminModeButton
+                .querySelector(".lucide-shield")
+                .classList.toggle("hidden");
+              adminModeButton
+                .querySelector(".lucide-shield-minus")
+                .classList.toggle("hidden");
+            } else {
+              adminModeButton.attributes.getNamedItem("data-variant").value =
+                "primary";
+              adminModeButton
+                .querySelector(".lucide-shield")
+                .classList.toggle("hidden");
+              adminModeButton
+                .querySelector(".lucide-shield-minus")
+                .classList.toggle("hidden");
+            }
+            localStorage.setItem(
+              "adminMode",
+              adminModeButton.attributes.getNamedItem("data-variant")?.value ===
+                "primary"
+                ? "primary"
+                : "outline",
+            );
+          });
+          const storedAdminMode = localStorage.getItem("adminMode");
+          if (storedAdminMode) {
+            adminModeButton.attributes.getNamedItem("data-variant").value =
+              storedAdminMode;
+            if (storedAdminMode === "primary") {
+              adminModeButton
+                .querySelector(".lucide-shield-minus")
+                .classList.add("hidden");
+            } else {
+              adminModeButton
+                .querySelector(".lucide-shield")
+                .classList.add("hidden");
+            }
+          }
+        }
+      })();
     </script>
   </body>
 </html>
