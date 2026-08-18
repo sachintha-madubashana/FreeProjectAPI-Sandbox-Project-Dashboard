@@ -1,61 +1,40 @@
 import "basecoat-css/all";
 import "./styles/style.css";
-import javascriptLogo from "./assets/javascript.svg";
-import viteLogo from "./assets/vite.svg";
-import heroImg from "./assets/hero.png";
-import { setupCounter } from "./features/dashboard/counter.js";
+import { createIcons, Menu, ArrowRight, Globe, Star } from "lucide";
+import "../bin/app-dashboard.js";
+import dashboardBannerComponent from "./components/dashboard/dashboard-banner.js";
+import projectCardComponent from "./components/dashboard/card.js";
+import data from "./assets/data.json" with { type: "json" };
 
-// document.querySelector("#app").innerHTML = `
-// <section id="center">
-//   <div class="hero">
-//     <img src="${heroImg}" class="base" width="170" height="179">
-//     <img src="${javascriptLogo}" class="framework" alt="JavaScript logo"/>
-//     <img src="${viteLogo}" class="vite" alt="Vite logo" />
-//   </div>
-//   <div>
-//     <h1>Get started</h1>
-//     <p>Edit <code>src/main.js</code> and save to test <code>HMR</code></p>
-//   </div>
-//   <button id="counter" type="button" class="counter"></button>
-// </section>
+createIcons({
+  icons: {
+    Menu,
+    ArrowRight,
+    Globe,
+    Star,
+  },
+  attrs: {
+    class: ["bg-black", "fill-foreground", "w-20", "h-20"],
+    "stroke-width": 1,
+    stroke: "#333",
+    width: 24,
+    height: 24,
+  },
+  nameAttr: "data-lucide",
+  inTemplates: true,
+});
 
-// <div class="ticks"></div>
+const app = document.querySelector("#app");
+const projects = data.projects;
 
-// <section id="next-steps">
-//   <div id="docs">
-//     <svg class="icon" role="presentation" aria-hidden="true"><use href="/icons.svg#documentation-icon"></use></svg>
-//     <h2>Documentation</h2>
-//     <p>Your questions, answered. Ha ha ha</p>
-//     <ul>
-//       <li>
-//         <a href="https://vite.dev/" target="_blank">
-//           <img class="logo" src="${viteLogo}" alt="" />
-//           Explore Vite
-//         </a>
-//       </li>
-//       <li>
-//         <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-//           <img class="button-icon" src="${javascriptLogo}" alt="">
-//           Learn more
-//         </a>
-//       </li>
-//     </ul>
-//   </div>
-//   <div id="social">
-//     <svg class="icon" role="presentation" aria-hidden="true"><use href="/icons.svg#social-icon"></use></svg>
-//     <h2>Connect with us</h2>
-//     <p>Join the Vite community</p>
-//     <ul>
-//       <li><a href="https://github.com/vitejs/vite" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#github-icon"></use></svg>GitHub</a></li>
-//       <li><a href="https://chat.vite.dev/" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#discord-icon"></use></svg>Discord</a></li>
-//       <li><a href="https://x.com/vite_js" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#x-icon"></use></svg>X.com</a></li>
-//       <li><a href="https://bsky.app/profile/vite.dev" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#bluesky-icon"></use></svg>Bluesky</a></li>
-//     </ul>
-//   </div>
-// </section>
+app.appendChild(dashboardBannerComponent(data.banner));
 
-// <div class="ticks"></div>
-// <section id="spacer"></section>
-// `;
+const gridContainer = document.createElement("div");
+gridContainer.className =
+  "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-full";
+projects.forEach((project) => {
+  const cardNode = projectCardComponent(project);
+  gridContainer.appendChild(cardNode);
+});
 
-// setupCounter(document.querySelector("#counter"));
+app.appendChild(gridContainer);

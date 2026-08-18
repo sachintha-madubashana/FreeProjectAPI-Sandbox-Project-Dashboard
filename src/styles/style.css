@@ -4,6 +4,10 @@
 @layer components {
   .item-selected {
     @apply bg-accent-foreground text-accent;
+
+    span {
+      @apply text-accent;
+    }
   }
 
   .item-selected:hover {

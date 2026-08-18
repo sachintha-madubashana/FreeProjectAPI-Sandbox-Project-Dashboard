@@ -1,0 +1,51 @@
+{
+  "banner": {
+    "title": "Welcome to the FreeProjectAPI Dashboard",
+    "description": "This dashboard provides an overview of various sandbox projects and their details.",
+    "badges": [
+      {
+        "text": "Vanilla JS"
+      },
+      {
+        "text": "Tailwind CSS"
+      },
+      {
+        "text": "Vanila js with Vite"
+      }
+    ]
+  },
+  "projects": [
+    {
+      "id": 1,
+      "title": "Project 1",
+      "description": "This is the first project.",
+      "icon": "Star",
+      "iconColor": "#FFD700",
+      "apiEndpoint": "https://api.example.com/project1"
+    },
+    {
+      "id": 2,
+      "title": "Project 2",
+      "description": "This is the second project.",
+      "icon": "Bus",
+      "iconColor": "#1E90FF",
+      "apiEndpoint": "https://api.example.com/project1"
+    },
+    {
+      "id": 3,
+      "title": "Project 3",
+      "description": "This is the third project.",
+      "icon": "Heart",
+      "iconColor": "#FF69B4",
+      "apiEndpoint": "https://api.example.com/project1"
+    },
+    {
+      "id": 4,
+      "title": "Project 4",
+      "description": "This is the fourth project.",
+      "icon": "Send",
+      "iconColor": "#32CD32",
+      "apiEndpoint": "https://api.example.com/project1"
+    }
+  ]
+}
