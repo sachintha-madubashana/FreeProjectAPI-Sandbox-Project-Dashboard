@@ -7,7 +7,8 @@
     <title>freeprojectapi-sandbox-project-dashboard</title>
   </head>
   <body>
-    <aside
+    <div id="app"></div>
+    <!-- <aside
       id="sidebar"
       class="sidebar bg-transparent backdrop-blur-xs md:backdrop-blur-none"
       data-side="left"
@@ -270,78 +271,78 @@
           aria-hidden="true"
         />
       </header>
-      <!-- <div class="flex flex-col gap-6">
-      </div> -->
-    </main>
+      <div class="flex flex-col gap-6">
+      </div>
+    </main> -->
 
     <script type="module" src="src/main.js"></script>
     <script>
-      (() => {
-        try {
-          const stored = localStorage.getItem("themeMode");
-          if (
-            stored
-              ? stored === "dark"
-              : matchMedia("(prefers-color-scheme: dark)").matches
-          ) {
-            document.documentElement.classList.add("dark");
-          }
-        } catch (_) {}
-      })();
-      const toggleTheme = () => {
-        document.documentElement.classList.toggle("dark");
-        const isDark = document.documentElement.classList.contains("dark");
-        localStorage.setItem("theme", isDark ? "dark" : "light");
-      };
-      (() => {
-        const adminModeButton = document.getElementById("adminMode");
-        if (adminModeButton) {
-          adminModeButton.addEventListener("click", () => {
-            const buttonMode =
-              adminModeButton.attributes.getNamedItem("data-variant")?.value;
-            if (buttonMode === "primary") {
-              adminModeButton.attributes.getNamedItem("data-variant").value =
-                "outline";
-              adminModeButton
-                .querySelector(".lucide-shield")
-                .classList.toggle("hidden");
-              adminModeButton
-                .querySelector(".lucide-shield-minus")
-                .classList.toggle("hidden");
-            } else {
-              adminModeButton.attributes.getNamedItem("data-variant").value =
-                "primary";
-              adminModeButton
-                .querySelector(".lucide-shield")
-                .classList.toggle("hidden");
-              adminModeButton
-                .querySelector(".lucide-shield-minus")
-                .classList.toggle("hidden");
-            }
-            localStorage.setItem(
-              "adminMode",
-              adminModeButton.attributes.getNamedItem("data-variant")?.value ===
-                "primary"
-                ? "primary"
-                : "outline",
-            );
-          });
-          const storedAdminMode = localStorage.getItem("adminMode");
-          if (storedAdminMode) {
-            adminModeButton.attributes.getNamedItem("data-variant").value =
-              storedAdminMode;
-            if (storedAdminMode === "primary") {
-              adminModeButton
-                .querySelector(".lucide-shield-minus")
-                .classList.add("hidden");
-            } else {
-              adminModeButton
-                .querySelector(".lucide-shield")
-                .classList.add("hidden");
-            }
-          }
-        }
-      })();
+      // (() => {
+      //   try {
+      //     const stored = localStorage.getItem("themeMode");
+      //     if (
+      //       stored
+      //         ? stored === "dark"
+      //         : matchMedia("(prefers-color-scheme: dark)").matches
+      //     ) {
+      //       document.documentElement.classList.add("dark");
+      //     }
+      //   } catch (_) {}
+      // })();
+      // const toggleTheme = () => {
+      //   document.documentElement.classList.toggle("dark");
+      //   const isDark = document.documentElement.classList.contains("dark");
+      //   localStorage.setItem("theme", isDark ? "dark" : "light");
+      // };
+      // (() => {
+      //   const adminModeButton = document.getElementById("adminMode");
+      //   if (adminModeButton) {
+      //     adminModeButton.addEventListener("click", () => {
+      //       const buttonMode =
+      //         adminModeButton.attributes.getNamedItem("data-variant")?.value;
+      //       if (buttonMode === "primary") {
+      //         adminModeButton.attributes.getNamedItem("data-variant").value =
+      //           "outline";
+      //         adminModeButton
+      //           .querySelector(".lucide-shield")
+      //           .classList.toggle("hidden");
+      //         adminModeButton
+      //           .querySelector(".lucide-shield-minus")
+      //           .classList.toggle("hidden");
+      //       } else {
+      //         adminModeButton.attributes.getNamedItem("data-variant").value =
+      //           "primary";
+      //         adminModeButton
+      //           .querySelector(".lucide-shield")
+      //           .classList.toggle("hidden");
+      //         adminModeButton
+      //           .querySelector(".lucide-shield-minus")
+      //           .classList.toggle("hidden");
+      //       }
+      //       localStorage.setItem(
+      //         "adminMode",
+      //         adminModeButton.attributes.getNamedItem("data-variant")?.value ===
+      //           "primary"
+      //           ? "primary"
+      //           : "outline",
+      //       );
+      //     });
+      //     const storedAdminMode = localStorage.getItem("adminMode");
+      //     if (storedAdminMode) {
+      //       adminModeButton.attributes.getNamedItem("data-variant").value =
+      //         storedAdminMode;
+      //       if (storedAdminMode === "primary") {
+      //         adminModeButton
+      //           .querySelector(".lucide-shield-minus")
+      //           .classList.add("hidden");
+      //       } else {
+      //         adminModeButton
+      //           .querySelector(".lucide-shield")
+      //           .classList.add("hidden");
+      //       }
+      //     }
+      //   }
+      // })();
     </script>
   </body>
 </html>
