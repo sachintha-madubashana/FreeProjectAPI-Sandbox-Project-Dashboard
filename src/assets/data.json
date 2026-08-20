@@ -14,9 +14,17 @@
       }
     ]
   },
-  "projects": [
+  "pages": [
     {
       "id": 1,
+      "title": "Dashboard",
+      "description": "This is the Dashboard.",
+      "icon": "LayoutDashboard",
+      "iconColor": "#FFD700",
+      "apiEndpoint": "https://api.example.com/project1"
+    },
+    {
+      "id": 2,
       "title": "Project 1",
       "description": "This is the first project.",
       "icon": "Star",
@@ -24,7 +32,7 @@
       "apiEndpoint": "https://api.example.com/project1"
     },
     {
-      "id": 2,
+      "id": 3,
       "title": "Project 2",
       "description": "This is the second project.",
       "icon": "Bus",
@@ -32,7 +40,7 @@
       "apiEndpoint": "https://api.example.com/project1"
     },
     {
-      "id": 3,
+      "id": 4,
       "title": "Project 3",
       "description": "This is the third project.",
       "icon": "Heart",
@@ -40,7 +48,7 @@
       "apiEndpoint": "https://api.example.com/project1"
     },
     {
-      "id": 4,
+      "id": 5,
       "title": "Project 4",
       "description": "This is the fourth project.",
       "icon": "Send",

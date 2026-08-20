@@ -1,12 +1,12 @@
 import cardHtml from "./card.html?raw";
-import * as LucideIcons from "lucide";
+import loadAndRenderIcon from "../../utils/loadAndRenderIcon.js";
 
 const template = document.createElement("template");
 template.innerHTML = cardHtml;
 
-export default function projectCardComponent(projectData) {
+export default async function projectCardComponent(projectData) {
   const clone = template.content.cloneNode(true);
-  const icon = LucideIcons[projectData.icon];
+  // const iconRegistry = { Star, Bus, Heart, Send };
 
   clone.querySelector("#icon").setAttribute("data-lucide", projectData.icon);
   clone.querySelector("#icon").style.cssText =
@@ -14,17 +14,13 @@ export default function projectCardComponent(projectData) {
   clone.querySelector(".project-title").textContent = projectData.title;
   clone.querySelector(".project-desc").textContent = projectData.description;
 
-  LucideIcons.createIcons({
-    icons: { [projectData.icon]: icon },
-    nameAttr: "data-lucide",
-    root: clone,
-    attrs: {
-      width: 50,
-      height: 40,
-    },
-    nameAttr: "data-lucide",
-    inTemplates: true,
-  });
+  await loadAndRenderIcon(projectData.icon, clone);
+  // createIcons({
+  //   icons: { [projectData.icon]: iconRegistry[projectData.icon] },
+  //   nameAttr: "data-lucide",
+  //   root: clone,
+  //   inTemplates: true,
+  // });
 
   return clone;
 }

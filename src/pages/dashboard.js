@@ -1,8 +1,8 @@
-import dashbord from "./dashboard.html?raw";
-import dashboardBannerComponent from "../components/dashboard/dashboard-banner.js";
-import projectCardComponent from "../components/dashboard/card.js";
-import data from "../assets/data.json" with { type: "json" };
-import { createIcons, Star, Bus, Heart, Send, HelpCircle } from "lucide";
+import dashbord from "@/pages/dashboard.html?raw";
+import dashboardBannerComponent from "@/components/dashboard/dashboard-banner.js";
+import projectCardComponent from "@/components/dashboard/card.js";
+import data from "@/assets/data.json" with { type: "json" };
+import loadAndRenderIcon from "@/utils/loadAndRenderIcon";
 
 // Create a template element and set its innerHTML to the imported dashboard HTML
 const template = document.createElement("template");
@@ -93,16 +93,17 @@ export default function dashboardPage() {
 
   // Populate the dashboard with banner and project cards
   const cardsConteiner = clone.querySelector("#cardsConteiner");
-  const projects = data.projects;
+  const pages = data.pages;
 
   cardsConteiner.appendChild(dashboardBannerComponent(data.banner));
 
   const gridContainer = document.createElement("div");
   gridContainer.className =
     "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-full";
-  projects.forEach((project) => {
-    const cardNode = projectCardComponent(project);
-    gridContainer.appendChild(cardNode);
+  pages.forEach((project) => {
+    projectCardComponent(project).then((cardNode) => {
+      gridContainer.appendChild(cardNode);
+    });
   });
 
   cardsConteiner.appendChild(gridContainer);
@@ -111,9 +112,7 @@ export default function dashboardPage() {
   const sidebarMenu = clone.querySelector("#sideberMenu");
   const sideberMenuItem = clone.querySelector("#sideberMenuItem");
 
-  const iconRegistry = { Star, Bus, Heart, Send };
-
-  projects.forEach((project) => {
+  pages.forEach((project) => {
     const menuItem = sideberMenuItem.cloneNode(true);
 
     menuItem.querySelector("span").textContent = project.title;
@@ -127,20 +126,7 @@ export default function dashboardPage() {
       // navigation here
     });
 
-    //icon for the sidebar menu items
-    createIcons({
-      icons: {
-        [menuItem.querySelector("#icon").getAttribute("data-lucide")]:
-          iconRegistry,
-      },
-      nameAttr: "data-lucide",
-      root: menuItem,
-      attrs: {
-        width: 50,
-        height: 40,
-      },
-      inTemplates: true,
-    });
+    loadAndRenderIcon(project.icon, menuItem);
 
     sidebarMenu.appendChild(menuItem);
   });

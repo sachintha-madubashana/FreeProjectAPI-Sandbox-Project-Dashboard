@@ -1,4 +1,4 @@
-import dashboardBanner from "./dashboard-banner.html?raw";
+import dashboardBanner from "@/components/dashboard/dashboard-banner.html?raw";
 
 const template = document.createElement("template");
 template.innerHTML = dashboardBanner;
