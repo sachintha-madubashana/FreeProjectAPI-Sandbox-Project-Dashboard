@@ -5,9 +5,7 @@ export default async function loadAndRenderIcon(iconName, rootElement) {
   const fileName = toKebabCase(iconName);
 
   try {
-    const iconModule = await import(
-      `../../node_modules/lucide/dist/esm/icons/${fileName}.mjs`
-    );
+    const iconModule = await import(`@lucide/dist/esm/icons/${fileName}.mjs`);
     const iconComponent = iconModule.default;
 
     createIcons({
