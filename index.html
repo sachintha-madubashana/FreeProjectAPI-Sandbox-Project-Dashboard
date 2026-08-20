@@ -7,8 +7,8 @@
     <title>freeprojectapi-sandbox-project-dashboard</title>
   </head>
   <body>
-    <div id="app"></div>
-    <!-- <aside
+    <!-- <div id="app"></div> -->
+    <aside
       id="sidebar"
       class="sidebar bg-transparent backdrop-blur-xs md:backdrop-blur-none"
       data-side="left"
@@ -38,49 +38,28 @@
               </div>
               <span class="text-xs font-normal">14 Sandbox Applications</span>
             </div>
-            <ul>
-              <li>
+            <ul id="sideberMenu">
+              <li id="sideberMenuItem">
                 <a href="#" class="item-selected">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-layout-dashboard-icon lucide-layout-dashboard"
-                  >
-                    <rect width="7" height="9" x="3" y="3" rx="1" />
-                    <rect width="7" height="5" x="14" y="3" rx="1" />
-                    <rect width="7" height="9" x="14" y="12" rx="1" />
-                    <rect width="7" height="5" x="3" y="16" rx="1" />
-                  </svg>
+                  <!-- <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-layout-dashboard-icon lucide-layout-dashboard"
+              >
+                <rect width="7" height="9" x="3" y="3" rx="1" />
+                <rect width="7" height="5" x="14" y="3" rx="1" />
+                <rect width="7" height="9" x="14" y="12" rx="1" />
+                <rect width="7" height="5" x="3" y="16" rx="1" />
+              </svg> -->
+                  <i data-lucide="Bus" id="icon" class="size-4"></i>
                   <span class="font-normal">Dashboard</span>
-                </a>
-              </li>
-              <li>
-                <a href="./src/pages/busBooking.html" class="">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-layout-dashboard-icon lucide-layout-dashboard"
-                  >
-                    <rect width="7" height="9" x="3" y="3" rx="1" />
-                    <rect width="7" height="5" x="14" y="3" rx="1" />
-                    <rect width="7" height="9" x="14" y="12" rx="1" />
-                    <rect width="7" height="5" x="3" y="16" rx="1" />
-                  </svg>
-                  <span class="font-normal">Bus Booking</span>
                 </a>
               </li>
             </ul>
@@ -88,8 +67,8 @@
         </section>
       </nav>
     </aside>
-    <main class="p-6 gap-5 flex flex-col" id="app">
-      <header class="flex flex-col items-center gap-3">
+    <main class="p-6 gap-5 flex flex-col bg-amber-500" id="app">
+      <!-- <header class="flex flex-col items-center gap-3">
         <div class="flex justify-between pb-0 w-full">
           <nav class="breadcrumb inline-flex gap-2" aria-label="Breadcrumb">
             <button
@@ -211,10 +190,10 @@
             </button>
             <button
               type="button"
+              id="themeToggle"
               aria-label="Toggle dark mode"
               data-tooltip="Toggle dark mode"
               data-side="inline-start"
-              onclick="toggleTheme()"
               class="btn size-8"
               data-variant="outline"
               data-size="icon"
@@ -270,10 +249,9 @@
           class="border border-accent w-full rounded-full"
           aria-hidden="true"
         />
-      </header>
-      <div class="flex flex-col gap-6">
-      </div>
-    </main> -->
+      </header> -->
+      <!-- <div class="flex flex-col gap-6" id="cardsConteiner"></div> -->
+    </main>
 
     <script type="module" src="src/main.js"></script>
     <script>
