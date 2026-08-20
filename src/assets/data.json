@@ -21,7 +21,7 @@
       "description": "This is the Dashboard.",
       "icon": "LayoutDashboard",
       "iconColor": "#FFD700",
-      "apiEndpoint": "https://api.example.com/project1"
+      "apiEndpoint": "./"
     },
     {
       "id": 2,
@@ -29,7 +29,7 @@
       "description": "This is the first project.",
       "icon": "Star",
       "iconColor": "#FFD700",
-      "apiEndpoint": "https://api.example.com/project1"
+      "apiEndpoint": "./test"
     },
     {
       "id": 3,
@@ -37,7 +37,7 @@
       "description": "This is the second project.",
       "icon": "Bus",
       "iconColor": "#1E90FF",
-      "apiEndpoint": "https://api.example.com/project1"
+      "apiEndpoint": "./"
     },
     {
       "id": 4,
@@ -45,7 +45,7 @@
       "description": "This is the third project.",
       "icon": "Heart",
       "iconColor": "#FF69B4",
-      "apiEndpoint": "https://api.example.com/project1"
+      "apiEndpoint": "./"
     },
     {
       "id": 5,
@@ -53,7 +53,7 @@
       "description": "This is the fourth project.",
       "icon": "Send",
       "iconColor": "#32CD32",
-      "apiEndpoint": "https://api.example.com/project1"
+      "apiEndpoint": "./"
     }
   ]
 }

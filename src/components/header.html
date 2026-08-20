@@ -1,0 +1,179 @@
+<header class="flex flex-col items-center gap-3">
+  <div class="flex justify-between pb-0 w-full">
+    <nav class="breadcrumb inline-flex gap-2" aria-label="Breadcrumb">
+      <button
+        class="btn"
+        type="button"
+        data-variant="outline"
+        onclick="document.getElementById('sidebar')?.toggle()"
+        data-tooltip="Toggle sidebar"
+        data-side="bottom"
+        data-align="start"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-panel-left-icon lucide-panel-left"
+          aria-hidden="true"
+        >
+          <rect width="18" height="18" x="3" y="3" rx="2" />
+          <path d="M9 3v18" />
+        </svg>
+      </button>
+      <div class="border border-accent my-2" aria-hidden="true"></div>
+      <ol>
+        <li class="block md:hidden">
+          <span aria-hidden="true">
+            <svg
+              class="lucide lucide-ellipsis"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="1" />
+              <circle cx="19" cy="12" r="1" />
+              <circle cx="5" cy="12" r="1" />
+            </svg>
+          </span>
+        </li>
+        <li class="hidden md:block">
+          <span>Dashboard</span>
+        </li>
+        <li aria-hidden="true">
+          <svg
+            data-rtl-flip
+            class="lucide lucide-chevron-right"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="m9 18 6-6-6-6" />
+          </svg>
+        </li>
+        <li><span aria-current="page">Home</span></li>
+      </ol>
+    </nav>
+    <div class="flex gap-2">
+      <button
+        id="adminMode"
+        type="button"
+        class="btn"
+        data-variant="outline"
+        data-size="sm"
+        data-tooltip="Admin mode"
+        data-side="inline-start"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-shield-minus-icon lucide-shield-minus"
+        >
+          <path
+            d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
+          />
+          <path d="M9 12h6" />
+        </svg>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-shield-icon lucide-shield"
+          aria-hidden="true"
+        >
+          <path
+            d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
+          />
+        </svg>
+        Admin Mode
+      </button>
+      <button
+        type="button"
+        id="themeToggle"
+        aria-label="Toggle dark mode"
+        data-tooltip="Toggle dark mode"
+        data-side="inline-start"
+        class="btn size-8"
+        data-variant="outline"
+        data-size="icon"
+      >
+        <span class="hidden dark:block">
+          <svg
+            class="lucide lucide-sun"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2v2" />
+            <path d="M12 20v2" />
+            <path d="m4.93 4.93 1.41 1.41" />
+            <path d="m17.66 17.66 1.41 1.41" />
+            <path d="M2 12h2" />
+            <path d="M20 12h2" />
+            <path d="m6.34 17.66-1.41 1.41" />
+            <path d="m19.07 4.93-1.41 1.41" />
+          </svg>
+        </span>
+        <span class="block dark:hidden">
+          <svg
+            class="lucide lucide-moon"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path
+              d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"
+            />
+          </svg>
+        </span>
+      </button>
+    </div>
+  </div>
+  <hr class="border border-accent w-full rounded-full" aria-hidden="true" />
+</header>
