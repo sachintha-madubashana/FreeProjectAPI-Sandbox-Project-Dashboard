@@ -1,7 +1,8 @@
 import { createIcons } from "lucide";
 
 export default async function loadAndRenderIcon(iconName, rootElement) {
-  const fileName = iconName.toLowerCase();
+  const pascalIconName = toPascalCase(iconName);
+  const fileName = toKebabCase(iconName);
 
   try {
     const iconModule = await import(
@@ -11,7 +12,7 @@ export default async function loadAndRenderIcon(iconName, rootElement) {
 
     createIcons({
       icons: {
-        [iconName]: iconComponent,
+        [pascalIconName]: iconComponent,
       },
       nameAttr: "data-lucide",
       root: rootElement,
@@ -23,4 +24,17 @@ export default async function loadAndRenderIcon(iconName, rootElement) {
       error,
     );
   }
+}
+
+function toPascalCase(str) {
+  return str
+    .replace(/(^\w|-\w)/g, (g) => g.replace("-", "").toUpperCase())
+    .replace(/^\w/, (c) => c.toUpperCase());
+}
+
+function toKebabCase(str) {
+  return str
+    .replace(/([a-z0-9])([A-Z])/g, "$1-$2")
+    .replace(/[\s_]+/g, "-")
+    .toLowerCase();
 }
