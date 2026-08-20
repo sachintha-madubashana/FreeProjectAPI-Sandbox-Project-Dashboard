@@ -1,6 +1,7 @@
 import sidebar from "@/components/sideBar.html?raw";
 import data from "@/assets/data.json" with { type: "json" };
 import loadAndRenderIcon from "@/utils/loadAndRenderIcon";
+import { navigate } from "@/router/router.js";
 
 export default function sidebarComponent() {
   const template = document.createElement("template");
@@ -15,25 +16,34 @@ export default function sidebarComponent() {
 
   data.pages.forEach((project) => {
     const menuItem = sideberMenuItem.cloneNode(true);
+    const link = menuItem.querySelector("a");
 
     menuItem.querySelector("span").textContent = project.title;
-    if (project.path === currentPath) {
-      menuItem.querySelector("a").classList.add("item-selected");
-    }
 
-    // menuItem.querySelector("a").setAttribute("href", project.apiEndpoint);
+    if (project.path === currentPath) {
+      link.classList.add("item-selected");
+    }
+    link.setAttribute("href", project.path);
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      navigate(project.path);
+      updateActiveItem(link, project);
+    });
+
     menuItem.querySelector("#icon").setAttribute("data-lucide", project.icon);
     menuItem.querySelector("#icon").style.cssText =
       "color: " + project.iconColor;
-    menuItem.querySelector("a").addEventListener("click", (e) => {
-      // navigation here
-      console.log(`Clicked on ${project.title}`);
-      e.preventDefault();
-    });
 
     loadAndRenderIcon(project.icon, menuItem);
     sidebarMenu.appendChild(menuItem);
   });
 
   return clone;
+}
+
+function updateActiveItem(link, project) {
+  const currentPath = window.location.pathname;
+  if (project.path === currentPath) {
+    link.classList.add("item-selected");
+  }
 }

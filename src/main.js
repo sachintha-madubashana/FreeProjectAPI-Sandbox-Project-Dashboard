@@ -1,17 +1,20 @@
 import "basecoat-css/all";
 import "@/styles/style.css";
+
 import headerComponent from "@/components/header.js";
 import sidebar from "@/components/sideBar.js";
-import dashbord from "@/pages/dashboard.js";
-import data from "@/assets/data.json" with { type: "json" };
-import loadAndRenderIcon from "@/utils/loadAndRenderIcon";
-import busBookingPage from "@/pages/busBooking.js";
+import { router } from "@/router/router.js";
 
-document.querySelector("#main").prepend(sidebar(1));
-
+const main = document.querySelector("#main");
 const app = document.querySelector("#app");
+
+main.prepend(sidebar());
+
 app.appendChild(headerComponent());
-const div = document.createElement("div");
-div.id = "pageContent";
-div.appendChild(dashbord());
-app.appendChild(div);
+
+const pageContent = document.createElement("div");
+pageContent.id = "pageContent";
+
+app.appendChild(pageContent);
+
+router();
