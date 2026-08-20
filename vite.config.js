@@ -6,8 +6,8 @@ export default defineConfig({
   plugins: [tailwindcss()],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
-      "@lucide": path.resolve(__dirname, "./node_modules/lucide"),
+      "@": path.resolve(import.meta.dirname, "./src"),
+      "@lucide": path.resolve(import.meta.dirname, "./node_modules/lucide"),
     },
   },
 });
