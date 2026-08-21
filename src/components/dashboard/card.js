@@ -8,7 +8,6 @@ template.innerHTML = cardHtml;
 export default async function projectCardComponent(projectData) {
   const clone = template.content.cloneNode(true);
 
-  clone.querySelector("#icon").setAttribute("data-lucide", projectData.icon);
   clone.querySelector("#icon").style.cssText =
     "color: " + projectData.iconColor;
   clone.querySelector(".project-title").textContent = projectData.title;
@@ -17,7 +16,11 @@ export default async function projectCardComponent(projectData) {
     navigate(projectData.path);
   });
 
-  await loadAndRenderIcon(projectData.icon, clone);
+  await loadAndRenderIcon(
+    projectData.icon,
+    clone,
+    clone.querySelector("#icon"),
+  );
 
   return clone;
 }
