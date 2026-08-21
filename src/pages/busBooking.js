@@ -1,5 +1,5 @@
-import busBooking from "@/pages/busBooking.html?raw";
-import bussBookingAdmin from "@/pages/busBookingAdmin.html?raw";
+import busBooking from "@/pages/html/busBooking.html?raw";
+import bussBookingAdmin from "@/pages/html/busBookingAdmin.html?raw";
 import { getAdminMode } from "@/components/header.js";
 
 export default function busBookingPage() {

@@ -1,8 +1,7 @@
-import dashbord from "@/pages/dashboard.html?raw";
+import dashbord from "@/pages/html/dashboard.html?raw";
 import dashboardBannerComponent from "@/components/dashboard/dashboard-banner.js";
 import projectCardComponent from "@/components/dashboard/card.js";
 import data from "@/assets/data.json" with { type: "json" };
-import loadAndRenderIcon from "@/utils/loadAndRenderIcon";
 
 // Create a template element and set its innerHTML to the imported dashboard HTML
 const template = document.createElement("template");

@@ -1,6 +1,5 @@
 import header from "@/components/header.html?raw";
 import data from "@/assets/data.json" with { type: "json" };
-import loadAndRenderIcon from "@/utils/loadAndRenderIcon";
 
 let isAdminMode = false;
 
