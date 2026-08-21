@@ -1,8 +1,14 @@
 import { createIcons } from "lucide";
 
-export default async function loadAndRenderIcon(iconName, rootElement) {
+export default async function loadAndRenderIcon(
+  iconName,
+  rootElement,
+  iElement,
+) {
   const pascalIconName = toPascalCase(iconName);
   const fileName = toKebabCase(iconName);
+
+  iElement.setAttribute("data-lucide", pascalIconName);
 
   try {
     const iconModule = await import(`@lucide/dist/esm/icons/${fileName}.mjs`);

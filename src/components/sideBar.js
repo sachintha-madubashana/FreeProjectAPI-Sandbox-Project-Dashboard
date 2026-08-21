@@ -28,12 +28,10 @@ function SideBarComponent() {
       e.preventDefault();
       navigate(project.path);
     });
-
-    menuItem.querySelector("#icon").setAttribute("data-lucide", project.icon);
     menuItem.querySelector("#icon").style.cssText =
       "color: " + project.iconColor;
 
-    loadAndRenderIcon(project.icon, menuItem);
+    loadAndRenderIcon(project.icon, menuItem, menuItem.querySelector("#icon"));
     sidebarMenu.appendChild(menuItem);
   });
 
