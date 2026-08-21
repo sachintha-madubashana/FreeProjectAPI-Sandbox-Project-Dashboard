@@ -1,4 +1,4 @@
-import headder from "@/components/header.html?raw";
+import header from "@/components/header.html?raw";
 import data from "@/assets/data.json" with { type: "json" };
 
 // Initialize admin mode button functionality
@@ -72,13 +72,14 @@ const toggleTheme = () => {
   const isDark = document.documentElement.classList.contains("dark");
   localStorage.setItem("themeMode", isDark ? "dark" : "light");
 };
+let breadcrumbElement;
 
-export default function headderComponent() {
+function HeaderComponent() {
   const template = document.createElement("template");
-  template.innerHTML = headder;
+  template.innerHTML = header;
   const clone = template.content.cloneNode(true);
 
-  const breadcrumbElement = clone.querySelector("#breadcrumbPage");
+  breadcrumbElement = clone.querySelector("#breadcrumbPage");
 
   // Add event listener for admin mode button
   initAdminModeButton(clone);
@@ -88,28 +89,21 @@ export default function headderComponent() {
     toggleTheme();
   });
 
-  const setPageTitle = (title) => {
-    if (breadcrumbElement) {
-      breadcrumbElement.textContent = title;
-    } else {
-      const liveElement = document.querySelector("#breadcrumbPage");
-      if (liveElement) liveElement.textContent = title;
-    }
-  };
-
   setPageTitle(
     data.pages.find((page) => page.path === window.location.pathname)?.title ||
       "Page Not Found",
   );
 
-  navigation.addEventListener("navigate", (event) => {
-    const pathname = new URL(event.destination.url).pathname;
-
-    setPageTitle(
-      data.pages.find((page) => page.path === pathname)?.title ||
-        "Page Not Found",
-    );
-  });
-
   return clone;
 }
+
+const setPageTitle = (title) => {
+  if (breadcrumbElement) {
+    breadcrumbElement.textContent = title;
+  } else {
+    const liveElement = document.querySelector("#breadcrumbPage");
+    if (liveElement) liveElement.textContent = title;
+  }
+};
+
+export { HeaderComponent, setPageTitle };

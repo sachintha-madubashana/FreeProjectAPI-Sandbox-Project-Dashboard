@@ -3,7 +3,7 @@ import data from "@/assets/data.json" with { type: "json" };
 import loadAndRenderIcon from "@/utils/loadAndRenderIcon";
 import { navigate } from "@/router/router.js";
 
-export default function sidebarComponent() {
+function SideBarComponent() {
   const template = document.createElement("template");
   template.innerHTML = sidebar;
   const clone = template.content.cloneNode(true);
@@ -27,7 +27,6 @@ export default function sidebarComponent() {
     link.addEventListener("click", (e) => {
       e.preventDefault();
       navigate(project.path);
-      updateActiveItem(project.path);
     });
 
     menuItem.querySelector("#icon").setAttribute("data-lucide", project.icon);
@@ -41,10 +40,12 @@ export default function sidebarComponent() {
   return clone;
 }
 
-function updateActiveItem(path) {
+const updateActiveItem = (path) => {
   document.querySelectorAll("#sideberMenu a").forEach((item) => {
     item.hasAttribute("href") && item.getAttribute("href") === path
       ? item.classList.add("item-selected")
       : item.classList.remove("item-selected");
   });
-}
+};
+
+export { SideBarComponent, updateActiveItem };
