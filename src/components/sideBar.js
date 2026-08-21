@@ -27,7 +27,7 @@ export default function sidebarComponent() {
     link.addEventListener("click", (e) => {
       e.preventDefault();
       navigate(project.path);
-      updateActiveItem(link, project);
+      updateActiveItem(project.path);
     });
 
     menuItem.querySelector("#icon").setAttribute("data-lucide", project.icon);
@@ -41,9 +41,10 @@ export default function sidebarComponent() {
   return clone;
 }
 
-function updateActiveItem(link, project) {
-  const currentPath = window.location.pathname;
-  if (project.path === currentPath) {
-    link.classList.add("item-selected");
-  }
+function updateActiveItem(path) {
+  document.querySelectorAll("#sideberMenu a").forEach((item) => {
+    item.hasAttribute("href") && item.getAttribute("href") === path
+      ? item.classList.add("item-selected")
+      : item.classList.remove("item-selected");
+  });
 }
