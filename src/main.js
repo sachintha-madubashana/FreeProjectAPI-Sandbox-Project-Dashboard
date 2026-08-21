@@ -3,7 +3,7 @@ import "@/styles/style.css";
 
 import { HeaderComponent, setPageTitle } from "@/components/header.js";
 import { SideBarComponent, updateActiveItem } from "@/components/sideBar.js";
-import { router } from "@/router/router.js";
+import { startRouter } from "@/router/router.js";
 import data from "@/assets/data.json" with { type: "json" };
 
 const main = document.querySelector("#main");
@@ -18,7 +18,7 @@ pageContent.id = "pageContent";
 
 app.appendChild(pageContent);
 
-router();
+startRouter();
 
 navigation.addEventListener("navigate", (event) => {
   const pathname = new URL(event.destination.url).pathname;
