@@ -29,6 +29,5 @@ export function navigate(path) {
 
 export function startRouter() {
   window.addEventListener("popstate", router);
-
   router();
 }

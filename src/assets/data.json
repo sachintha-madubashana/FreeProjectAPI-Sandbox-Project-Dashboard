@@ -17,8 +17,8 @@
   "pages": [
     {
       "id": 1,
-      "title": "Dashboard",
-      "description": "This is the Dashboard.",
+      "title": "Home",
+      "description": "This is the Home Page.",
       "icon": "LayoutDashboard",
       "iconColor": "#FFD700",
       "path": "/",

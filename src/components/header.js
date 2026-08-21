@@ -1,4 +1,5 @@
 import headder from "@/components/header.html?raw";
+import data from "@/assets/data.json" with { type: "json" };
 
 // Initialize admin mode button functionality
 const initAdminModeButton = (clone) => {
@@ -77,12 +78,37 @@ export default function headderComponent() {
   template.innerHTML = headder;
   const clone = template.content.cloneNode(true);
 
+  const breadcrumbElement = clone.querySelector("#breadcrumbPage");
+
   // Add event listener for admin mode button
   initAdminModeButton(clone);
 
   // Add event listener for theme toggle button
   clone.querySelector("#themeToggle").addEventListener("click", () => {
     toggleTheme();
+  });
+
+  const setPageTitle = (title) => {
+    if (breadcrumbElement) {
+      breadcrumbElement.textContent = title;
+    } else {
+      const liveElement = document.querySelector("#breadcrumbPage");
+      if (liveElement) liveElement.textContent = title;
+    }
+  };
+
+  setPageTitle(
+    data.pages.find((page) => page.path === window.location.pathname)?.title ||
+      "Page Not Found",
+  );
+
+  navigation.addEventListener("navigate", (event) => {
+    const pathname = new URL(event.destination.url).pathname;
+
+    setPageTitle(
+      data.pages.find((page) => page.path === pathname)?.title ||
+        "Page Not Found",
+    );
   });
 
   return clone;
