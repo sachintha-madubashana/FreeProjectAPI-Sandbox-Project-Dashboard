@@ -26,17 +26,24 @@ export function router() {
 
 export function navigate(path) {
   history.pushState({}, "", path);
+  updateData(path);
   router();
-  setPageTitle(
-    data.pages.find((page) => page.path === path)?.title || "Page Not Found",
-  );
-  updateActiveItem(path);
 }
 
 export function startRouter() {
-  window.addEventListener("popstate", router);
+  window.addEventListener("popstate", () => {
+    updateData(window.location.pathname);
+    router();
+  });
   window.addEventListener("adminMode", () => {
     router();
   });
   router();
 }
+
+const updateData = (path) => {
+  setPageTitle(
+    data.pages.find((page) => page.path === path)?.title || "Page Not Found",
+  );
+  updateActiveItem(path);
+};
