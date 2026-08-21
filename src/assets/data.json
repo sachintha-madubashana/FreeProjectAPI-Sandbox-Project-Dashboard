@@ -26,6 +26,15 @@
     },
     {
       "id": 2,
+      "title": "Bank Loan",
+      "description": "This is the second project.",
+      "icon": "Landmark",
+      "iconColor": "#1E90FF",
+      "path": "/bank-loan",
+      "apiEndpoints": "./"
+    },
+    {
+      "id": 3,
       "title": "Bus Booking",
       "description": "Browse bus schedules and book a seat",
       "icon": "Bus",
@@ -34,30 +43,111 @@
       "apiEndpoints": "./test"
     },
     {
-      "id": 3,
-      "title": "Project 2",
-      "description": "This is the second project.",
-      "icon": "Star",
-      "iconColor": "#1E90FF",
-      "path": "/p2",
-      "apiEndpoints": "./"
-    },
-    {
       "id": 4,
-      "title": "Project 3",
+      "title": "College Project",
       "description": "This is the third project.",
-      "icon": "Heart",
+      "icon": "GraduationCap",
       "iconColor": "#FF69B4",
-      "path": "/p3",
+      "path": "/college-project",
       "apiEndpoints": "./"
     },
     {
       "id": 5,
-      "title": "Project 4",
+      "title": "Ecommerce",
       "description": "This is the fourth project.",
-      "icon": "Send",
+      "icon": "ShoppingCart",
       "iconColor": "#32CD32",
-      "path": "/p4",
+      "path": "/ecommerce",
+      "apiEndpoints": "./"
+    },
+    {
+      "id": 6,
+      "title": "Employee App",
+      "description": "Directory & search",
+      "icon": "Users",
+      "iconColor": "#4285F4",
+      "path": "/employee-app",
+      "apiEndpoints": "./"
+    },
+    {
+      "id": 7,
+      "title": "Onboarding",
+      "description": "Step-by-step wizard",
+      "icon": "UserPlus",
+      "iconColor": "#34A853",
+      "path": "/onboarding",
+      "apiEndpoints": "./"
+    },
+    {
+      "id": 8,
+      "title": "Enquiry",
+      "description": "Support tickets",
+      "icon": "MessageSquare",
+      "iconColor": "#EA4335",
+      "path": "/enquiry",
+      "apiEndpoints": "./"
+    },
+    {
+      "id": 9,
+      "title": "Fees Tracking",
+      "description": "Enrollments & payments",
+      "icon": "HandCoins",
+      "iconColor": "#FBBC05",
+      "path": "/fees-tracking",
+      "apiEndpoints": "./"
+    },
+    {
+      "id": 10,
+      "title": "Goal Tracker",
+      "description": "Goals & progress",
+      "icon": "Target",
+      "iconColor": "#AA00FF",
+      "path": "/goal-tracker",
+      "apiEndpoints": "./"
+    },
+    {
+      "id": 11,
+      "title": "Leave Tracker",
+      "description": "Leave requests & balance",
+      "icon": "CalendarDays",
+      "iconColor": "#4285F4",
+      "path": "/leave-tracker",
+      "apiEndpoints": "./"
+    },
+    {
+      "id": 12,
+      "title": "Competition",
+      "description": "Register & submit projects",
+      "icon": "Trophy",
+      "iconColor": "#FBBC05",
+      "path": "/competition",
+      "apiEndpoints": "./"
+    },
+    {
+      "id": 13,
+      "title": "Smart Parking",
+      "description": "Live slot availability",
+      "icon": "CircleParking",
+      "iconColor": "#34A853",
+      "path": "/smart-parking",
+      "apiEndpoints": "./"
+    },
+    {
+      "id": 14,
+      "title": "Survey",
+      "description": "Multi-question surveys",
+      "icon": "ClipboardList",
+      "iconColor": "#AA00FF",
+      "path": "/survey",
+      "apiEndpoints": "./"
+    },
+    {
+      "id": 15,
+      "title": "User App",
+      "description": "Profile management",
+      "icon": "User",
+      "iconColor": "#4285F4",
+      "path": "/user-app",
       "apiEndpoints": "./"
     }
   ]
