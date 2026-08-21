@@ -31,8 +31,13 @@ const initAdminModeButton = (clone) => {
 
     adminModeButton.addEventListener("click", () => {
       isAdminMode = !isAdminMode;
+      const adminModeEvent = new CustomEvent("adminMode", {
+        detail: {
+          adminMode: isAdminMode,
+        },
+      });
+      window.dispatchEvent(adminModeEvent);
       localStorage.setItem("adminMode", isAdminMode.toString());
-      console.log(`Admin mode ${isAdminMode ? "enabled" : "disabled"}`);
       asyncButton();
     });
   }
@@ -93,4 +98,6 @@ const setPageTitle = (title) => {
   }
 };
 
-export { HeaderComponent, setPageTitle };
+const getAdminMode = () => isAdminMode;
+
+export { HeaderComponent, setPageTitle, getAdminMode };

@@ -1,8 +1,15 @@
 import busBooking from "@/pages/busBooking.html?raw";
+import bussBookingAdmin from "@/pages/busBookingAdmin.html?raw";
+import { getAdminMode } from "@/components/header.js";
 
 export default function busBookingPage() {
   const template = document.createElement("template");
-  template.innerHTML = busBooking;
+  if (getAdminMode()) {
+    template.innerHTML = bussBookingAdmin;
+  } else {
+    template.innerHTML = busBooking;
+  }
+
   const clone = template.content.cloneNode(true);
 
   return clone;

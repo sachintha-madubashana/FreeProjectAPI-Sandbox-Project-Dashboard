@@ -19,13 +19,3 @@ pageContent.id = "pageContent";
 app.appendChild(pageContent);
 
 startRouter();
-
-navigation.addEventListener("navigate", (event) => {
-  const pathname = new URL(event.destination.url).pathname;
-
-  setPageTitle(
-    data.pages.find((page) => page.path === pathname)?.title ||
-      "Page Not Found",
-  );
-  updateActiveItem(pathname);
-});
