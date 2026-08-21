@@ -21,6 +21,9 @@ export default function dashboardPage() {
   gridContainer.className =
     "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-full";
   pages.forEach((project) => {
+    if (project.id === 1) {
+      return;
+    }
     projectCardComponent(project).then((cardNode) => {
       gridContainer.appendChild(cardNode);
     });
