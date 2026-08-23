@@ -1,18 +1,31 @@
-// replace impots with the correct file names
-// import projectTemp from "@/pages/html/projectTemp.html?raw";
-// import projectTempAdmin from "@/pages/html/projectTempAdmin.html?raw";
 import login from "@/components/login/login.js";
-import { getAdminMode } from "@/components/header.js";
+import register from "@/components/register/register.js";
+import goalTrakerDashboard from "@/pages/html/goalTraker/dashboard.js";
 
 export default function goalTracker() {
-  const template = document.createElement("template");
-  const clone = template.content.cloneNode(true);
+  const template = document.createElement("div");
+  template.classList.add("size-full");
+  const logedInUser = localStorage.getItem("goalTrackerUser") || false;
 
   const loginProps = {
     title: "Goal Tracker Login",
+    onNavigateToSignup: () => {
+      template.innerHTML = "";
+      template.appendChild(register(registerProps));
+    },
   };
 
-  clone.appendChild(login(loginProps));
+  const registerProps = {
+    title: "Goal Tracker Register",
+    onNavigateToLogin: () => {
+      template.innerHTML = "";
+      template.appendChild(login(loginProps));
+    },
+  };
 
-  return clone;
+  template.appendChild(
+    logedInUser === false ? login(loginProps) : goalTrakerDashboard(),
+  );
+
+  return template;
 }

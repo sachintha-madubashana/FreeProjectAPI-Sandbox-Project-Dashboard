@@ -62,3 +62,7 @@ const updateData = (path) => {
   );
   updateActiveItem(path);
 };
+
+export function refresh() {
+  router();
+}
