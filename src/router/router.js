@@ -2,6 +2,7 @@ import { setPageTitle } from "@/components/header.js";
 import { updateActiveItem } from "@/components/sideBar.js";
 import dashboardPage from "@/pages/dashboard.js";
 import busBookingPage from "@/pages/busBooking.js";
+import goalTracker from "@/pages/goalTracker.js";
 import templatePage from "@/pages/projectTemp.js";
 import data from "@/assets/data.json" with { type: "json" };
 
@@ -15,7 +16,7 @@ const routes = {
   "/onboarding": templatePage,
   "/enquiry": templatePage,
   "/fees-tracking": templatePage,
-  "/goal-tracker": templatePage,
+  "/goal-tracker": goalTracker,
   "/leave-tracker": templatePage,
   "/competition": templatePage,
   "/smart-parking": templatePage,

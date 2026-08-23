@@ -14,6 +14,7 @@ app.appendChild(HeaderComponent());
 
 const pageContent = document.createElement("div");
 pageContent.id = "pageContent";
+pageContent.classList = "flex flex-col flex-1 min-h-0";
 
 app.appendChild(pageContent);
 

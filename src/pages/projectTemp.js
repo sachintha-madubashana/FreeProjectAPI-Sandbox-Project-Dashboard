@@ -22,7 +22,8 @@ export default function projectTempPage() {
     // change the template to the correct user template
     template.innerHTML = projectTemp;
   }
-  const clone = template.content.cloneNode(true);
+  // const clone = template.content.cloneNode(true);
+  const clone = document.importNode(template.content, true); // Best practice to use this.
 
   // remove this line
   clone.querySelector("h2").textContent = name + " Page";

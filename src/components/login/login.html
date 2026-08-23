@@ -1,0 +1,59 @@
+<div class="flex justify-center items-center flex-1">
+  <div class="card w-full md:w-md">
+    <header>
+      <h2>Title</h2>
+      <p>Enter your email below to login to your account</p>
+      <div class="card-action">
+        <button type="button" class="btn" data-variant="link">Sign Up</button>
+      </div>
+    </header>
+    <section>
+      <form class="grid gap-6">
+        <div class="grid gap-2">
+          <label class="label" for="email">Email</label>
+          <input
+            class="input"
+            type="email"
+            id="email"
+            placeholder="email@example.com"
+            required
+          />
+        </div>
+        <div class="grid gap-2">
+          <div class="field">
+            <div class="flex items-center">
+              <label class="label" for="password">Password</label>
+              <a
+                href="#"
+                class="ms-auto inline-block text-sm underline-offset-4 hover:underline"
+                >Forgot your password?</a
+              >
+            </div>
+            <div class="input-group">
+              <input
+                id="password"
+                type="password"
+                placeholder="Enter password"
+              />
+              <span role="group" data-align="end">
+                <button
+                  type="button"
+                  class="btn btn-icon"
+                  data-variant="ghost"
+                  data-size="sm"
+                  id="passwordVisibilityToggler"
+                >
+                  <div id="passwordVisibilityIcon" class="size-4"></div>
+                </button>
+              </span>
+            </div>
+            <p id="errorMsg" class="hidden">This is an Error message.</p>
+          </div>
+        </div>
+      </form>
+    </section>
+    <footer class="flex-col gap-2">
+      <button type="button" class="btn w-full" id="loginBtn">Login</button>
+    </footer>
+  </div>
+</div>
