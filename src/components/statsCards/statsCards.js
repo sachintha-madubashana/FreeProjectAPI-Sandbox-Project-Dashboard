@@ -12,7 +12,7 @@ export default function statsCards(props) {
     props?.secondValue || "";
 
   loadAndRenderIcon(
-    "List",
+    props?.icon || "Bug",
     clone.querySelector(".card"),
     clone.querySelector("#icon"),
   );

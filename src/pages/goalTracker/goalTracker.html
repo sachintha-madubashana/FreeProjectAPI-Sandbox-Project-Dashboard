@@ -1,0 +1,90 @@
+<div class="tabs" id="tabs-with-icons">
+  <div class="flex justify-between items-center">
+    <h2 class="text-lg font-bold">Goal Tracker Dashboard</h2>
+    <button type="button" class="btn" data-variant="destructive" id="logoutBtn">
+      Logout
+    </button>
+  </div>
+  <nav role="tablist" aria-orientation="horizontal">
+    <button
+      type="button"
+      role="tab"
+      id="tabsWithIconsTabDashboard"
+      aria-controls="tabsWithIconsPanelDashboard"
+      aria-selected="true"
+      tabindex="0"
+    >
+      <i
+        data-lucide="layout-dashboard"
+        class="size-5"
+        id="tabDashboardIcon"
+      ></i>
+      Dashboard
+    </button>
+    <button
+      type="button"
+      role="tab"
+      id="tabsWithIconsTabTask"
+      aria-controls="tabsWithIconsPanelTask"
+      aria-selected="false"
+      tabindex="-1"
+    >
+      <i data-lucide="check-square" class="size-5" id="tabTaskIcon"></i>
+      Task
+    </button>
+    <button
+      type="button"
+      role="tab"
+      id="tabsWithIconsTabGoal"
+      aria-controls="tabsWithIconsPanelGoal"
+      aria-selected="false"
+      tabindex="-1"
+    >
+      <i data-lucide="Goal" class="size-5" id="tabGoalIcon"></i>
+      Goals
+    </button>
+    <button
+      type="button"
+      role="tab"
+      id="tabsWithIconsTabReminders"
+      aria-controls="tabsWithIconsPanelReminders"
+      aria-selected="false"
+      tabindex="-1"
+    >
+      <i data-lucide="Bell" class="size-5" id="tabRemindersIcon"></i>
+      Reminders
+    </button>
+  </nav>
+
+  <div
+    role="tabpanel"
+    id="tabsWithIconsPanelDashboard"
+    aria-labelledby="tabsWithIconsTabDashboard"
+    tabindex="0"
+    aria-hidden="false"
+  ></div>
+  <div
+    role="tabpanel"
+    id="tabsWithIconsPanelTask"
+    aria-labelledby="tabsWithIconsTabTask"
+    tabindex="-1"
+    aria-hidden="true"
+    hidden
+  ></div>
+  <div
+    role="tabpanel"
+    id="tabsWithIconsPanelGoal"
+    aria-labelledby="tabsWithIconsTabGoal"
+    tabindex="-1"
+    aria-hidden="true"
+    hidden
+  ></div>
+  <div
+    role="tabpanel"
+    id="tabsWithIconsPanelReminders"
+    aria-labelledby="tabsWithIconsTabReminders"
+    tabindex="-1"
+    aria-hidden="true"
+    hidden
+  ></div>
+</div>
