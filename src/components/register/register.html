@@ -2,7 +2,7 @@
   <div class="card w-full md:w-md">
     <header>
       <h2>Title</h2>
-      <p>Enter your email below to login to your account</p>
+      <p>Enter your detailes below to create an account</p>
       <div class="card-action">
         <button type="button" class="btn" data-variant="link" id="goToLoginbtn">
           Log In
@@ -12,25 +12,31 @@
     <section>
       <form class="grid gap-6">
         <div class="grid gap-2">
-          <label class="label" for="email">Email</label>
+          <label class="label" for="email">Full Name</label>
           <input
             class="input"
-            type="email"
-            id="email"
-            placeholder="email@example.com"
+            type="text"
+            id="name"
+            placeholder="Jane Doe"
             required
           />
         </div>
         <div class="grid gap-2">
           <div class="field">
-            <div class="flex items-center">
-              <label class="label" for="password">Password</label>
-              <a
-                href="#"
-                class="ms-auto inline-block text-sm underline-offset-4 hover:underline"
-                >Forgot your password?</a
-              >
-            </div>
+            <label class="label" for="email">Email</label>
+            <input
+              class="input"
+              type="email"
+              id="email"
+              placeholder="email@example.com"
+              required
+            />
+            <p id="errorMsg" class="hidden">This is an Error message.</p>
+          </div>
+        </div>
+        <div class="grid gap-2">
+          <div class="field">
+            <label class="label" for="password">Password</label>
             <div class="input-group">
               <input
                 id="password"
@@ -55,7 +61,9 @@
       </form>
     </section>
     <footer class="flex-col gap-2">
-      <button type="button" class="btn w-full" id="loginBtn">Register</button>
+      <button type="button" class="btn w-full" id="registerBtn">
+        Register
+      </button>
     </footer>
   </div>
 </div>
