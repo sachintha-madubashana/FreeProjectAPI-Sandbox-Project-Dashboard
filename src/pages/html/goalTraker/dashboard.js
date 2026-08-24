@@ -9,11 +9,24 @@ export default function goalTrakerDashboard() {
   template.innerHTML = dashboard;
   const clone = document.importNode(template.content, true);
 
+  // load and render icons for tabs
+  loadAndRenderIcon(
+    "LayoutDashboard",
+    clone.querySelector("#tabsWithIconsTabDashboard"),
+    clone.querySelector("#tabDashboardIcon"),
+  );
+  loadAndRenderIcon(
+    "Logs",
+    clone.querySelector("#tabsWithIconsTabTask"),
+    clone.querySelector("#tabTaskIcon"),
+  );
+
   clone.querySelector("#logoutBtn").addEventListener("click", () => {
     localStorage.removeItem("goalTrackerUser");
     refresh();
   });
 
+  // Render stats cards
   clone.querySelector("#statsCardsContainer").appendChild(
     statsCards({
       title: "Total Goals",
