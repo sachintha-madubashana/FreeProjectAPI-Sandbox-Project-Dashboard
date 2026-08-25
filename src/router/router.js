@@ -27,6 +27,8 @@ const routes = {
 export function router() {
   const path = window.location.pathname;
   const page = routes[path];
+  const urlParams = new URLSearchParams(window.location.search);
+  console.log(urlParams);
   const pageContent = document.querySelector("#pageContent");
 
   if (!page) {
@@ -36,7 +38,7 @@ export function router() {
     `;
     return;
   }
-  pageContent.replaceChildren(page());
+  pageContent.replaceChildren(page(Object.fromEntries(urlParams.entries())));
 }
 
 export function navigate(path) {

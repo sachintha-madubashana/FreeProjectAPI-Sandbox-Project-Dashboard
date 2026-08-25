@@ -7,9 +7,38 @@ import { refresh } from "@/router/router.js";
 import taskPage from "@/pages/goalTracker/task.js";
 import templatePage from "@/pages/projectTemp.js";
 
-export default function goalTracker() {
+const TABS_CONFIG = {
+  dashboard: {
+    btn: "#tabsWithIconsTabDashboardBtn",
+    panel: "#tabsWithIconsPanelDashboard",
+    icon: "#tabDashboardIcon",
+    iconName: "LayoutDashboard",
+    page: goalTrakerDashboard,
+  },
+  tasks: {
+    btn: "#tabsWithIconsTabTaskBtn",
+    panel: "#tabsWithIconsPanelTask",
+    icon: "#tabTaskIcon",
+    iconName: "Logs",
+    page: taskPage,
+  },
+  goals: {
+    btn: "#tabsWithIconsTabGoalBtn",
+    panel: "#tabsWithIconsPanelGoal",
+    icon: "#tabGoalIcon",
+    iconName: "Goal",
+    page: templatePage,
+  },
+  reminders: {
+    btn: "#tabsWithIconsTabRemindersBtn",
+    panel: "#tabsWithIconsPanelReminders",
+    icon: "#tabRemindersIcon",
+    iconName: "Bell",
+    page: templatePage,
+  },
+};
+export default function goalTracker(params) {
   const logedInUser = localStorage.getItem("goalTrackerUser") || false;
-
   if (logedInUser === false) {
     const template = document.createElement("div");
     template.classList.add("size-full");
@@ -30,6 +59,10 @@ export default function goalTracker() {
       },
     };
 
+    const url = new URL(window.location.href);
+    url.search = "";
+    window.history.replaceState({}, "", url);
+
     template.appendChild(login(loginProps));
 
     return template;
@@ -39,21 +72,51 @@ export default function goalTracker() {
   template.innerHTML = goalTrackerHTML;
   const clone = document.importNode(template.content, true);
 
-  clone
-    .querySelector("#tabsWithIconsPanelDashboard")
-    .appendChild(goalTrakerDashboard());
-  clone.querySelector("#tabsWithIconsPanelTask").appendChild(taskPage());
-  clone.querySelector("#tabsWithIconsPanelGoal").appendChild(templatePage());
-  clone
-    .querySelector("#tabsWithIconsPanelReminders")
-    .appendChild(templatePage());
-  clone.querySelector("#logoutBtn").addEventListener("click", () => {
+  Object.entries(TABS_CONFIG).forEach(([tabKey, config]) => {
+    clone.querySelector(config.panel)?.appendChild(config.page());
+
+    clone.querySelector(config.btn)?.addEventListener("click", () => {
+      updateUrlParameter("tab", tabKey);
+    });
+  });
+
+  const activeTabKey = params?.tab || "dashboard";
+  const activeConfig = TABS_CONFIG[activeTabKey];
+
+  if (activeConfig) {
+    Object.values(TABS_CONFIG).forEach((config) => {
+      const btn = clone.querySelector(config.btn);
+      const panel = clone.querySelector(config.panel);
+
+      btn?.setAttribute("aria-selected", "false");
+      btn?.setAttribute("tabindex", "-1");
+
+      btn?.removeAttribute("data-state");
+      panel?.removeAttribute("data-state");
+      panel?.setAttribute("hidden", "true");
+    });
+
+    const targetBtn = clone.querySelector(activeConfig.btn);
+    const targetPanel = clone.querySelector(activeConfig.panel);
+
+    targetBtn?.setAttribute("aria-selected", "true");
+    targetBtn?.setAttribute("tabindex", "0");
+    targetBtn?.setAttribute("data-state", "active");
+
+    targetPanel?.removeAttribute("hidden");
+    targetPanel?.setAttribute("data-state", "active");
+  }
+
+  clone.querySelector("#logoutBtn")?.addEventListener("click", () => {
     localStorage.removeItem("goalTrackerUser");
     refresh();
   });
 
-  // load and render icons for tabs
   loadIcons(clone);
+
+  setTimeout(() => {
+    window.basecoat?.refresh?.(document.querySelector(".tabs"));
+  }, 0);
 
   return clone;
 }
@@ -61,22 +124,28 @@ export default function goalTracker() {
 const loadIcons = (clone) => {
   loadAndRenderIcon(
     "LayoutDashboard",
-    clone.querySelector("#tabsWithIconsTabDashboard"),
+    clone.querySelector("#tabsWithIconsTabDashboardBtn"),
     clone.querySelector("#tabDashboardIcon"),
   );
   loadAndRenderIcon(
     "Logs",
-    clone.querySelector("#tabsWithIconsTabTask"),
+    clone.querySelector("#tabsWithIconsTabTaskBtn"),
     clone.querySelector("#tabTaskIcon"),
   );
   loadAndRenderIcon(
     "Goal",
-    clone.querySelector("#tabsWithIconsTabGoal"),
+    clone.querySelector("#tabsWithIconsTabGoalBtn"),
     clone.querySelector("#tabGoalIcon"),
   );
   loadAndRenderIcon(
     "Bell",
-    clone.querySelector("#tabsWithIconsTabReminders"),
+    clone.querySelector("#tabsWithIconsTabRemindersBtn"),
     clone.querySelector("#tabRemindersIcon"),
   );
 };
+
+function updateUrlParameter(key, value) {
+  const url = new URL(window.location.href);
+  url.searchParams.set(key, value);
+  window.history.pushState({}, "", url);
+}
