@@ -4,6 +4,7 @@ import goalTrackerHTML from "@/pages/goalTracker/goalTracker.html?raw";
 import goalTrakerDashboard from "@/pages/goalTracker/dashboard.js";
 import loadAndRenderIcon from "@/utils/loadAndRenderIcon.js";
 import { refresh } from "@/router/router.js";
+import taskPage from "@/pages/goalTracker/task.js";
 import templatePage from "@/pages/projectTemp.js";
 
 export default function goalTracker() {
@@ -41,15 +42,11 @@ export default function goalTracker() {
   clone
     .querySelector("#tabsWithIconsPanelDashboard")
     .appendChild(goalTrakerDashboard());
-
-  clone.querySelector("#tabsWithIconsPanelTask").appendChild(templatePage());
-
+  clone.querySelector("#tabsWithIconsPanelTask").appendChild(taskPage());
   clone.querySelector("#tabsWithIconsPanelGoal").appendChild(templatePage());
-
   clone
     .querySelector("#tabsWithIconsPanelReminders")
     .appendChild(templatePage());
-
   clone.querySelector("#logoutBtn").addEventListener("click", () => {
     localStorage.removeItem("goalTrackerUser");
     refresh();
