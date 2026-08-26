@@ -99,7 +99,6 @@ export default function task() {
         {
           taskId: 405,
           taskName: "dfhdfh",
-          frequency: "Daily",
           createdDate: "2026-08-25T11:56:05.087",
           dueDate: "2026-09-01T00:00:00",
           isCompleted: false,
@@ -110,39 +109,14 @@ export default function task() {
     {
       frequency: "Monthly",
       frequencyIcon: "Calendar",
-      tasks: [
-        {
-          taskId: 403,
-          taskName: "adfg",
-          createdDate: "2026-08-22T11:42:12.543",
-          dueDate: "2026-08-29T00:00:00",
-          isCompleted: false,
-          userId: 9567,
-        },
-        {
-          taskId: 404,
-          taskName: "aaaaa",
-          createdDate: "2026-08-22T11:42:33.177",
-          dueDate: "2026-08-29T00:00:00",
-          isCompleted: false,
-          userId: 9567,
-        },
-        {
-          taskId: 405,
-          taskName: "dfhdfh",
-          createdDate: "2026-08-25T11:56:05.087",
-          dueDate: "2026-09-01T00:00:00",
-          isCompleted: false,
-          userId: 9567,
-        },
-      ],
+      tasks: [],
     },
   ];
-
+  const taskCardsContainer = clone.querySelector("#taskCardsContainer");
   taskSeperatedByFrequency.forEach((task) => {
-    clone
-      .querySelector("#taskCardsContainer")
-      .appendChild(taskCardContainer(task));
+    console.log("task", task);
+
+    taskCardsContainer.appendChild(taskCardContainer(task));
   });
 
   return clone;
