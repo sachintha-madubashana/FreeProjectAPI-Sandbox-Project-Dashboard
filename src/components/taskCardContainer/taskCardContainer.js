@@ -1,7 +1,7 @@
-import cardContainerTemplate from "@/components/cardContainer/cardContainer.html?raw";
+import cardContainerTemplate from "@/components/taskCardContainer/taskCardContainer.html?raw";
 import loadAndRenderIcon from "@/utils/loadAndRenderIcon.js";
 
-export default function cardContainer(props) {
+export default function taskCardContainer(props) {
   const template = document.createElement("template");
   template.innerHTML = cardContainerTemplate;
   const clone = document.importNode(template.content, true);

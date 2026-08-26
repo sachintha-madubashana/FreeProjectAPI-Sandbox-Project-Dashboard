@@ -1,7 +1,7 @@
 import taskTemplate from "@/pages/goalTracker/task.html?raw";
 import statsCards from "@/components/simpleStatsCards/simpleStatsCards.js";
 import loadAndRenderIcon from "@/utils/loadAndRenderIcon.js";
-import cardContainer from "@/components/cardContainer/cardContainer.js";
+import taskCardContainer from "@/components/taskCardContainer/taskCardContainer.js";
 
 export default function task() {
   const template = document.createElement("template");
@@ -49,22 +49,100 @@ export default function task() {
     {
       frequency: "Daily",
       frequencyIcon: "Sun",
-      tasks: [],
+      tasks: [
+        {
+          taskId: 403,
+          taskName: "adfg",
+          createdDate: "2026-08-22T11:42:12.543",
+          dueDate: "2026-08-29T00:00:00",
+          isCompleted: false,
+          userId: 9567,
+        },
+        {
+          taskId: 404,
+          taskName: "aaaaa",
+          createdDate: "2026-08-22T11:42:33.177",
+          dueDate: "2026-08-29T00:00:00",
+          isCompleted: false,
+          userId: 9567,
+        },
+        {
+          taskId: 405,
+          taskName: "dfhdfh",
+          createdDate: "2026-08-25T11:56:05.087",
+          dueDate: "2026-09-01T00:00:00",
+          isCompleted: false,
+          userId: 9567,
+        },
+      ],
     },
     {
       frequency: "Weekly",
       frequencyIcon: "CalendarDays",
-      tasks: [],
+      tasks: [
+        {
+          taskId: 403,
+          taskName: "adfg",
+          createdDate: "2026-08-22T11:42:12.543",
+          dueDate: "2026-08-29T00:00:00",
+          isCompleted: false,
+          userId: 9567,
+        },
+        {
+          taskId: 404,
+          taskName: "aaaaa",
+          createdDate: "2026-08-22T11:42:33.177",
+          dueDate: "2026-08-29T00:00:00",
+          isCompleted: false,
+          userId: 9567,
+        },
+        {
+          taskId: 405,
+          taskName: "dfhdfh",
+          frequency: "Daily",
+          createdDate: "2026-08-25T11:56:05.087",
+          dueDate: "2026-09-01T00:00:00",
+          isCompleted: false,
+          userId: 9567,
+        },
+      ],
     },
     {
       frequency: "Monthly",
       frequencyIcon: "Calendar",
-      tasks: [],
+      tasks: [
+        {
+          taskId: 403,
+          taskName: "adfg",
+          createdDate: "2026-08-22T11:42:12.543",
+          dueDate: "2026-08-29T00:00:00",
+          isCompleted: false,
+          userId: 9567,
+        },
+        {
+          taskId: 404,
+          taskName: "aaaaa",
+          createdDate: "2026-08-22T11:42:33.177",
+          dueDate: "2026-08-29T00:00:00",
+          isCompleted: false,
+          userId: 9567,
+        },
+        {
+          taskId: 405,
+          taskName: "dfhdfh",
+          createdDate: "2026-08-25T11:56:05.087",
+          dueDate: "2026-09-01T00:00:00",
+          isCompleted: false,
+          userId: 9567,
+        },
+      ],
     },
   ];
 
   taskSeperatedByFrequency.forEach((task) => {
-    clone.querySelector("#taskCardsContainer").appendChild(cardContainer(task));
+    clone
+      .querySelector("#taskCardsContainer")
+      .appendChild(taskCardContainer(task));
   });
 
   return clone;
