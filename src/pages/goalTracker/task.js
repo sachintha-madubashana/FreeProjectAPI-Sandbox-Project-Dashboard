@@ -2,6 +2,7 @@ import taskTemplate from "@/pages/goalTracker/task.html?raw";
 import statsCards from "@/components/simpleStatsCards/simpleStatsCards.js";
 import loadAndRenderIcon from "@/utils/loadAndRenderIcon.js";
 import taskCardContainer from "@/components/taskCardContainer/taskCardContainer.js";
+import showTaskInfo from "@/components/dialogs/showTaskInfo/showTaskInfo.js";
 
 export default function task() {
   const template = document.createElement("template");
@@ -120,5 +121,13 @@ export default function task() {
     taskCardsContainer.appendChild(taskCardContainer(task));
   });
 
+  clone.appendChild(showTaskInfo({ dialogId: "showTaskInfo" }));
+
   return clone;
+}
+
+export function showMoreInfoDialog() {
+  // const addTaskBtn = document.getElementById("addTaskBtn");
+  // addTaskBtn.classList.toggle("bg-amber-500");
+  document.getElementById("showTaskInfo").showModal();
 }

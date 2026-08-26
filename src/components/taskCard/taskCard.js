@@ -1,5 +1,6 @@
 import taskCardTemplate from "@/components/taskCard/taskCard.html?raw";
 import loadAndRenderIcon from "@/utils/loadAndRenderIcon.js";
+import { showMoreInfoDialog } from "@/pages/goalTracker/task.js";
 
 export default function taskCard(props) {
   const template = document.createElement("template");
@@ -21,8 +22,7 @@ export default function taskCard(props) {
   }
 
   clone.querySelector("#taskTitle").setAttribute("for", props?.taskId || 0);
-  clone.querySelector("#taskTitle").textContent =
-    props?.taskName || "Task Name";
+  clone.querySelector("#taskTitle").textContent = props?.taskName || "";
   clone.querySelector("#taskDueDate").textContent =
     "Due : " +
     new Date(props?.dueDate).toLocaleString(
@@ -38,6 +38,12 @@ export default function taskCard(props) {
     );
 
   clone.querySelector(".field").append(badge(props?.status || "pending"));
+
+  clone.querySelector("#moreInfoBtn").addEventListener("click", () => {
+    console.log("More Info button clicked for task:", props?.taskId);
+    // document.getElementById("demo-dialog-edit-profile").showModal();
+    showMoreInfoDialog();
+  });
 
   return clone;
 }
