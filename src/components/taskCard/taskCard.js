@@ -2,6 +2,7 @@ import taskCardTemplate from "@/components/taskCard/taskCard.html?raw";
 import loadAndRenderIcon from "@/utils/loadAndRenderIcon.js";
 import { showMoreInfoDialog } from "@/pages/goalTracker/task.js";
 import confirmationDialog from "@/components/dialogs/confirmationDialog/confirmationDialog.js";
+import addAndEditTask from "@/components/dialogs/addAndEditTask/addAndEditTask.js";
 
 export default function taskCard(props) {
   const template = document.createElement("template");
@@ -101,6 +102,20 @@ export default function taskCard(props) {
       .getElementById("pageContent")
       .appendChild(confirmationDialog(data));
     document.getElementById("confirmationDialog").showModal();
+  });
+  clone.querySelector("#editTaskBtn").addEventListener("click", () => {
+    const data = {
+      dialogId: "editTaskDialog",
+      confermButtonText: "Save Changes",
+      onConfirm: () => {
+        console.log("Task edited:", props?.taskId);
+      },
+      title: "Edit Task",
+      description:
+        "You can edit the task details here. Click save when you're done.",
+    };
+    document.getElementById("pageContent").appendChild(addAndEditTask(data));
+    document.getElementById("editTaskDialog").showModal();
   });
 
   return clone;

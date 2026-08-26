@@ -1,6 +1,7 @@
 import showTaskInfoTemplate from "@/components/dialogs/showTaskInfo/showTaskInfo.html?raw";
 import simpleStatsCards from "@/components/simpleStatsCards/simpleStatsCards.js";
 import confirmationDialog from "@/components/dialogs/confirmationDialog/confirmationDialog.js";
+import addAndEditTask from "@/components/dialogs/addAndEditTask/addAndEditTask.js";
 
 export default function showTaskInfo(props) {
   const template = document.createElement("template");
@@ -24,6 +25,23 @@ export default function showTaskInfo(props) {
         icon: value.icon,
       }),
     );
+  });
+
+  clone.querySelector("#editTaskBtn").addEventListener("click", () => {
+    const data = {
+      dialogId: "editTaskDialog",
+      confermButtonText: "Save Changes",
+      onConfirm: () => {
+        console.log("Task Edited:", props?.taskId);
+        dialog.close();
+        dialog.remove();
+      },
+      title: "Edit Task",
+      description:
+        "You can edit the task details here. Click save when you're done.",
+    };
+    document.getElementById("pageContent").appendChild(addAndEditTask(data));
+    document.getElementById("editTaskDialog").showModal();
   });
 
   clone.querySelector("#deleteTaskBtn").addEventListener("click", () => {

@@ -3,6 +3,7 @@ import statsCards from "@/components/simpleStatsCards/simpleStatsCards.js";
 import loadAndRenderIcon from "@/utils/loadAndRenderIcon.js";
 import taskCardContainer from "@/components/taskCardContainer/taskCardContainer.js";
 import showTaskInfo from "@/components/dialogs/showTaskInfo/showTaskInfo.js";
+import addAndEditTask from "@/components/dialogs/addAndEditTask/addAndEditTask.js";
 
 export default function task() {
   const template = document.createElement("template");
@@ -123,6 +124,20 @@ export default function task() {
   const taskCardsContainer = clone.querySelector("#taskCardsContainer");
   taskSeperatedByFrequency.forEach((task) => {
     taskCardsContainer.appendChild(taskCardContainer(task));
+  });
+
+  clone.querySelector("#addTaskBtn").addEventListener("click", () => {
+    const data = {
+      dialogId: "addTaskDialog",
+      confermButtonText: "Save Task",
+      onConfirm: () => {
+        console.log("Task added:", props?.taskId);
+      },
+      title: "Add Task",
+      description: "You can add a new task here. Click save when you're done.",
+    };
+    document.getElementById("pageContent").appendChild(addAndEditTask(data));
+    document.getElementById("addTaskDialog").showModal();
   });
 
   return clone;
