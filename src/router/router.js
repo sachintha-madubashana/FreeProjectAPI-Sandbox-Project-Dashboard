@@ -28,7 +28,6 @@ export function router() {
   const path = window.location.pathname;
   const page = routes[path];
   const urlParams = new URLSearchParams(window.location.search);
-  console.log(urlParams);
   const pageContent = document.querySelector("#pageContent");
 
   if (!page) {

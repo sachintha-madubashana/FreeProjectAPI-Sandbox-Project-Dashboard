@@ -1,0 +1,106 @@
+<div
+  class="card drop-shadow-sm hover:drop-shadow-xl hover:scale-105 hover:border-gray-400 duration-300"
+  data-size="sm"
+>
+  <header>
+    <div role="group" class="field" data-orientation="horizontal">
+      <input
+        type="checkbox"
+        id="completedCheckbox"
+        name="completed-checkbox"
+        class="input"
+        data-tooltip="Complete"
+        data-side="bottom"
+        data-align="start"
+      />
+      <label for="completedCheckbox" class="text-xl" id="taskTitle"
+        >Small Card</label
+      >
+    </div>
+    <div class="text-muted-foreground flex justify-between">
+      <span>3 days remaining</span>
+      <span id="taskDueDate">Due : 29/08/2026</span>
+    </div>
+  </header>
+  <footer>
+    <div class="flex justify-end w-full gap-2">
+      <button
+        class="btn"
+        data-variant="outline"
+        data-size="sm"
+        data-tooltip="More Info"
+        data-side="left"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-external-link-icon lucide-external-link"
+        >
+          <path d="M15 3h6v6" />
+          <path d="M10 14 21 3" />
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+        </svg>
+        More Info
+      </button>
+      <button
+        class="btn"
+        data-variant="outline"
+        data-size="sm"
+        data-tooltip="Edit Task"
+        data-side="top"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-pencil-icon lucide-pencil"
+        >
+          <path
+            d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"
+          />
+          <path d="m15 5 4 4" />
+        </svg>
+      </button>
+      <button
+        class="btn"
+        data-variant="destructive"
+        data-size="sm"
+        data-tooltip="Delete Task"
+        data-side="top"
+        data-align="end"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-trash2-icon lucide-trash-2"
+        >
+          <path d="M10 11v6" />
+          <path d="M14 11v6" />
+          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+          <path d="M3 6h18" />
+          <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+        </svg>
+      </button>
+    </div>
+  </footer>
+</div>
