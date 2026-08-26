@@ -132,7 +132,3 @@ export function showMoreInfoDialog(prams) {
   document.getElementById("pageContent").appendChild(showTaskInfo(prams));
   document.getElementById("showTaskInfo").showModal();
 }
-
-export function showDeleteConfermationDialog(prams) {
-  console.log("Delete Task :", prams?.taskName);
-}

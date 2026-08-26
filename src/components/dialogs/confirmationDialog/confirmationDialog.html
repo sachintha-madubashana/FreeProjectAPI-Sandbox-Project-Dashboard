@@ -1,0 +1,22 @@
+<dialog
+  id="alert-dialog-destructive"
+  class="alert-dialog"
+  aria-labelledby="confirmationDialogTitle"
+  aria-describedby="confirmationDialogDescription"
+  onclick="if (event.target === this) this.close();"
+>
+  <div>
+    <header>
+      <h2 id="confirmationDialogTitle">Title</h2>
+      <p id="confirmationDialogDescription" class="w-full">Description</p>
+    </header>
+    <footer>
+      <button class="btn" data-variant="outline" id="cancelButton">
+        Cancel
+      </button>
+      <button class="btn" data-variant="destructive" id="confirmButton">
+        Delete
+      </button>
+    </footer>
+  </div>
+</dialog>

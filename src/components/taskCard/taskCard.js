@@ -1,9 +1,7 @@
 import taskCardTemplate from "@/components/taskCard/taskCard.html?raw";
 import loadAndRenderIcon from "@/utils/loadAndRenderIcon.js";
-import {
-  showMoreInfoDialog,
-  showDeleteConfermationDialog,
-} from "@/pages/goalTracker/task.js";
+import { showMoreInfoDialog } from "@/pages/goalTracker/task.js";
+import confirmationDialog from "@/components/dialogs/confirmationDialog/confirmationDialog.js";
 
 export default function taskCard(props) {
   const template = document.createElement("template");
@@ -90,10 +88,19 @@ export default function taskCard(props) {
   });
   clone.querySelector("#deleteTaskBtn").addEventListener("click", () => {
     const data = {
-      taskId: props?.taskId,
-      taskName: props?.taskName,
+      dialogId: "confirmationDialog",
+      confermButtonText: "Delete",
+      onConfirm: () => {
+        console.log("Task deleted:", props?.taskId);
+      },
+      title: "Delete Task",
+      description:
+        "Are you sure you want to delete " + props?.taskName + " task?",
     };
-    showDeleteConfermationDialog(data);
+    document
+      .getElementById("pageContent")
+      .appendChild(confirmationDialog(data));
+    document.getElementById("confirmationDialog").showModal();
   });
 
   return clone;
