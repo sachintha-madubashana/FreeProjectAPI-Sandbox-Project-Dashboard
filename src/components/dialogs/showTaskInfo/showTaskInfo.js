@@ -13,20 +13,14 @@ export default function showTaskInfo(props) {
     props?.description ||
     "Hi, I am the new dialog. Make changes to your profile here. Click save when you're done.";
 
-  const taskStats = {
-    frequency: "Daily",
-    createdDate: "2026-08-22 11:42:12",
-    dueDate: "2026-08-29 11:42:12",
-    isCompleted: true,
-    status: "done",
-    remainingTime: "2 days",
-  };
-  Object.entries(taskStats).forEach(([key, value]) => {
-    clone
-      .querySelector("#taskStatusContainer")
-      .appendChild(
-        simpleStatsCards({ title: key, value: value, icon: "ClipboardList" }),
-      );
+  Object.entries(props.status).forEach(([key, value]) => {
+    clone.querySelector("#taskStatusContainer").appendChild(
+      simpleStatsCards({
+        title: key,
+        value: value.value,
+        icon: value.icon,
+      }),
+    );
   });
 
   return clone;

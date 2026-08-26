@@ -88,8 +88,9 @@ export default function task() {
           taskId: 406,
           taskName: "adfg",
           createdDate: "2026-08-22T11:42:12.543",
-          dueDate: "2026-08-29T00:00:00",
-          isCompleted: false,
+          dueDate: "2026-08-29T11:42:12.543",
+          isCompleted: true,
+          status: "done",
           userId: 9567,
         },
         {
@@ -98,6 +99,7 @@ export default function task() {
           createdDate: "2026-08-22T11:42:33.177",
           dueDate: "2026-08-29T00:00:00",
           isCompleted: false,
+          status: "pending",
           userId: 9567,
         },
         {
@@ -106,6 +108,7 @@ export default function task() {
           createdDate: "2026-08-25T11:56:05.087",
           dueDate: "2026-09-01T00:00:00",
           isCompleted: false,
+          status: "overdue",
           userId: 9567,
         },
       ],
@@ -116,18 +119,20 @@ export default function task() {
       tasks: [],
     },
   ];
+
   const taskCardsContainer = clone.querySelector("#taskCardsContainer");
   taskSeperatedByFrequency.forEach((task) => {
     taskCardsContainer.appendChild(taskCardContainer(task));
   });
 
-  clone.appendChild(showTaskInfo({ dialogId: "showTaskInfo" }));
-
   return clone;
 }
 
-export function showMoreInfoDialog() {
-  // const addTaskBtn = document.getElementById("addTaskBtn");
-  // addTaskBtn.classList.toggle("bg-amber-500");
+export function showMoreInfoDialog(prams) {
+  document.getElementById("pageContent").appendChild(showTaskInfo(prams));
   document.getElementById("showTaskInfo").showModal();
+}
+
+export function showDeleteConfermationDialog(prams) {
+  console.log("Delete Task :", prams?.taskName);
 }

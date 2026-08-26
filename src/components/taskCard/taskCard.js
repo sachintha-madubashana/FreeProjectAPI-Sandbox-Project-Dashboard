@@ -1,6 +1,9 @@
 import taskCardTemplate from "@/components/taskCard/taskCard.html?raw";
 import loadAndRenderIcon from "@/utils/loadAndRenderIcon.js";
-import { showMoreInfoDialog } from "@/pages/goalTracker/task.js";
+import {
+  showMoreInfoDialog,
+  showDeleteConfermationDialog,
+} from "@/pages/goalTracker/task.js";
 
 export default function taskCard(props) {
   const template = document.createElement("template");
@@ -37,12 +40,60 @@ export default function taskCard(props) {
       } || "Due Date",
     );
 
-  clone.querySelector(".field").append(badge(props?.status || "pending"));
+  clone.querySelector(".field").append(badge(props?.status || ""));
 
   clone.querySelector("#moreInfoBtn").addEventListener("click", () => {
-    console.log("More Info button clicked for task:", props?.taskId);
-    // document.getElementById("demo-dialog-edit-profile").showModal();
-    showMoreInfoDialog();
+    const dialogData = {
+      dialogId: "showTaskInfo",
+      title: props?.taskName,
+      description: props?.description || "No description available.",
+      status: {
+        Frequency: {
+          value: props?.frequency, // need the frequency value from the task object
+          icon: "Goal",
+        },
+        Status: {
+          value: capitalizeFirstLetter(props?.status),
+          icon: "Goal",
+        },
+        "Remaining Time": {
+          value: findRemainingDays(props) + " days",
+          icon: "Goal",
+        },
+        "Created Date": {
+          value: new Date(props?.createdDate).toLocaleString(
+            "en-US",
+            {
+              month: "short",
+              day: "numeric",
+              timeZone: "Asia/Colombo",
+              hour12: false,
+            } || "Created Date",
+          ),
+          icon: "Goal",
+        },
+        "Due Date": {
+          value: new Date(props?.dueDate).toLocaleString(
+            "en-US",
+            {
+              month: "short",
+              day: "numeric",
+              timeZone: "Asia/Colombo",
+              hour12: false,
+            } || "Due Date",
+          ),
+          icon: "Goal",
+        },
+      },
+    };
+    showMoreInfoDialog(dialogData);
+  });
+  clone.querySelector("#deleteTaskBtn").addEventListener("click", () => {
+    const data = {
+      taskId: props?.taskId,
+      taskName: props?.taskName,
+    };
+    showDeleteConfermationDialog(data);
   });
 
   return clone;
@@ -78,4 +129,18 @@ const badge = (type) => {
   template.innerHTML = htmlString.trim();
 
   return template.content.firstElementChild;
+};
+
+const findRemainingDays = (task) => {
+  const now = new Date();
+  const due = new Date(task.dueDate);
+  const diffInMs = due - now;
+
+  const remainingDays = Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
+  return remainingDays;
+};
+
+const capitalizeFirstLetter = (string) => {
+  console.log("capitalizeFirstLetter:", string);
+  return string.charAt(0).toUpperCase() + string.slice(1);
 };
