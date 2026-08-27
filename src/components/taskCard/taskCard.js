@@ -71,6 +71,18 @@ export default function taskCard(props) {
           ),
           icon: "Goal",
         },
+        "Start Date": {
+          value: new Date(props?.startDate).toLocaleString(
+            "en-US",
+            {
+              month: "short",
+              day: "numeric",
+              timeZone: "Asia/Colombo",
+              hour12: false,
+            } || "Start Date",
+          ), // need to add startDate
+          icon: "Goal",
+        },
         "Due Date": {
           value: new Date(props?.dueDate).toLocaleString(
             "en-US",

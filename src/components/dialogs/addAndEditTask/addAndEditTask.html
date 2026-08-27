@@ -2,12 +2,6 @@
   class="dialog"
   aria-labelledby="addAndEditTaskTitle"
   aria-describedby="addAndEditTaskDescription"
-  onclick="
-    if (event.target === this) {
-      this.close();
-      this.remove();
-    }
-  "
 >
   <div class="sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl">
     <header>
@@ -26,6 +20,17 @@
             value="Enter your task title"
             id="addAndEditTaskName"
             autofocus
+          />
+        </div>
+        <div role="group" class="field">
+          <label for="input-required"
+            >Username <span class="text-destructive">*</span></label
+          >
+          <input
+            id="input-required"
+            type="datetime-local"
+            placeholder="hunvreus"
+            required
           />
         </div>
       </form>
