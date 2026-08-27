@@ -32,22 +32,18 @@
       </button>
     </div>
     <div
-      class="flex flex-col md:flex-row gap-2 md:justify-between w-full md:w-fit"
+      class="flex flex-col md:flex-row gap-2 md:justify-between w-full md:w-fit h-fit"
     >
-      <div
-        role="group"
-        aria-label="Search"
-        class="button-group w-full md:w-auto"
-      >
-        <button
-          type="button"
-          class="btn"
-          id="searchBtn"
-          data-variant="outline"
-          aria-label="Search goals"
-        >
+      <div class="input-group">
+        <input
+          id="inline-start-input"
+          type="text"
+          placeholder="Search Taks..."
+          id="searchInput"
+        />
+        <span role="group" data-align="start" aria-hidden="true">
           <svg
-            class="lucide lucide-search"
+            class="text-muted-foreground lucide lucide-search"
             xmlns="http://www.w3.org/2000/svg"
             width="24"
             height="24"
@@ -60,14 +56,26 @@
           >
             <path d="m21 21-4.34-4.34" />
             <circle cx="11" cy="11" r="8" />
-          </svg></button
-        ><input
-          type="text"
-          class="input"
-          placeholder="Search Taks..."
-          id="searchInput"
-        />
+          </svg>
+        </span>
       </div>
+      <button type="button" class="btn" data-variant="secondary" id="searchBtn">
+        <svg
+          class="lucide lucide-search"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="m21 21-4.34-4.34" />
+          <circle cx="11" cy="11" r="8" />
+        </svg>
+      </button>
       <div class="border border-accent my-2" aria-hidden="true"></div>
       <button type="button" class="btn" id="addGoalBtn">
         <svg
