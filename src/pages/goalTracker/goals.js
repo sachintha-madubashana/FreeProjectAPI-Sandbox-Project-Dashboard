@@ -56,10 +56,6 @@ export default function goals() {
 
   renderGoals(clone, goals, selectedStatus);
 
-  // filterGoalsByStatus(goals, selectedStatus).forEach((goal) => {
-  //   clone.querySelector("#goalCardsContainer").appendChild(goalCard(goal));
-  // });
-
   clone.querySelector("#searchGoalBtn").addEventListener("click", () => {
     const searchInput = document.querySelector("#searchGoalInput").value.trim();
     if (searchInput) {
@@ -78,24 +74,24 @@ export default function goals() {
     }
   });
 
-  clone.querySelector("#filterAllBtn").addEventListener("click", () => {
+  clone.querySelector("#filterAllBtn").addEventListener("click", (e) => {
     selectedStatus = "All";
-    filterBtnClickHandler(goals, selectedStatus);
-    document
-      .querySelector("#filterAllBtn")
-      .setAttribute("data-variant", "primary");
+    filterBtnClickHandler(goals, selectedStatus, e.currentTarget);
+    // document
+    //   .querySelector("#filterAllBtn")
+    //   .setAttribute("data-variant", "primary");
   });
-  clone.querySelector("#filterCompletedBtn").addEventListener("click", () => {
+  clone.querySelector("#filterCompletedBtn").addEventListener("click", (e) => {
     selectedStatus = "Completed";
-    filterBtnClickHandler(goals, selectedStatus);
+    filterBtnClickHandler(goals, selectedStatus, e.currentTarget);
   });
-  clone.querySelector("#filterPendingBtn").addEventListener("click", () => {
+  clone.querySelector("#filterPendingBtn").addEventListener("click", (e) => {
     selectedStatus = "Pending";
-    filterBtnClickHandler(goals, selectedStatus);
+    filterBtnClickHandler(goals, selectedStatus, e.currentTarget);
   });
-  clone.querySelector("#filterOverdueBtn").addEventListener("click", () => {
+  clone.querySelector("#filterOverdueBtn").addEventListener("click", (e) => {
     selectedStatus = "Overdue";
-    filterBtnClickHandler(goals, selectedStatus);
+    filterBtnClickHandler(goals, selectedStatus, e.currentTarget);
   });
   return clone;
 }
@@ -231,18 +227,24 @@ const addStatusToGoal = (goals) => {
   });
 };
 
-const filterBtnClickHandler = (goals, selectedStatus) => {
+const filterBtnClickHandler = (goals, selectedStatus, clickedButton) => {
   renderGoals(document, goals, selectedStatus);
   document.querySelector("#searchGoalInput").value = "";
-  filterBtnStateHandler(selectedStatus);
+  filterBtnStateHandler(clickedButton);
 };
 
-const filterBtnStateHandler = (selectedStatus) => {
+const filterBtnStateHandler = (clickedButton) => {
   const filterButtons = document.querySelectorAll(
     "#goalStatusFilterGroup button",
   );
 
-  console.log(filterButtons);
+  filterButtons.forEach((button) => {
+    if (button === clickedButton) {
+      button.setAttribute("data-variant", "primary");
+    } else {
+      button.setAttribute("data-variant", "outline");
+    }
+  });
 };
 
 export function showMoreInfoDialog(prams) {
