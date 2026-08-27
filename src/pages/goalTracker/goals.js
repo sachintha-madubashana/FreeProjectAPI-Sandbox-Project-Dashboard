@@ -1,7 +1,7 @@
 import goalsTemplate from "@/pages/goalTracker/goals.html?raw";
 import simpleCards from "@/components/simpleStatsCards/simpleStatsCards.js";
 import goalCard from "@/components/cards/goalCard/goalCard.js";
-import showTaskInfo from "@/components/dialogs/showTaskInfo/showTaskInfo.js";
+import goalMoreInfo from "@/components/dialogs/goalMoreInfo/goalMoreInfo.js";
 
 let selectedStatus = "All";
 export default function goals() {
@@ -252,6 +252,6 @@ const filterBtnStateHandler = (clickedButton) => {
 };
 
 export function showMoreInfoDialog(prams) {
-  document.getElementById("pageContent").appendChild(showTaskInfo(prams)); // TODO: change the showTaskInfo to showGoalInfo
+  document.getElementById("pageContent").appendChild(goalMoreInfo(prams));
   document.getElementById(prams.dialogId).showModal();
 }

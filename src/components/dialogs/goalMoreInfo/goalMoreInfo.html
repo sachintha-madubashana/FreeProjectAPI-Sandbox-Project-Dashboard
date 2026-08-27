@@ -1,0 +1,213 @@
+<dialog
+  class="dialog"
+  aria-labelledby="dialog-scrollable-title"
+  aria-describedby="dialog-scrollable-description"
+  onclick="
+    if (event.target === this) {
+      this.close();
+      this.remove();
+    }
+  "
+>
+  <div class="w-full max-w-2xl">
+    <header>
+      <h2 id="goalTitle">title</h2>
+      <p id="goalDescription">description</p>
+    </header>
+    <section
+      class="-mx-4 max-h-[50vh] overflow-y-auto px-4 scrollbar scrollbar-thin"
+    >
+      <div
+        class="grid grid-cols-1 md:grid-cols-3 gap-2 my-4"
+        id="goalStatusContainer"
+      ></div>
+      <div class="field">
+        <div class="flex items-center gap-3 text-sm">
+          <label id="progressLabel">Goal progress</label>
+          <output class="ms-auto tabular-nums" id="progressValue">66%</output>
+        </div>
+        <div
+          class="progress"
+          role="progressbar"
+          aria-labelledby="progressLabel"
+          aria-valuenow="66"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        >
+          <span style="width: 66%"></span>
+        </div>
+      </div>
+      <div class="w-full py-6 space-y-2">
+        <h1 class="text-lg font-semibold">Milestones</h1>
+        <div class="space-y-2 py-2" id="milestoneContainer">
+          <div class="card" data-size="sm">
+            <header>
+              <h2>Small Card</h2>
+              <p>This card uses the small size variant.</p>
+              <div class="card-action">
+                <button
+                  class="btn bg-green-100 dark:bg-green-950 text-green-950 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900"
+                  id="markAsComplete"
+                  data-tooltip="Mark as Complete"
+                  data-side="left"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-circle-check-icon lucide-circle-check"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="m9 12 2 2 4-4" />
+                  </svg>
+                  Mark as Complete
+                </button>
+              </div>
+            </header>
+          </div>
+          <div class="card" data-size="sm">
+            <header>
+              <h2>Small Card</h2>
+              <p>This card uses the small size variant.</p>
+              <div class="card-action">
+                <button
+                  type="button"
+                  class="btn"
+                  data-size="sm"
+                  data-variant="outline"
+                >
+                  Action
+                </button>
+              </div>
+            </header>
+          </div>
+          <div class="card" data-size="sm">
+            <header>
+              <h2>Small Card</h2>
+              <p>This card uses the small size variant.</p>
+              <div class="card-action">
+                <button
+                  type="button"
+                  class="btn"
+                  data-size="sm"
+                  data-variant="outline"
+                >
+                  Action
+                </button>
+              </div>
+            </header>
+          </div>
+          <div class="card" data-size="sm">
+            <header>
+              <h2>Small Card</h2>
+              <p>This card uses the small size variant.</p>
+              <div class="card-action">
+                <button
+                  type="button"
+                  class="btn"
+                  data-size="sm"
+                  data-variant="outline"
+                >
+                  Action
+                </button>
+              </div>
+            </header>
+          </div>
+          <div class="card" data-size="sm">
+            <header>
+              <h2>Small Card</h2>
+              <p>This card uses the small size variant.</p>
+              <div class="card-action">
+                <button
+                  type="button"
+                  class="btn"
+                  data-size="sm"
+                  data-variant="outline"
+                >
+                  Action
+                </button>
+              </div>
+            </header>
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer>
+      <button
+        class="btn"
+        id="editTaskBtn"
+        data-variant="outline"
+        data-tooltip="Edit Goal"
+        data-side="top"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-pencil-icon lucide-pencil"
+        >
+          <path
+            d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"
+          />
+          <path d="m15 5 4 4" />
+        </svg>
+      </button>
+      <button
+        id="cancelButton"
+        class="btn"
+        data-variant="outline"
+        data-tooltip="Close"
+        data-side="top"
+        onclick="
+          {
+            this.closest('dialog').close();
+            this.closest('dialog').remove();
+          }
+        "
+      >
+        Cancel
+      </button>
+    </footer>
+    <button
+      type="button"
+      class="btn"
+      data-variant="ghost"
+      data-size="icon-sm"
+      aria-label="Close dialog"
+      onclick="
+        {
+          this.closest('dialog').close();
+          this.closest('dialog').remove();
+        }
+      "
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-x-icon lucide-x"
+      >
+        <path d="M18 6 6 18" />
+        <path d="m6 6 12 12" />
+      </svg>
+    </button>
+  </div>
+</dialog>
