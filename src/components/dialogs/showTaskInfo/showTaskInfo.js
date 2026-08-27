@@ -17,15 +17,17 @@ export default function showTaskInfo(props) {
     props?.description ||
     "Hi, I am the new dialog. Make changes to your profile here. Click save when you're done.";
 
-  Object.entries(props.status).forEach(([key, value]) => {
-    clone.querySelector("#taskStatusContainer").appendChild(
-      simpleStatsCards({
-        title: key,
-        value: value.value,
-        icon: value.icon,
-      }),
-    );
-  });
+  if (props?.status && Object.keys(props?.status).length > 0) {
+    Object.entries(props.status).forEach(([key, value]) => {
+      clone.querySelector("#taskStatusContainer").appendChild(
+        simpleStatsCards({
+          title: key,
+          value: value.value,
+          icon: value.icon,
+        }),
+      );
+    });
+  }
 
   clone.querySelector("#editTaskBtn").addEventListener("click", () => {
     const data = {

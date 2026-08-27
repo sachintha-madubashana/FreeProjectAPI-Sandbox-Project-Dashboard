@@ -1,4 +1,5 @@
 import goalCardTemplate from "@/components/cards/goalCard/goalCard.html?raw";
+import { showMoreInfoDialog } from "@/pages/goalTracker/goals.js";
 
 export default function goalCard(props) {
   const template = document.createElement("template");
@@ -35,7 +36,13 @@ export default function goalCard(props) {
       } || "Due Date",
     );
 
-  clone.querySelector("#moreInfoBtn").addEventListener("click", () => {});
+  clone.querySelector("#moreInfoBtn").addEventListener("click", () => {
+    const dialogData = {
+      dialogId: "showGoalInfo",
+      goalData: props,
+    };
+    showMoreInfoDialog(dialogData);
+  });
 
   return clone;
 }

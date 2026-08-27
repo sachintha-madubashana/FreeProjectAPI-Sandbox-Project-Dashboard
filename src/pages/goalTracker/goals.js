@@ -1,6 +1,7 @@
 import goalsTemplate from "@/pages/goalTracker/goals.html?raw";
 import simpleCards from "@/components/simpleStatsCards/simpleStatsCards.js";
 import goalCard from "@/components/cards/goalCard/goalCard.js";
+import showTaskInfo from "@/components/dialogs/showTaskInfo/showTaskInfo.js";
 
 export default function goals() {
   const template = document.createElement("template");
@@ -161,3 +162,8 @@ const addMileStonesToGoal = (goals) => {
     );
   });
 };
+
+export function showMoreInfoDialog(prams) {
+  document.getElementById("pageContent").appendChild(showTaskInfo(prams)); // TODO: change the showTaskInfo to showGoalInfo
+  document.getElementById(prams.dialogId).showModal();
+}
