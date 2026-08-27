@@ -1,0 +1,41 @@
+<div
+  class="card drop-shadow-sm hover:drop-shadow-xl hover:scale-105 hover:border-gray-400 duration-300"
+  data-size="sm"
+>
+  <header>
+    <h2 class="text-xl" id="goalTitle"></h2>
+    <p class="text-lg text-muted-foreground" id="goalDescription"></p>
+    <div class="text-muted-foreground flex justify-between">
+      <span id="goalStartDate">Start : 29/08/2026</span>
+      <span id="goalDueDate">End : 29/08/2026</span>
+    </div>
+  </header>
+  <footer class="flex justify-end w-full gap-2">
+    <button
+      class="btn"
+      id="moreInfoBtn"
+      data-variant="outline"
+      data-size="sm"
+      data-tooltip="More Info"
+      data-side="left"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-external-link-icon lucide-external-link"
+      >
+        <path d="M15 3h6v6" />
+        <path d="M10 14 21 3" />
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+      </svg>
+      More Info
+    </button>
+  </footer>
+</div>

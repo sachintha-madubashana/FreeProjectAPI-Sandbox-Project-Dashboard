@@ -6,6 +6,7 @@ import loadAndRenderIcon from "@/utils/loadAndRenderIcon.js";
 import { refresh } from "@/router/router.js";
 import taskPage from "@/pages/goalTracker/task.js";
 import templatePage from "@/pages/projectTemp.js";
+import goalsPage from "@/pages/goalTracker/goals.js";
 
 const TABS_CONFIG = {
   dashboard: {
@@ -27,7 +28,7 @@ const TABS_CONFIG = {
     panel: "#tabsWithIconsPanelGoal",
     icon: "#tabGoalIcon",
     iconName: "Goal",
-    page: templatePage,
+    page: goalsPage,
   },
   reminders: {
     btn: "#tabsWithIconsTabRemindersBtn",
