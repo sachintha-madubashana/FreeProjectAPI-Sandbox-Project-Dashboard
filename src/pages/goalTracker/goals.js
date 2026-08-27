@@ -137,6 +137,11 @@ const addMileStonesToGoal = (goals) => {
   ];
 
   goals.forEach((goal, index) => {
-    goal.milestones = milestones[index] || [];
+    const goalMilestones = milestones[index] || [];
+
+    goal.milestones = goalMilestones;
+    goal.isCompleted = goalMilestones.every(
+      (milestone) => milestone.isCompleted,
+    );
   });
 };
