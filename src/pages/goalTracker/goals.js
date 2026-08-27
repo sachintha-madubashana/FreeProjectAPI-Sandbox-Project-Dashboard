@@ -47,7 +47,23 @@ export default function goals() {
     clone.querySelector("#goalCardsContainer").appendChild(goalCard(goal));
   });
 
-  console.log("Goals data:", goals);
+  clone.querySelector("#searchGoalBtn").addEventListener("click", () => {
+    const searchInput = document.querySelector("#searchGoalInput").value.trim();
+    if (searchInput) {
+      console.log("Searching ...");
+      const filteredGoals = goals.filter((goal) =>
+        goal.goalName.toLowerCase().includes(searchInput.toLowerCase()),
+      );
+      const goalCardsContainer = document.querySelector("#goalCardsContainer");
+      goalCardsContainer.replaceChildren();
+      filteredGoals.forEach((goal) => {
+        goalCardsContainer.appendChild(goalCard(goal));
+      });
+    } else {
+      //add a message to the user that the search input is empty
+      console.log("Search input is empty.");
+    }
+  });
 
   return clone;
 }
