@@ -3,6 +3,7 @@ import simpleCards from "@/components/simpleStatsCards/simpleStatsCards.js";
 import goalCard from "@/components/cards/goalCard/goalCard.js";
 import showTaskInfo from "@/components/dialogs/showTaskInfo/showTaskInfo.js";
 
+let selectedStatus = "All";
 export default function goals() {
   const template = document.createElement("template");
   template.innerHTML = goalsTemplate;
@@ -11,7 +12,7 @@ export default function goals() {
   const goals = [
     {
       goalId: 273,
-      goalName: "Goal 1",
+      goalName: "Goal 1 abc",
       description: "Description for Goal 1",
       startDate: "2026-08-27T02:07:31.82",
       endDate: "2026-09-18T00:00:00",
@@ -19,7 +20,7 @@ export default function goals() {
     },
     {
       goalId: 274,
-      goalName: "Goal 2",
+      goalName: "Goal 2 abc",
       description: "Description for Goal 2",
       startDate: "2026-08-27T02:08:48.223",
       endDate: "2026-09-01T00:00:00",
@@ -27,14 +28,23 @@ export default function goals() {
     },
     {
       goalId: 275,
-      goalName: "Goal 3",
+      goalName: "Goal 3 abc",
       description: "Description for Goal 3",
+      startDate: "2026-08-20T02:09:01.223",
+      endDate: "2026-08-27T11:09:01.223",
+      userId: 9583,
+    },
+    {
+      goalId: 276,
+      goalName: "Goal 4",
+      description: "Description for Goal 4",
       startDate: "2026-08-20T02:09:01.223",
       endDate: "2026-08-27T11:09:01.223",
       userId: 9583,
     },
   ];
   addMileStonesToGoal(goals);
+  addStatusToGoal(goals);
 
   const goalsStatus = goalStatsGenerator(goals);
 
@@ -44,9 +54,11 @@ export default function goals() {
       .appendChild(simpleCards(stats));
   });
 
-  goals.forEach((goal) => {
-    clone.querySelector("#goalCardsContainer").appendChild(goalCard(goal));
-  });
+  renderGoals(clone, goals, selectedStatus);
+
+  // filterGoalsByStatus(goals, selectedStatus).forEach((goal) => {
+  //   clone.querySelector("#goalCardsContainer").appendChild(goalCard(goal));
+  // });
 
   clone.querySelector("#searchGoalBtn").addEventListener("click", () => {
     const searchInput = document.querySelector("#searchGoalInput").value.trim();
@@ -66,12 +78,56 @@ export default function goals() {
     }
   });
 
+  clone.querySelector("#filterAllBtn").addEventListener("click", () => {
+    selectedStatus = "All";
+    filterBtnClickHandler(goals, selectedStatus);
+    document
+      .querySelector("#filterAllBtn")
+      .setAttribute("data-variant", "primary");
+  });
+  clone.querySelector("#filterCompletedBtn").addEventListener("click", () => {
+    selectedStatus = "Completed";
+    filterBtnClickHandler(goals, selectedStatus);
+  });
+  clone.querySelector("#filterPendingBtn").addEventListener("click", () => {
+    selectedStatus = "Pending";
+    filterBtnClickHandler(goals, selectedStatus);
+  });
+  clone.querySelector("#filterOverdueBtn").addEventListener("click", () => {
+    selectedStatus = "Overdue";
+    filterBtnClickHandler(goals, selectedStatus);
+  });
   return clone;
 }
 
+const renderGoals = (clone, goals, selectedStatus) => {
+  const goalCardsContainer = clone.querySelector("#goalCardsContainer");
+  goalCardsContainer.replaceChildren();
+  filterGoalsByStatus(goals, selectedStatus).forEach((goal) => {
+    goalCardsContainer.appendChild(goalCard(goal));
+  });
+};
+
+const filterGoalsByStatus = (goals, status) => {
+  if (status === "All") {
+    return goals;
+  }
+  if (status === "Completed") {
+    return goals.filter((goal) => goal.status === "Completed");
+  }
+  if (status === "Pending") {
+    return goals.filter((goal) => goal.status === "Pending");
+  }
+  if (status === "Overdue") {
+    return goals.filter((goal) => goal.status === "Overdue");
+  }
+};
+
 const goalStatsGenerator = (goals) => {
   const totalGoals = goals.length;
-  const completedGoals = goals.filter((goal) => goal.isCompleted).length;
+  const completedGoals = goals.filter(
+    (goal) => goal.status === "Completed",
+  ).length;
   const pendingGoals = totalGoals - completedGoals;
   const overdueGoals = goals.filter(
     (goal) => new Date(goal.endDate) < new Date(),
@@ -157,10 +213,36 @@ const addMileStonesToGoal = (goals) => {
     const goalMilestones = milestones[index] || [];
 
     goal.milestones = goalMilestones;
-    goal.isCompleted = goalMilestones.every(
-      (milestone) => milestone.isCompleted,
-    );
+    // goal.isCompleted = goalMilestones.every(
+    //   (milestone) => milestone.isCompleted,
+    // );
   });
+};
+
+const addStatusToGoal = (goals) => {
+  goals.forEach((goal) => {
+    if (goal.milestones.every((milestone) => milestone.isCompleted)) {
+      goal.status = "Completed";
+    } else if (goal.milestones.some((milestone) => !milestone.isCompleted)) {
+      goal.status = "Pending";
+    } else if (new Date(goal.endDate) < new Date()) {
+      goal.status = "Overdue";
+    }
+  });
+};
+
+const filterBtnClickHandler = (goals, selectedStatus) => {
+  renderGoals(document, goals, selectedStatus);
+  document.querySelector("#searchGoalInput").value = "";
+  filterBtnStateHandler(selectedStatus);
+};
+
+const filterBtnStateHandler = (selectedStatus) => {
+  const filterButtons = document.querySelectorAll(
+    "#goalStatusFilterGroup button",
+  );
+
+  console.log(filterButtons);
 };
 
 export function showMoreInfoDialog(prams) {
