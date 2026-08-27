@@ -77,9 +77,6 @@ export default function goals() {
   clone.querySelector("#filterAllBtn").addEventListener("click", (e) => {
     selectedStatus = "All";
     filterBtnClickHandler(goals, selectedStatus, e.currentTarget);
-    // document
-    //   .querySelector("#filterAllBtn")
-    //   .setAttribute("data-variant", "primary");
   });
   clone.querySelector("#filterCompletedBtn").addEventListener("click", (e) => {
     selectedStatus = "Completed";
@@ -124,10 +121,8 @@ const goalStatsGenerator = (goals) => {
   const completedGoals = goals.filter(
     (goal) => goal.status === "Completed",
   ).length;
-  const pendingGoals = totalGoals - completedGoals;
-  const overdueGoals = goals.filter(
-    (goal) => new Date(goal.endDate) < new Date(),
-  ).length;
+  const pendingGoals = goals.filter((goal) => goal.status === "Pending").length;
+  const overdueGoals = goals.filter((goal) => goal.status === "Overdue").length;
 
   return [
     {
@@ -217,11 +212,20 @@ const addMileStonesToGoal = (goals) => {
 
 const addStatusToGoal = (goals) => {
   goals.forEach((goal) => {
+    if (goal.milestones.length === 0) {
+      goal.status = "Pending";
+      return;
+    }
     if (goal.milestones.every((milestone) => milestone.isCompleted)) {
       goal.status = "Completed";
-    } else if (goal.milestones.some((milestone) => !milestone.isCompleted)) {
+      return;
+    }
+    if (goal.milestones.some((milestone) => !milestone.isCompleted)) {
       goal.status = "Pending";
-    } else if (new Date(goal.endDate) < new Date()) {
+      return;
+    }
+
+    if (new Date(goal.endDate) < new Date()) {
       goal.status = "Overdue";
     }
   });
