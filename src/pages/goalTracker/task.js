@@ -47,7 +47,7 @@ export default function task() {
     }),
   );
 
-  const taskSeperatedByFrequency = [
+  const tasksSeperatedByFrequency = [
     {
       frequency: "Daily",
       frequencyIcon: "Sun",
@@ -122,8 +122,36 @@ export default function task() {
   ];
 
   const taskCardsContainer = clone.querySelector("#taskCardsContainer");
-  taskSeperatedByFrequency.forEach((task) => {
-    taskCardsContainer.appendChild(taskCardContainer(task));
+  tasksSeperatedByFrequency.forEach((taskSeperatedByFrequency) => {
+    taskCardsContainer.appendChild(taskCardContainer(taskSeperatedByFrequency));
+  });
+
+  clone.querySelector("#searchBtn").addEventListener("click", () => {
+    const searchInput = document.querySelector("#searchInput").value.trim();
+    if (searchInput) {
+      console.log("Searching ...");
+      const filteredTasks = tasksSeperatedByFrequency.map((group) => ({
+        ...group,
+        tasks: group.tasks.filter((task) =>
+          task.taskName.toLowerCase().includes(searchInput.toLowerCase()),
+        ),
+      }));
+
+      const taskCardsContainer = document.querySelector("#taskCardsContainer");
+      taskCardsContainer.replaceChildren();
+      filteredTasks.forEach((taskSeperatedByFrequency) => {
+        console.log(
+          "Filtered tasks for frequency:",
+          taskSeperatedByFrequency.frequency,
+          taskSeperatedByFrequency.tasks,
+        );
+        taskCardsContainer.appendChild(
+          taskCardContainer(taskSeperatedByFrequency),
+        );
+      });
+    } else {
+      console.log("Search input is empty.");
+    }
   });
 
   clone.querySelector("#addTaskBtn").addEventListener("click", () => {
