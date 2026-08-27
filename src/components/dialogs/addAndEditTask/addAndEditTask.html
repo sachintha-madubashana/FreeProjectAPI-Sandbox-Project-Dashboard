@@ -22,16 +22,79 @@
             autofocus
           />
         </div>
-        <div role="group" class="field">
-          <label for="input-required"
-            >Username <span class="text-destructive">*</span></label
+        <div class="grid gap-3">
+          <label for="frequencyTrigger"
+            >Frequency <span class="text-destructive">*</span></label
           >
-          <input
-            id="input-required"
-            type="datetime-local"
-            placeholder="hunvreus"
-            required
-          />
+          <div
+            id="frequencySelect"
+            class="select"
+            data-placeholder="Select a frequency"
+          >
+            <button
+              type="button"
+              id="frequencyTrigger"
+              class="w-full"
+              aria-haspopup="listbox"
+              aria-expanded="false"
+              aria-controls="frequencyListbox"
+            >
+              <span class="truncate">Select a frequency</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-chevron-down text-muted-foreground opacity-50 shrink-0"
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </button>
+            <div id="frequencyPopover" data-popover aria-hidden="true">
+              <div
+                role="listbox"
+                id="frequencyListbox"
+                aria-orientation="vertical"
+                aria-labelledby="frequencyTrigger"
+              >
+                <div role="group" aria-labelledby="frequencyItems">
+                  <span role="heading" id="frequencyItems">Frequency</span>
+                  <div role="option" data-value="daily">Daily</div>
+                  <div role="option" data-value="weekly">Weekly</div>
+                  <div role="option" data-value="monthly">Monthly</div>
+                </div>
+              </div>
+            </div>
+            <input type="hidden" name="frequencyInput" value="" />
+          </div>
+        </div>
+        <div class="grid gap-3 md:grid-cols-2">
+          <div role="group" class="field">
+            <label for="startDateInput"
+              >Start Date <span class="text-destructive">*</span></label
+            >
+            <input id="startDateInput" type="datetime-local" required />
+          </div>
+          <div role="group" class="field">
+            <label for="dueDateInput"
+              >Due Date <span class="text-destructive">*</span></label
+            >
+            <input id="dueDateInput" type="datetime-local" required />
+          </div>
+        </div>
+        <div class="grid gap-3">
+          <label for="startDateInput">
+            Description <span class="text-destructive">*</span>
+          </label>
+          <textarea
+            class="textarea max-h-40 resize-y"
+            placeholder="Type your message here"
+          ></textarea>
         </div>
       </form>
     </section>
