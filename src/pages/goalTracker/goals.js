@@ -58,20 +58,7 @@ export default function goals() {
 
   clone.querySelector("#searchGoalBtn").addEventListener("click", () => {
     const searchInput = document.querySelector("#searchGoalInput").value.trim();
-    if (searchInput) {
-      console.log("Searching ...");
-      const filteredGoals = goals.filter((goal) =>
-        goal.goalName.toLowerCase().includes(searchInput.toLowerCase()),
-      );
-      const goalCardsContainer = document.querySelector("#goalCardsContainer");
-      goalCardsContainer.replaceChildren();
-      filteredGoals.forEach((goal) => {
-        goalCardsContainer.appendChild(goalCard(goal));
-      });
-    } else {
-      //add a message to the user that the search input is empty
-      console.log("Search input is empty.");
-    }
+    goalSearch(goals, searchInput, selectedStatus);
   });
 
   clone.querySelector("#filterAllBtn").addEventListener("click", (e) => {
@@ -249,6 +236,31 @@ const filterBtnStateHandler = (clickedButton) => {
       button.setAttribute("data-variant", "outline");
     }
   });
+};
+
+const goalSearch = (goals, searchInput, selectedStatus) => {
+  if (searchInput) {
+    console.log("Searching ...");
+    const filteredGoals = goals.filter((goal) => {
+      const matchesStatus =
+        selectedStatus === "All" || goal.status === selectedStatus;
+      const matchesSearch = goal.goalName
+        .toLowerCase()
+        .includes(searchInput.toLowerCase());
+
+      return matchesStatus && matchesSearch;
+    });
+    const goalCardsContainer = document.querySelector("#goalCardsContainer");
+    goalCardsContainer.replaceChildren();
+    filteredGoals.forEach((goal) => {
+      goalCardsContainer.appendChild(goalCard(goal));
+    });
+    console.log("selectedStatus:", selectedStatus);
+    console.log("filteredGoals:", filteredGoals);
+  } else {
+    //add a message to the user that the search input is empty
+    console.log("Search input is empty.");
+  }
 };
 
 export function showMoreInfoDialog(prams) {
