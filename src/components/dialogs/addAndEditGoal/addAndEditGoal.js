@@ -1,12 +1,14 @@
 import addAndEditGoalTemplate from "@/components/dialogs/addAndEditGoal/addAndEditGoal.html?raw";
-import confirmationDialog from "@/components/dialogs/confirmationDialog/confirmationDialog.js";
 import empty from "@/components/empty/empty.js";
+import addAndEditMilestone from "@/components/dialogs/addAndEditMilestone/addAndEditMilestone.js";
 
+let count = 1;
 export default function addAndEditGoal(props) {
   const template = document.createElement("template");
   template.innerHTML = addAndEditGoalTemplate;
   const clone = document.importNode(template.content, true);
 
+  const goalObject = {};
   let milestoneArray = [];
 
   const dialog = clone.querySelector("dialog");
@@ -26,36 +28,34 @@ export default function addAndEditGoal(props) {
   const milestoneCard = clone.querySelector("#milestoneCard");
   refreshMilestoneContainer(milestoneContainer, milestoneArray);
 
-  let count = 0;
   clone.querySelector("#addMilestoneButton").addEventListener("click", () => {
-    if (milestoneArray.length === 0) {
-      milestoneContainer.replaceChildren();
-    }
-
     const currentId = count;
 
-    const clone = milestoneCard.cloneNode(true);
-    clone.querySelector("h2").textContent = "Milestone " + currentId;
-    clone.querySelector("p").textContent = "This is milestone " + currentId;
-
-    clone.querySelector("#deleteMilestoneBtn").addEventListener("click", () => {
-      console.log("Deleting milestone with id:", currentId);
-      milestoneArray = milestoneArray.filter(
-        (milestone) => milestone.id !== currentId,
-      );
-      clone.remove();
-      refreshMilestoneContainer(milestoneContainer, milestoneArray);
-      console.log("milestoneArray after deletion:", milestoneArray);
-    });
-    milestoneContainer.appendChild(clone);
-
-    milestoneArray.push({
-      id: currentId,
-      title: "Milestone " + currentId,
-      description: "This is milestone " + currentId,
-      targetDate: "2026-08-28T00:00:00",
-    });
-    count++;
+    const data = {
+      dialogId: "addMilestoneDialog",
+      confermButtonText: "Save Milestone",
+      placeholder: "milestone",
+      onConfirm: (milestoneItem) => {
+        if (milestoneArray.length === 0) {
+          milestoneContainer.replaceChildren();
+        }
+        addMilestoneCard(
+          milestoneContainer,
+          milestoneCard,
+          milestoneArray,
+          currentId,
+          milestoneItem,
+        );
+        count++;
+      },
+      title: "Add Milestone",
+      description:
+        "You can add a new milestone here. Click add when you're done.",
+    };
+    document
+      .getElementById("pageContent")
+      .appendChild(addAndEditMilestone(data));
+    document.getElementById("addMilestoneDialog").showModal();
   });
 
   clone.querySelector("#cancelButton").addEventListener("click", () => {
@@ -68,7 +68,7 @@ export default function addAndEditGoal(props) {
 
   clone.querySelector("#confirmButton").addEventListener("click", () => {
     if (typeof props?.onConfirm === "function") {
-      props?.onConfirm();
+      props?.onConfirm(goalObject);
       dialog.close();
       dialog.remove();
     }
@@ -78,7 +78,6 @@ export default function addAndEditGoal(props) {
 }
 
 const refreshMilestoneContainer = (milestoneContainer, milestoneArray) => {
-  console.log("milestoneMap:", milestoneArray);
   if (milestoneArray.length === 0) {
     const emptyTemplate = empty({
       title: "No Milestones Yet",
@@ -87,5 +86,32 @@ const refreshMilestoneContainer = (milestoneContainer, milestoneArray) => {
       icon: "Flag",
     });
     milestoneContainer.replaceChildren(emptyTemplate);
+    count = 1;
   }
+};
+
+const addMilestoneCard = (
+  milestoneContainer,
+  milestoneCard,
+  milestoneArray,
+  currentId,
+  milestoneItem,
+) => {
+  const clone = milestoneCard.cloneNode(true);
+  clone.querySelector("h2").textContent = milestoneItem.title;
+  clone.querySelector("p").textContent = milestoneItem.description;
+
+  clone.querySelector("#deleteMilestoneBtn").addEventListener("click", () => {
+    const index = milestoneArray.findIndex(
+      (milestone) => milestone.id === currentId,
+    );
+    if (index !== -1) {
+      milestoneArray.splice(index, 1);
+    }
+    clone.remove();
+    refreshMilestoneContainer(milestoneContainer, milestoneArray);
+  });
+  milestoneContainer.appendChild(clone);
+
+  milestoneArray.push(milestoneItem);
 };

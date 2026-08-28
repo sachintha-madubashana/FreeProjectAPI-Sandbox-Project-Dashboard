@@ -83,8 +83,8 @@ export default function goals() {
       dialogId: "addGoalDialog",
       confermButtonText: "Save Goal",
       placeholder: "goal",
-      onConfirm: () => {
-        console.log("Goal added ");
+      onConfirm: (goal) => {
+        console.log("Goal added: ", goal);
       },
       title: "Add Goal",
       description: "You can add a new Goal here. Click save when you're done.",
