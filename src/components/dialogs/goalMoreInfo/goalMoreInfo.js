@@ -1,5 +1,6 @@
 import goalMoreInfoCardTemplate from "@/components/dialogs/goalMoreInfo/goalMoreInfo.html?raw";
 import simpleStatsCards from "@/components/simpleStatsCards/simpleStatsCards.js";
+import emptyComponent from "@/components/empty/empty.js";
 
 export default function goalMoreInfoCard(props) {
   const template = document.createElement("template");
@@ -15,7 +16,6 @@ export default function goalMoreInfoCard(props) {
     props?.goalData?.description || "undefined description";
 
   const goalStatusContainer = clone.querySelector("#goalStatusContainer");
-  console.log("params.status:", props);
 
   goalStatus(props?.goalData).forEach((status) => {
     goalStatusContainer.appendChild(simpleStatsCards(status));
@@ -24,10 +24,28 @@ export default function goalMoreInfoCard(props) {
   const milestoneCard = clone.querySelector("#milestoneCard");
   const milestoneContainer = clone.querySelector("#milestoneContainer");
   milestoneContainer.replaceChildren();
-  props?.goalData?.milestones?.forEach((milestone) => {
-    const cardClone = milestoneCard.cloneNode(true);
-    milestoneContainer.appendChild(cardClone);
-  });
+  if (props?.goalData?.milestones.length > 0) {
+    props?.goalData?.milestones?.forEach((milestone) => {
+      const cardClone = milestoneCard.cloneNode(true);
+      milestoneContainer.appendChild(cardClone);
+    });
+
+    return clone;
+  }
+  const emptyProps = {
+    title: "No Milestones Yet",
+    description:
+      "You haven't created any milestones for this goal yet. Get started by creating your first milestone.",
+    icon: "Flag",
+    action: {
+      text: "Create Milestone",
+      callback: () => {
+        console.log("Create Milestone button clicked");
+        // Add your logic here to handle the button click event
+      },
+    },
+  };
+  milestoneContainer.appendChild(emptyComponent(emptyProps));
 
   return clone;
 }
