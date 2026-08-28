@@ -84,7 +84,8 @@ export default function goals() {
       confermButtonText: "Save Goal",
       placeholder: "goal",
       onConfirm: (goal) => {
-        console.log("Goal added: ", goal);
+        // TODO: add to the api and get the goal id
+        addGoalToArray(goals, goal);
       },
       title: "Add Goal",
       description: "You can add a new Goal here. Click save when you're done.",
@@ -95,6 +96,11 @@ export default function goals() {
 
   return clone;
 }
+
+const addGoalToArray = (goals, goal) => {
+  goals.push(goal);
+  renderGoals(document, goals, selectedStatus);
+};
 
 const renderGoals = (clone, goals, selectedStatus) => {
   const goalCardsContainer = clone.querySelector("#goalCardsContainer");

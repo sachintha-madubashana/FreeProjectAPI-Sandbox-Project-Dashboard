@@ -66,7 +66,18 @@ export default function addAndEditGoal(props) {
   clone.querySelector("#confirmButton").textContent =
     props?.confermButtonText || "Confirm";
 
+  const titleInput = clone.querySelector("#titleInput");
+  const descriptionInput = clone.querySelector("#descriptionInput");
+  const startDateInput = clone.querySelector("#startDateInput");
+  const endDateInput = clone.querySelector("#endDateInput");
+
   clone.querySelector("#confirmButton").addEventListener("click", () => {
+    goalObject.goalName = titleInput.value;
+    goalObject.description = descriptionInput.value;
+    goalObject.startDate = startDateInput.value;
+    goalObject.endDate = endDateInput.value;
+    goalObject.milestones = milestoneArray;
+
     if (typeof props?.onConfirm === "function") {
       props?.onConfirm(goalObject);
       dialog.close();

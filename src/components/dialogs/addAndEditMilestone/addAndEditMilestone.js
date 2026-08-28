@@ -34,10 +34,5 @@ export default function addAndEditMilestone(props) {
     }
   });
 
-  //   clone.querySelector("#titleInput").placeholder =
-  //     "Enter your " + props?.placeholder + " title";
-  //   clone.querySelector("#descriptionInput").placeholder =
-  //     "Enter your " + props?.placeholder + " description";
-
   return clone;
 }
