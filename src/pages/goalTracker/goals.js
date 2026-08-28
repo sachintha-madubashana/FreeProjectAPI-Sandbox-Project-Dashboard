@@ -2,6 +2,7 @@ import goalsTemplate from "@/pages/goalTracker/goals.html?raw";
 import simpleCards from "@/components/simpleStatsCards/simpleStatsCards.js";
 import goalCard from "@/components/cards/goalCard/goalCard.js";
 import goalMoreInfo from "@/components/dialogs/goalMoreInfo/goalMoreInfo.js";
+import addAndEditGoal from "@/components/dialogs/addAndEditGoal/addAndEditGoal";
 
 let selectedStatus = "All";
 export default function goals() {
@@ -77,6 +78,20 @@ export default function goals() {
     selectedStatus = "Overdue";
     filterBtnClickHandler(goals, selectedStatus, e.currentTarget);
   });
+  clone.querySelector("#addGoalBtn").addEventListener("click", () => {
+    const data = {
+      dialogId: "addGoalDialog",
+      confermButtonText: "Save Goal",
+      onConfirm: () => {
+        console.log("Goal added:", props?.taskId);
+      },
+      title: "Add Goal",
+      description: "You can add a new Goal here. Click save when you're done.",
+    };
+    document.getElementById("pageContent").appendChild(addAndEditGoal(data));
+    document.getElementById("addGoalDialog").showModal();
+  });
+
   return clone;
 }
 

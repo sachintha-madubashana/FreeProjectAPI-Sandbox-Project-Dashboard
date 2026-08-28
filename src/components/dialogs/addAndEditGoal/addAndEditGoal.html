@@ -1,0 +1,86 @@
+<dialog
+  class="dialog"
+  aria-labelledby="addAndEditGoalTitle"
+  aria-describedby="addAndEditGoalDescription"
+>
+  <div class="sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl">
+    <header>
+      <h2 id="addAndEditGoalTitle"></h2>
+      <p id="addAndEditGoalDescription"></p>
+    </header>
+    <section>
+      <form class="grid gap-4">
+        <div class="grid gap-3">
+          <label class="label" for="addAndEditGoalName"
+            >Title <span class="text-destructive">*</span></label
+          >
+          <input
+            class="input"
+            type="text"
+            value="Enter your Goal title"
+            id="addAndEditGoalName"
+            autofocus
+          />
+        </div>
+        <div class="grid gap-3 md:grid-cols-2">
+          <div role="group" class="field">
+            <label for="startDateInput"
+              >Start Date <span class="text-destructive">*</span></label
+            >
+            <input id="startDateInput" type="datetime-local" required />
+          </div>
+          <div role="group" class="field">
+            <label for="dueDateInput"
+              >Due Date <span class="text-destructive">*</span></label
+            >
+            <input id="dueDateInput" type="datetime-local" required />
+          </div>
+        </div>
+        <div class="grid gap-3">
+          <label for="startDateInput">
+            Description <span class="text-destructive">*</span>
+          </label>
+          <textarea
+            class="textarea max-h-40 resize-y"
+            placeholder="Type your message here"
+          ></textarea>
+        </div>
+      </form>
+    </section>
+    <footer>
+      <button class="btn" data-variant="outline" id="cancelButton">
+        Cancel
+      </button>
+      <button class="btn" id="confirmButton">Save changes</button>
+    </footer>
+    <button
+      type="button"
+      class="btn"
+      data-variant="ghost"
+      data-size="icon-sm"
+      aria-label="Close dialog"
+      onclick="
+        {
+          this.closest('dialog').close();
+          this.closest('dialog').remove();
+        }
+      "
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-x-icon lucide-x"
+      >
+        <path d="M18 6 6 18" />
+        <path d="m6 6 12 12" />
+      </svg>
+    </button>
+  </div>
+</dialog>
