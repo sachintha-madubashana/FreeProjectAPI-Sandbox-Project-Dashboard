@@ -21,6 +21,14 @@ export default function goalMoreInfoCard(props) {
     goalStatusContainer.appendChild(simpleStatsCards(status));
   });
 
+  const milestoneCard = clone.querySelector("#milestoneCard");
+  const milestoneContainer = clone.querySelector("#milestoneContainer");
+  milestoneContainer.replaceChildren();
+  props?.goalData?.milestones?.forEach((milestone) => {
+    const cardClone = milestoneCard.cloneNode(true);
+    milestoneContainer.appendChild(cardClone);
+  });
+
   return clone;
 }
 
