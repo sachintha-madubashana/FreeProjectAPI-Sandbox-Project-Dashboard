@@ -16,7 +16,7 @@ export default function emptyComponent(props) {
     clone.querySelector("#icon").parentElement,
     clone.querySelector("#icon"),
   );
-  console.log("props?.action:", props?.action);
+
   if (props?.action) {
     const actionButton = clone.querySelector("#actionButton");
     actionButton.textContent = props?.action?.text || "Click Me";
