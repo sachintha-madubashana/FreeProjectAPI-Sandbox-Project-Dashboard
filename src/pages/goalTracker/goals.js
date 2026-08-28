@@ -82,8 +82,9 @@ export default function goals() {
     const data = {
       dialogId: "addGoalDialog",
       confermButtonText: "Save Goal",
+      placeholder: "goal",
       onConfirm: () => {
-        console.log("Goal added:", props?.taskId);
+        console.log("Goal added ");
       },
       title: "Add Goal",
       description: "You can add a new Goal here. Click save when you're done.",
