@@ -1,7 +1,8 @@
 import remindersTemplate from "@/pages/goalTracker/reminders.html?raw";
 import simpleCards from "@/components/simpleStatsCards/simpleStatsCards.js";
+import reminderCard from "@/components/cards/reminderCard/reminderCard.js";
 
-let selectedStatus = "All";
+let selectedStatus = "all";
 export default function reminders() {
   const template = document.createElement("template");
   template.innerHTML = remindersTemplate;
@@ -60,7 +61,32 @@ export default function reminders() {
     remindersSearch(reminders, searchInput, selectedStatus);
   });
 
-  console.log("Reminders with status:", reminders);
+  clone
+    .querySelector("#filterAllRemindersBtn")
+    .addEventListener("click", (e) => {
+      selectedStatus = "all";
+      filterBtnClickHandler(reminders, selectedStatus, e.currentTarget);
+    });
+  clone
+    .querySelector("#filterCompletedRemindersBtn")
+    .addEventListener("click", (e) => {
+      selectedStatus = "completed";
+      filterBtnClickHandler(reminders, selectedStatus, e.currentTarget);
+    });
+  clone
+    .querySelector("#filterPendingRemindersBtn")
+    .addEventListener("click", (e) => {
+      selectedStatus = "pending";
+      filterBtnClickHandler(reminders, selectedStatus, e.currentTarget);
+    });
+  clone
+    .querySelector("#filterOverdueRemindersBtn")
+    .addEventListener("click", (e) => {
+      selectedStatus = "overdue";
+      filterBtnClickHandler(reminders, selectedStatus, e.currentTarget);
+    });
+
+  // console.log("Reminders with status:", reminders);
   return clone;
 }
 
@@ -70,18 +96,18 @@ const addStatusToReminder = (reminders) => {
       !reminder.isAcknowledged &&
       new Date(reminder.reminderDateTime) > new Date()
     ) {
-      reminder.status = "Pending";
+      reminder.status = "pending";
       return;
     }
     if (reminder.isAcknowledged) {
-      reminder.status = "Completed";
+      reminder.status = "completed";
       return;
     }
     if (
       !reminder.isAcknowledged &&
       new Date(reminder.reminderDateTime) < new Date()
     ) {
-      reminder.status = "Overdue";
+      reminder.status = "overdue";
     }
   });
 };
@@ -89,13 +115,13 @@ const addStatusToReminder = (reminders) => {
 const reminderStatsGenerator = (reminders) => {
   const totalReminders = reminders.length;
   const completedReminders = reminders.filter(
-    (reminder) => reminder.status === "Completed",
+    (reminder) => reminder.status === "completed",
   ).length;
   const pendingReminders = reminders.filter(
-    (reminder) => reminder.status === "Pending",
+    (reminder) => reminder.status === "pending",
   ).length;
   const overdueReminders = reminders.filter(
-    (reminder) => reminder.status === "Overdue",
+    (reminder) => reminder.status === "overdue",
   ).length;
 
   return [
@@ -126,22 +152,22 @@ const renderReminders = (clone, reminders, selectedStatus) => {
   const reminderCardsContainer = clone.querySelector("#reminderCardsContainer");
   reminderCardsContainer.replaceChildren();
   filterRemindersByStatus(reminders, selectedStatus).forEach((reminder) => {
-    // reminderCardsContainer.appendChild(reminderCard(reminder)); // TODO: Add reminderCard
+    reminderCardsContainer.appendChild(reminderCard(reminder));
   });
 };
 
 const filterRemindersByStatus = (reminders, status) => {
-  if (status === "All") {
+  if (status === "all") {
     return reminders;
   }
-  if (status === "Completed") {
-    return reminders.filter((reminder) => reminder.status === "Completed");
+  if (status === "completed") {
+    return reminders.filter((reminder) => reminder.status === "completed");
   }
-  if (status === "Pending") {
-    return reminders.filter((reminder) => reminder.status === "Pending");
+  if (status === "pending") {
+    return reminders.filter((reminder) => reminder.status === "pending");
   }
-  if (status === "Overdue") {
-    return reminders.filter((reminder) => reminder.status === "Overdue");
+  if (status === "overdue") {
+    return reminders.filter((reminder) => reminder.status === "overdue");
   }
 };
 
@@ -162,11 +188,32 @@ const remindersSearch = (reminders, searchInput, selectedStatus) => {
     );
     reminderCardsContainer.replaceChildren();
     filteredReminders.forEach((reminder) => {
-      //   reminderCardsContainer.appendChild(reminderCard(reminder)); // TODO: Add reminderCard
+      reminderCardsContainer.appendChild(reminderCard(reminder));
     });
     console.log("filteredReminders:", filteredReminders);
   } else {
     //TODO: add a message to the user that the search input is empty
     console.log("Search input is empty.");
   }
+};
+
+const filterBtnClickHandler = (reminders, selectedStatus, clickedButton) => {
+  renderReminders(document, reminders, selectedStatus);
+  document.querySelector("#searchRemindersInput").value = "";
+  filterBtnStateHandler(clickedButton);
+  console.log("reminders:", reminders);
+};
+
+const filterBtnStateHandler = (clickedButton) => {
+  const filterButtons = document.querySelectorAll(
+    "#reminderStatusFilterGroup button",
+  );
+
+  filterButtons.forEach((button) => {
+    if (button === clickedButton) {
+      button.setAttribute("data-variant", "primary");
+    } else {
+      button.setAttribute("data-variant", "outline");
+    }
+  });
 };
