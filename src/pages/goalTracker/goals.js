@@ -4,7 +4,13 @@ import goalCard from "@/components/cards/goalCard/goalCard.js";
 import goalMoreInfo from "@/components/dialogs/goalMoreInfo/goalMoreInfo.js";
 import addAndEditGoal from "@/components/dialogs/addAndEditGoal/addAndEditGoal";
 
-let selectedStatus = "All";
+const GoalStatus = Object.freeze({
+  ALL: "all",
+  PENDING: "pending",
+  COMPLETED: "completed",
+  OVERDUE: "overdue",
+});
+let selectedStatus = GoalStatus.ALL;
 export default function goals() {
   const template = document.createElement("template");
   template.innerHTML = goalsTemplate;
@@ -63,19 +69,19 @@ export default function goals() {
   });
 
   clone.querySelector("#filterAllBtn").addEventListener("click", (e) => {
-    selectedStatus = "All";
+    selectedStatus = GoalStatus.ALL;
     filterBtnClickHandler(goals, selectedStatus, e.currentTarget);
   });
   clone.querySelector("#filterCompletedBtn").addEventListener("click", (e) => {
-    selectedStatus = "Completed";
+    selectedStatus = GoalStatus.COMPLETED;
     filterBtnClickHandler(goals, selectedStatus, e.currentTarget);
   });
   clone.querySelector("#filterPendingBtn").addEventListener("click", (e) => {
-    selectedStatus = "Pending";
+    selectedStatus = GoalStatus.PENDING;
     filterBtnClickHandler(goals, selectedStatus, e.currentTarget);
   });
   clone.querySelector("#filterOverdueBtn").addEventListener("click", (e) => {
-    selectedStatus = "Overdue";
+    selectedStatus = GoalStatus.OVERDUE;
     filterBtnClickHandler(goals, selectedStatus, e.currentTarget);
   });
   clone.querySelector("#addGoalBtn").addEventListener("click", () => {
@@ -111,27 +117,31 @@ const renderGoals = (clone, goals, selectedStatus) => {
 };
 
 const filterGoalsByStatus = (goals, status) => {
-  if (status === "All") {
+  if (status === GoalStatus.ALL) {
     return goals;
   }
-  if (status === "Completed") {
-    return goals.filter((goal) => goal.status === "Completed");
+  if (status === GoalStatus.COMPLETED) {
+    return goals.filter((goal) => goal.status === GoalStatus.COMPLETED);
   }
-  if (status === "Pending") {
-    return goals.filter((goal) => goal.status === "Pending");
+  if (status === GoalStatus.PENDING) {
+    return goals.filter((goal) => goal.status === GoalStatus.PENDING);
   }
-  if (status === "Overdue") {
-    return goals.filter((goal) => goal.status === "Overdue");
+  if (status === GoalStatus.OVERDUE) {
+    return goals.filter((goal) => goal.status === GoalStatus.OVERDUE);
   }
 };
 
 const goalStatsGenerator = (goals) => {
   const totalGoals = goals.length;
   const completedGoals = goals.filter(
-    (goal) => goal.status === "Completed",
+    (goal) => goal.status === GoalStatus.COMPLETED,
   ).length;
-  const pendingGoals = goals.filter((goal) => goal.status === "Pending").length;
-  const overdueGoals = goals.filter((goal) => goal.status === "Overdue").length;
+  const pendingGoals = goals.filter(
+    (goal) => goal.status === GoalStatus.PENDING,
+  ).length;
+  const overdueGoals = goals.filter(
+    (goal) => goal.status === GoalStatus.OVERDUE,
+  ).length;
 
   return [
     {
@@ -222,20 +232,20 @@ const addMileStonesToGoal = (goals) => {
 const addStatusToGoal = (goals) => {
   goals.forEach((goal) => {
     if (goal.milestones.length === 0) {
-      goal.status = "Pending";
+      goal.status = GoalStatus.PENDING;
       return;
     }
     if (goal.milestones.every((milestone) => milestone.isCompleted)) {
-      goal.status = "Completed";
+      goal.status = GoalStatus.COMPLETED;
       return;
     }
     if (goal.milestones.some((milestone) => !milestone.isCompleted)) {
-      goal.status = "Pending";
+      goal.status = GoalStatus.PENDING;
       return;
     }
 
     if (new Date(goal.endDate) < new Date()) {
-      goal.status = "Overdue";
+      goal.status = GoalStatus.OVERDUE;
     }
   });
 };
@@ -265,7 +275,7 @@ const goalSearch = (goals, searchInput, selectedStatus) => {
     console.log("Searching ...");
     const filteredGoals = goals.filter((goal) => {
       const matchesStatus =
-        selectedStatus === "All" || goal.status === selectedStatus;
+        selectedStatus === GoalStatus.ALL || goal.status === selectedStatus;
       const matchesSearch = goal.goalName
         .toLowerCase()
         .includes(searchInput.toLowerCase());
