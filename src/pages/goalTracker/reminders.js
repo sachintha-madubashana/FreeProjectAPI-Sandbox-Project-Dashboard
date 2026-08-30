@@ -1,6 +1,7 @@
 import remindersTemplate from "@/pages/goalTracker/reminders.html?raw";
 import simpleCards from "@/components/simpleStatsCards/simpleStatsCards.js";
 import reminderCard from "@/components/cards/reminderCard/reminderCard.js";
+import addAndEditReminder from "@/components/dialogs/addAndEditReminder/addAndEditReminder.js";
 
 const ReminderStatus = Object.freeze({
   ALL: "all",
@@ -66,6 +67,24 @@ export default function reminders() {
       .querySelector("#searchRemindersInput")
       .value.trim();
     remindersSearch(reminders, searchInput, selectedStatus);
+  });
+
+  clone.querySelector("#addReminderBtn").addEventListener("click", () => {
+    const data = {
+      dialogId: "addReminderDialog",
+      title: "Add Reminder",
+      description:
+        "You can add a new reminder here. When you are done, click the save button to save the reminder.",
+      saveBtnText: "Add Reminder",
+      onAction: (reminderItem) => {
+        console.log("Reminder item saved:", reminderItem);
+        // TODO: Call API to update reminder with reminderItem data
+      },
+    };
+    document
+      .getElementById("pageContent")
+      .appendChild(addAndEditReminder(data));
+    document.getElementById(data.dialogId).showModal();
   });
 
   clone

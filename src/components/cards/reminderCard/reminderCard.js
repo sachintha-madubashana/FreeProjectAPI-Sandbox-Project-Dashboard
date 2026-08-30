@@ -1,4 +1,5 @@
 import reminderCardTemplate from "@/components/cards/reminderCard/reminderCard.html?raw";
+import addAndEditReminder from "@/components/dialogs/addAndEditReminder/addAndEditReminder.js";
 
 export default function reminderCard(props) {
   const template = document.createElement("template");
@@ -48,8 +49,20 @@ export default function reminderCard(props) {
     });
 
   clone.querySelector("#editReminderBtn").addEventListener("click", () => {
-    // TODO: Open edit reminder modal
-    console.log("Open edit reminder modal for reminderId:", props?.reminderId);
+    const data = {
+      dialogId: "reminderId" + props?.reminderId,
+      title: props?.title,
+      description: props?.description,
+      saveBtnText: "Save Changes",
+      onAction: (reminderItem) => {
+        console.log("Reminder item saved:", reminderItem);
+        // TODO: Call API to update reminder with reminderItem data
+      },
+    };
+    document
+      .getElementById("pageContent")
+      .appendChild(addAndEditReminder(data));
+    document.getElementById("reminderId" + props?.reminderId).showModal();
   });
 
   clone.querySelector("#deleteReminderBtn").addEventListener("click", () => {
