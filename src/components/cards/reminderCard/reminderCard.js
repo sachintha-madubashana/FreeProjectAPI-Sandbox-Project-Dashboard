@@ -22,7 +22,40 @@ export default function reminderCard(props) {
       } || "Due Date",
     );
 
-  clone.querySelector("#reminderCardHeader").append(badge(props?.status || ""));
+  clone.querySelector("#reminderCardHeader").append(badge(props?.status));
+
+  const dropdown = clone.querySelector("#moreActionDropdown");
+  clone.querySelector(".card").addEventListener("mouseleave", () => {
+    dropdown.close();
+  });
+
+  clone.querySelector("#moreInfoReminderBtn").addEventListener("click", () => {
+    // TODO: Open reminder details modal
+    console.log(
+      "Open reminder details modal for reminderId:",
+      props?.reminderId,
+    );
+  });
+
+  clone
+    .querySelector("#markAsCompleteReminderBtn")
+    .addEventListener("click", () => {
+      // TODO: Call API to mark reminder as complete
+      console.log(
+        "Mark reminder as complete for reminderId:",
+        props?.reminderId,
+      );
+    });
+
+  clone.querySelector("#editReminderBtn").addEventListener("click", () => {
+    // TODO: Open edit reminder modal
+    console.log("Open edit reminder modal for reminderId:", props?.reminderId);
+  });
+
+  clone.querySelector("#deleteReminderBtn").addEventListener("click", () => {
+    // TODO: Call API to delete reminder
+    console.log("Delete reminder for reminderId:", props?.reminderId);
+  });
 
   return clone;
 }

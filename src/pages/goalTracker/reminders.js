@@ -92,8 +92,6 @@ export default function reminders() {
       selectedStatus = ReminderStatus.OVERDUE;
       filterBtnClickHandler(reminders, selectedStatus, e.currentTarget);
     });
-
-  // console.log("Reminders with status:", reminders);
   return clone;
 }
 
