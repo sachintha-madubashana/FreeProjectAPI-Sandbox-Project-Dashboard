@@ -1,5 +1,6 @@
 import reminderCardTemplate from "@/components/cards/reminderCard/reminderCard.html?raw";
 import addAndEditReminder from "@/components/dialogs/addAndEditReminder/addAndEditReminder.js";
+import { updateReminders } from "@/pages/goalTracker/reminders.js";
 
 export default function reminderCard(props) {
   const template = document.createElement("template");
@@ -30,7 +31,6 @@ export default function reminderCard(props) {
     dropdown.close();
   });
 
-  console.log("Reminder card props:", props);
   clone.querySelector("#moreInfoReminderBtn").addEventListener("click", () => {
     // TODO: Open reminder details modal
     console.log(
@@ -52,11 +52,14 @@ export default function reminderCard(props) {
   clone.querySelector("#editReminderBtn").addEventListener("click", () => {
     const data = {
       dialogId: "reminderId" + props?.reminderId,
-      title: props?.title,
-      description: props?.description,
+      title: "Edit Reminder",
+      description:
+        "Edit the details of your reminder. When you are done, click the save button to save the changes.",
       saveBtnText: "Save Changes",
+      data: props,
       onAction: (reminderItem) => {
-        console.log("Reminder item saved:", reminderItem);
+        // console.log("Reminder item saved:", reminderItem);
+        updateReminders(reminderItem);
         // TODO: Call API to update reminder with reminderItem data
       },
     };

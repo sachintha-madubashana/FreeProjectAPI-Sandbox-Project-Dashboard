@@ -17,9 +17,9 @@ export default function addAndEditReminder(props) {
   const dateInput = clone.querySelector("#reminderInputDate");
   const descriptionInput = clone.querySelector("#reminderDescriptionInput");
 
-  titleImput.value = props?.title || "";
-  dateInput.value = props?.reminderDateTime || "";
-  descriptionInput.value = props?.description || "";
+  titleImput.value = props?.data?.title || "";
+  dateInput.value = props?.data?.reminderDateTime || "";
+  descriptionInput.value = props?.data?.description || "";
 
   clone.querySelector("#saveBtn").addEventListener("click", () => {
     const title = titleImput.value;
@@ -27,10 +27,12 @@ export default function addAndEditReminder(props) {
     const description = descriptionInput.value;
 
     const reminderItem = {
+      reminderId: props?.data?.reminderId || null,
       title: title,
       reminderDateTime: date,
       description: description,
       isAcknowledged: false,
+      status: props?.data?.status || "Pending",
     };
 
     if (props?.onAction) {

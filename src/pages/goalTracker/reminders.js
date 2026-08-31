@@ -11,45 +11,45 @@ const ReminderStatus = Object.freeze({
 });
 
 let selectedStatus = ReminderStatus.ALL;
-export default function reminders() {
+
+const reminders = [
+  {
+    reminderId: 229,
+    title: "Reminder 1",
+    description: "Description for Reminder 1",
+    reminderDateTime: "2026-08-27T16:10:00",
+    isAcknowledged: true,
+    userId: 9583,
+  },
+  {
+    reminderId: 230,
+    title: "Reminder 2",
+    description: "Description for Reminder 2",
+    reminderDateTime: "2026-08-30T20:10:00",
+    isAcknowledged: false,
+    userId: 9583,
+  },
+  {
+    reminderId: 231,
+    title: "Reminder 3",
+    description: "Description for Reminder 3",
+    reminderDateTime: "2026-08-27T16:10:00",
+    isAcknowledged: false,
+    userId: 9583,
+  },
+  {
+    reminderId: 232,
+    title: "Reminder 4",
+    description: "Description for Reminder 4",
+    reminderDateTime: "2026-08-30T20:10:00",
+    isAcknowledged: false,
+    userId: 9583,
+  },
+];
+export default function remindersPage() {
   const template = document.createElement("template");
   template.innerHTML = remindersTemplate;
   const clone = document.importNode(template.content, true);
-
-  const reminders = [
-    {
-      reminderId: 229,
-      title: "Reminder 1",
-      description: "Description for Reminder 1",
-      reminderDateTime: "2026-08-27T16:10:00",
-      isAcknowledged: true,
-      userId: 9583,
-    },
-    {
-      reminderId: 230,
-      title: "Reminder 2",
-      description: "Description for Reminder 2",
-      reminderDateTime: "2026-08-30T20:10:00",
-      isAcknowledged: false,
-      userId: 9583,
-    },
-    {
-      reminderId: 231,
-      title: "Reminder 3",
-      description: "Description for Reminder 3",
-      reminderDateTime: "2026-08-27T16:10:00",
-      isAcknowledged: false,
-      userId: 9583,
-    },
-    {
-      reminderId: 232,
-      title: "Reminder 4",
-      description: "Description for Reminder 4",
-      reminderDateTime: "2026-08-30T20:10:00",
-      isAcknowledged: false,
-      userId: 9583,
-    },
-  ];
 
   addStatusToReminders(reminders);
 
@@ -279,5 +279,24 @@ const addReminderToAPI = (reminder) => {
 
   console.log("Get reminder from API");
   reminder.reminderId = 233; //TODO: Get the reminderId from the API response
-  return reminder;
 };
+
+const updateReminderToAPI = (reminder) => {
+  reminder.userId = 9583; //TODO: Get the userId from the logged in user
+  //TODO: Call API to add reminder
+  console.log("Update reminder to API");
+};
+
+const updateReminders = (reminderItem) => {
+  addStatusToAReminder(reminderItem);
+  updateReminderToAPI(reminderItem);
+  const index = reminders.findIndex(
+    (r) => r.reminderId === reminderItem.reminderId,
+  );
+  if (index !== -1) {
+    reminders[index] = reminderItem;
+  }
+  renderReminders(document, reminders, selectedStatus);
+};
+
+export { updateReminders };
