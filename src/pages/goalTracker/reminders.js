@@ -4,6 +4,8 @@ import reminderCard from "@/components/cards/reminderCard/reminderCard.js";
 import addAndEditReminder from "@/components/dialogs/addAndEditReminder/addAndEditReminder.js";
 import confirmationDialog from "@/components/dialogs/confirmationDialog/confirmationDialog.js";
 import reminderMoreInfo from "@/components/dialogs/reminderMoreInfo/reminderMoreInfo.js";
+import empty from "@/components/empty/empty.js";
+import { showToast } from "@/utils/toastSystem.js";
 
 const ReminderStatus = Object.freeze({
   ALL: "all",
@@ -229,6 +231,11 @@ const filterRemindersByStatus = (reminders, status) => {
 
 const remindersSearch = (reminders, searchInput, selectedStatus) => {
   if (searchInput) {
+    const reminderCardsContainer = document.querySelector(
+      "#reminderCardsContainer",
+    );
+    reminderCardsContainer.replaceChildren();
+
     console.log("Searching ...");
     const filteredReminders = reminders.filter((reminder) => {
       const matchesStatus =
@@ -240,18 +247,37 @@ const remindersSearch = (reminders, searchInput, selectedStatus) => {
 
       return matchesStatus && matchesSearch;
     });
-    const reminderCardsContainer = document.querySelector(
-      "#reminderCardsContainer",
-    );
-    reminderCardsContainer.replaceChildren();
+
+    if (filteredReminders.length === 0) {
+      const emptyData = {
+        title: "No reminders found",
+        description: "No reminders found for the search term.",
+        icon: "Search",
+      };
+
+      showEmptyUI(reminderCardsContainer, emptyData);
+      return;
+    }
+
     filteredReminders.forEach((reminder) => {
       reminderCardsContainer.appendChild(reminderCard(reminder));
     });
     console.log("filteredReminders:", filteredReminders);
   } else {
-    //TODO: add a message to the user that the search input is empty
-    console.log("Search input is empty.");
+    showToast({
+      category: "warning",
+      title: "Search input is empty",
+      description: "Search input is empty. Please enter a search term.",
+    });
   }
+};
+
+const showEmptyUI = (container, emptyData) => {
+  const emptyTemplate = empty(emptyData);
+  emptyTemplate
+    .querySelector(".empty")
+    .classList.add("col-span-1", "md:col-span-2", "lg:col-span-3");
+  container.appendChild(emptyTemplate);
 };
 
 const filterBtnClickHandler = (reminders, selectedStatus, clickedButton) => {
