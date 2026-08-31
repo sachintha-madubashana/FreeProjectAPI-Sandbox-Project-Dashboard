@@ -6,6 +6,7 @@ import confirmationDialogTemplate from "@/components/dialogs/confirmationDialog/
 // @param {string} props.description - The description of the confirmation dialog.
 // @param {string} props.confermButtonText - The text for the confirm button.
 // @param {Function} props.onConfirm - The callback function to be called when the confirm button is clicked.
+// @param {Function} props.onCancel - The callback function to be called when the cancel button is clicked.
 export default function confirmationDialog(props) {
   const template = document.createElement("template");
   template.innerHTML = confirmationDialogTemplate;
@@ -21,6 +22,9 @@ export default function confirmationDialog(props) {
     "This action cannot be undone. Please confirm your choice.";
 
   clone.querySelector("#cancelButton").addEventListener("click", () => {
+    if (typeof props?.onCancel === "function") {
+      props.onCancel();
+    }
     dialog.close();
     dialog.remove();
   });
