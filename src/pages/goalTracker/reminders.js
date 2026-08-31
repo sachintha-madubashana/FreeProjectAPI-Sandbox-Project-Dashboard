@@ -2,6 +2,7 @@ import remindersTemplate from "@/pages/goalTracker/reminders.html?raw";
 import simpleCards from "@/components/simpleStatsCards/simpleStatsCards.js";
 import reminderCard from "@/components/cards/reminderCard/reminderCard.js";
 import addAndEditReminder from "@/components/dialogs/addAndEditReminder/addAndEditReminder.js";
+import confirmationDialog from "@/components/dialogs/confirmationDialog/confirmationDialog.js";
 
 const ReminderStatus = Object.freeze({
   ALL: "all",
@@ -299,4 +300,30 @@ const updateReminders = (reminderItem) => {
   renderReminders(document, reminders, selectedStatus);
 };
 
-export { updateReminders };
+const deleteReminderFromAPI = (reminderId) => {
+  //TODO: Call API to delete reminder
+  console.log("Delete reminder from API for reminderId:", reminderId);
+};
+
+const deleteReminder = (reminderId) => {
+  const data = {
+    dialogId: "confirmationDialog",
+    title: "Delete Reminder",
+    description:
+      "Are you sure you want to delete this reminder? This action cannot be undone.",
+    confermButtonText: "Delete",
+    onConfirm: () => {
+      deleteReminderFromAPI(reminderId);
+      const index = reminders.findIndex((r) => r.reminderId === reminderId);
+      if (index !== -1) {
+        reminders.splice(index, 1);
+      }
+      renderReminders(document, reminders, selectedStatus);
+    },
+  };
+
+  document.getElementById("pageContent").appendChild(confirmationDialog(data));
+  document.getElementById("confirmationDialog").showModal();
+};
+
+export { updateReminders, deleteReminder };

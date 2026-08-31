@@ -1,6 +1,9 @@
 import reminderCardTemplate from "@/components/cards/reminderCard/reminderCard.html?raw";
 import addAndEditReminder from "@/components/dialogs/addAndEditReminder/addAndEditReminder.js";
-import { updateReminders } from "@/pages/goalTracker/reminders.js";
+import {
+  updateReminders,
+  deleteReminder,
+} from "@/pages/goalTracker/reminders.js";
 
 export default function reminderCard(props) {
   const template = document.createElement("template");
@@ -72,6 +75,7 @@ export default function reminderCard(props) {
   clone.querySelector("#deleteReminderBtn").addEventListener("click", () => {
     // TODO: Call API to delete reminder
     console.log("Delete reminder for reminderId:", props?.reminderId);
+    deleteReminder(props?.reminderId);
   });
 
   return clone;
