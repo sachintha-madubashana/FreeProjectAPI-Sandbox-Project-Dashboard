@@ -1,5 +1,5 @@
 <div
-  class="card hover:z-50 drop-shadow-sm hover:drop-shadow-xl hover:scale-105 hover:border-gray-400 duration-300 overflow-visible"
+  class="card hover:z-50 drop-shadow-sm hover:drop-shadow-xl hover:scale-105 hover:border-gray-400 duration-300 overflow-visible [&:active:not(:has(button:active,[role='menuitem']:active))]:scale-95 select-none"
   data-size="sm"
 >
   <header>
@@ -39,7 +39,7 @@
         type="button"
         id="moreActionDropdownTrigger"
         aria-haspopup="menu"
-        aria-controls="moreActionDropdown-menu"
+        aria-controls="moreActionDropdownMenu"
         aria-expanded="false"
         class="btn"
         data-variant="ghost"

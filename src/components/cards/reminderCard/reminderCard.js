@@ -35,13 +35,25 @@ export default function reminderCard(props) {
     dropdown.close();
   });
 
-  clone.querySelector("#moreInfoReminderBtn").addEventListener("click", () => {
+  clone.querySelector(".card").addEventListener("click", () => {
+    seeReminderDetails(props?.reminderId);
+  });
+
+  clone
+    .querySelector("#moreActionDropdownTrigger")
+    .addEventListener("click", (e) => {
+      e.stopPropagation();
+    });
+
+  clone.querySelector("#moreInfoReminderBtn").addEventListener("click", (e) => {
+    e.stopPropagation();
     seeReminderDetails(props?.reminderId);
   });
 
   clone
     .querySelector("#markAsCompleteReminderBtn")
-    .addEventListener("click", () => {
+    .addEventListener("click", (e) => {
+      e.stopPropagation();
       // TODO: Call API to mark reminder as complete
       console.log(
         "Mark reminder as complete for reminderId:",
@@ -49,7 +61,8 @@ export default function reminderCard(props) {
       );
     });
 
-  clone.querySelector("#editReminderBtn").addEventListener("click", () => {
+  clone.querySelector("#editReminderBtn").addEventListener("click", (e) => {
+    e.stopPropagation();
     const data = {
       dialogId: "reminderId" + props?.reminderId,
       title: "Edit Reminder",
@@ -67,7 +80,8 @@ export default function reminderCard(props) {
     document.getElementById("reminderId" + props?.reminderId).showModal();
   });
 
-  clone.querySelector("#deleteReminderBtn").addEventListener("click", () => {
+  clone.querySelector("#deleteReminderBtn").addEventListener("click", (e) => {
+    e.stopPropagation();
     deleteReminder(props?.reminderId);
   });
 
