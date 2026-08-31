@@ -5,6 +5,7 @@ import {
   deleteReminder,
   seeReminderDetails,
 } from "@/pages/goalTracker/reminders.js";
+import { showToast } from "@/utils/toastSystem.js";
 
 export default function reminderCard(props) {
   const template = document.createElement("template");
@@ -59,6 +60,11 @@ export default function reminderCard(props) {
         "Mark reminder as complete for reminderId:",
         props?.reminderId,
       );
+      showToast({
+        category: "success",
+        title: "Reminder Completed",
+        description: "The reminder has been marked as completed.",
+      });
     });
 
   clone.querySelector("#editReminderBtn").addEventListener("click", (e) => {
@@ -87,6 +93,7 @@ export default function reminderCard(props) {
 
   return clone;
 }
+
 const badge = (type) => {
   const template = document.createElement("template");
 
