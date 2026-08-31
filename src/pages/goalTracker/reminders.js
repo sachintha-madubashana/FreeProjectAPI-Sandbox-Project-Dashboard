@@ -85,6 +85,7 @@ export default function remindersPage() {
         addReminderToAPI(reminderItem);
         reminders.push(reminderItem);
         renderReminders(document, reminders, selectedStatus);
+        updateRemindersStats(document, reminders);
         console.log("Reminder item saved:", reminderItem);
         // TODO: Call API to update reminder with reminderItem data
       },
@@ -121,6 +122,17 @@ export default function remindersPage() {
     });
   return clone;
 }
+
+const updateRemindersStats = (clone, reminders) => {
+  const remindersStatus = reminderStatsGenerator(reminders);
+  const reminderStatsCardsContainer = clone.querySelector(
+    "#reminderStatsCardsContainer",
+  );
+  reminderStatsCardsContainer.replaceChildren();
+  remindersStatus.forEach((stats) => {
+    reminderStatsCardsContainer.appendChild(simpleCards(stats));
+  });
+};
 
 const addStatusToReminders = (reminders) => {
   reminders.forEach((reminder) => {
@@ -316,6 +328,7 @@ const updateReminders = (reminderItem) => {
     reminders[index] = reminderItem;
   }
   renderReminders(document, reminders, selectedStatus);
+  updateRemindersStats(document, reminders);
 };
 
 const deleteReminderFromAPI = (reminderId) => {
@@ -337,6 +350,7 @@ const deleteReminder = (reminderId) => {
         reminders.splice(index, 1);
       }
       renderReminders(document, reminders, selectedStatus);
+      updateRemindersStats(document, reminders);
     },
   };
 
