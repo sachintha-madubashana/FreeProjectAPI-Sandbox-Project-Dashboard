@@ -30,6 +30,7 @@ export default function reminderCard(props) {
     dropdown.close();
   });
 
+  console.log("Reminder card props:", props);
   clone.querySelector("#moreInfoReminderBtn").addEventListener("click", () => {
     // TODO: Open reminder details modal
     console.log(

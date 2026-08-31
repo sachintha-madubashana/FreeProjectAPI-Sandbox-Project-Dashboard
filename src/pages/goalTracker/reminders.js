@@ -51,7 +51,7 @@ export default function reminders() {
     },
   ];
 
-  addStatusToReminder(reminders);
+  addStatusToReminders(reminders);
 
   const remindersStatus = reminderStatsGenerator(reminders);
   remindersStatus.forEach((stats) => {
@@ -77,6 +77,10 @@ export default function reminders() {
         "You can add a new reminder here. When you are done, click the save button to save the reminder.",
       saveBtnText: "Add Reminder",
       onAction: (reminderItem) => {
+        addStatusToAReminder(reminderItem);
+        addReminderToAPI(reminderItem);
+        reminders.push(reminderItem);
+        renderReminders(document, reminders, selectedStatus);
         console.log("Reminder item saved:", reminderItem);
         // TODO: Call API to update reminder with reminderItem data
       },
@@ -114,7 +118,7 @@ export default function reminders() {
   return clone;
 }
 
-const addStatusToReminder = (reminders) => {
+const addStatusToReminders = (reminders) => {
   reminders.forEach((reminder) => {
     if (
       !reminder.isAcknowledged &&
@@ -134,6 +138,26 @@ const addStatusToReminder = (reminders) => {
       reminder.status = ReminderStatus.OVERDUE;
     }
   });
+};
+
+const addStatusToAReminder = (reminder) => {
+  if (
+    !reminder.isAcknowledged &&
+    new Date(reminder.reminderDateTime) > new Date()
+  ) {
+    reminder.status = ReminderStatus.PENDING;
+    return;
+  }
+  if (reminder.isAcknowledged) {
+    reminder.status = ReminderStatus.COMPLETED;
+    return;
+  }
+  if (
+    !reminder.isAcknowledged &&
+    new Date(reminder.reminderDateTime) < new Date()
+  ) {
+    reminder.status = ReminderStatus.OVERDUE;
+  }
 };
 
 const reminderStatsGenerator = (reminders) => {
@@ -246,4 +270,14 @@ const filterBtnStateHandler = (clickedButton) => {
       button.setAttribute("data-variant", "outline");
     }
   });
+};
+
+const addReminderToAPI = (reminder) => {
+  reminder.userId = 9583; //TODO: Get the userId from the logged in user
+  //TODO: Call API to add reminder
+  console.log("Add reminder to API");
+
+  console.log("Get reminder from API");
+  reminder.reminderId = 233; //TODO: Get the reminderId from the API response
+  return reminder;
 };

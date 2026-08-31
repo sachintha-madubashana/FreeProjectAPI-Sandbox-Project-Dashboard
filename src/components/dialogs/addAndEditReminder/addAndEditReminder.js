@@ -17,6 +17,10 @@ export default function addAndEditReminder(props) {
   const dateInput = clone.querySelector("#reminderInputDate");
   const descriptionInput = clone.querySelector("#reminderDescriptionInput");
 
+  titleImput.value = props?.title || "";
+  dateInput.value = props?.reminderDateTime || "";
+  descriptionInput.value = props?.description || "";
+
   clone.querySelector("#saveBtn").addEventListener("click", () => {
     const title = titleImput.value;
     const date = dateInput.value;
@@ -24,8 +28,9 @@ export default function addAndEditReminder(props) {
 
     const reminderItem = {
       title: title,
-      date: date,
+      reminderDateTime: date,
       description: description,
+      isAcknowledged: false,
     };
 
     if (props?.onAction) {
