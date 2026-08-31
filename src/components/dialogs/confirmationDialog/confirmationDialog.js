@@ -1,5 +1,11 @@
 import confirmationDialogTemplate from "@/components/dialogs/confirmationDialog/confirmationDialog.html?raw";
 
+// @param {Object} props - The properties for the confirmation dialog.
+// @param {string} props.dialogId - The ID of the dialog element.
+// @param {string} props.title - The title of the confirmation dialog.
+// @param {string} props.description - The description of the confirmation dialog.
+// @param {string} props.confermButtonText - The text for the confirm button.
+// @param {Function} props.onConfirm - The callback function to be called when the confirm button is clicked.
 export default function confirmationDialog(props) {
   const template = document.createElement("template");
   template.innerHTML = confirmationDialogTemplate;
