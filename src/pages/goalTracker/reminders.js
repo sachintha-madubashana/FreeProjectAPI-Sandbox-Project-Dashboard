@@ -203,7 +203,19 @@ const reminderStatsGenerator = (reminders) => {
 const renderReminders = (clone, reminders, selectedStatus) => {
   const reminderCardsContainer = clone.querySelector("#reminderCardsContainer");
   reminderCardsContainer.replaceChildren();
-  filterRemindersByStatus(reminders, selectedStatus).forEach((reminder) => {
+  const filteredReminders = filterRemindersByStatus(reminders, selectedStatus);
+
+  if (filteredReminders.length === 0) {
+    const emptyData = {
+      title: "No reminders found",
+      description: "No reminders found for the selected status.",
+      icon: "BellOff",
+    };
+    showEmptyUI(reminderCardsContainer, emptyData);
+    return;
+  }
+
+  filteredReminders.forEach((reminder) => {
     reminderCardsContainer.appendChild(reminderCard(reminder));
   });
 };
@@ -231,12 +243,6 @@ const filterRemindersByStatus = (reminders, status) => {
 
 const remindersSearch = (reminders, searchInput, selectedStatus) => {
   if (searchInput) {
-    const reminderCardsContainer = document.querySelector(
-      "#reminderCardsContainer",
-    );
-    reminderCardsContainer.replaceChildren();
-
-    console.log("Searching ...");
     const filteredReminders = reminders.filter((reminder) => {
       const matchesStatus =
         selectedStatus === ReminderStatus.ALL ||
@@ -247,22 +253,7 @@ const remindersSearch = (reminders, searchInput, selectedStatus) => {
 
       return matchesStatus && matchesSearch;
     });
-
-    if (filteredReminders.length === 0) {
-      const emptyData = {
-        title: "No reminders found",
-        description: "No reminders found for the search term.",
-        icon: "Search",
-      };
-
-      showEmptyUI(reminderCardsContainer, emptyData);
-      return;
-    }
-
-    filteredReminders.forEach((reminder) => {
-      reminderCardsContainer.appendChild(reminderCard(reminder));
-    });
-    console.log("filteredReminders:", filteredReminders);
+    renderReminders(document, filteredReminders, selectedStatus);
   } else {
     showToast({
       category: "warning",
