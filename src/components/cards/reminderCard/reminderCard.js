@@ -3,6 +3,7 @@ import addAndEditReminder from "@/components/dialogs/addAndEditReminder/addAndEd
 import {
   updateReminders,
   deleteReminder,
+  seeReminderDetails,
 } from "@/pages/goalTracker/reminders.js";
 
 export default function reminderCard(props) {
@@ -35,11 +36,7 @@ export default function reminderCard(props) {
   });
 
   clone.querySelector("#moreInfoReminderBtn").addEventListener("click", () => {
-    // TODO: Open reminder details modal
-    console.log(
-      "Open reminder details modal for reminderId:",
-      props?.reminderId,
-    );
+    seeReminderDetails(props?.reminderId);
   });
 
   clone
@@ -61,9 +58,7 @@ export default function reminderCard(props) {
       saveBtnText: "Save Changes",
       data: props,
       onAction: (reminderItem) => {
-        // console.log("Reminder item saved:", reminderItem);
         updateReminders(reminderItem);
-        // TODO: Call API to update reminder with reminderItem data
       },
     };
     document
@@ -73,8 +68,6 @@ export default function reminderCard(props) {
   });
 
   clone.querySelector("#deleteReminderBtn").addEventListener("click", () => {
-    // TODO: Call API to delete reminder
-    console.log("Delete reminder for reminderId:", props?.reminderId);
     deleteReminder(props?.reminderId);
   });
 

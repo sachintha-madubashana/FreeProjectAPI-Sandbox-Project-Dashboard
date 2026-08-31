@@ -3,6 +3,7 @@ import simpleCards from "@/components/simpleStatsCards/simpleStatsCards.js";
 import reminderCard from "@/components/cards/reminderCard/reminderCard.js";
 import addAndEditReminder from "@/components/dialogs/addAndEditReminder/addAndEditReminder.js";
 import confirmationDialog from "@/components/dialogs/confirmationDialog/confirmationDialog.js";
+import reminderMoreInfo from "@/components/dialogs/reminderMoreInfo/reminderMoreInfo.js";
 
 const ReminderStatus = Object.freeze({
   ALL: "all",
@@ -326,4 +327,18 @@ const deleteReminder = (reminderId) => {
   document.getElementById("confirmationDialog").showModal();
 };
 
-export { updateReminders, deleteReminder };
+const seeReminderDetails = (reminderId) => {
+  const reminder = reminders.find((r) => r.reminderId === reminderId);
+  if (reminder) {
+    const data = {
+      dialogId: "reminderDetailsDialog" + reminderId,
+      title: "Reminder Details",
+      description: "Here are the details of your reminder.",
+      data: reminder,
+    };
+    document.getElementById("pageContent").appendChild(reminderMoreInfo(data));
+    document.getElementById("reminderDetailsDialog" + reminderId).showModal();
+  }
+};
+
+export { updateReminders, deleteReminder, seeReminderDetails };

@@ -1,0 +1,93 @@
+<dialog
+  class="dialog"
+  aria-labelledby="addAndEditReminderTitle"
+  aria-describedby="addAndEditReminderDescription"
+  onclick="
+    if (event.target === this) {
+      this.close();
+      this.remove();
+    }
+  "
+>
+  <div class="sm:max-w-sm">
+    <header>
+      <h2 id="addAndEditReminderTitle">Dialog Title</h2>
+      <p id="addAndEditReminderDescription">Dialog Description</p>
+    </header>
+    <section>
+      <form class="grid gap-4">
+        <div class="grid gap-3">
+          <label class="label" for="reminderInputTitle">Title</label>
+          <input
+            class="input"
+            type="text"
+            placeholder="Enter Reminder title"
+            id="reminderInputTitle"
+            autofocus
+          />
+        </div>
+        <div class="grid gap-3">
+          <label class="label" for="reminderInputDate">Date & Time</label>
+          <input
+            class="input"
+            type="datetime-local"
+            value="2026-08-01 00:00:00"
+            id="reminderInputDate"
+          />
+        </div>
+        <div class="grid gap-3">
+          <label for="startDateInput"> Description</label>
+          <textarea
+            id="reminderDescriptionInput"
+            class="textarea max-h-40 resize-y"
+            placeholder="Write a few sentences about your reminder..."
+          ></textarea>
+        </div>
+      </form>
+    </section>
+    <footer>
+      <button
+        class="btn"
+        data-variant="outline"
+        id="cancelBtn"
+        onclick="
+          {
+            this.closest('dialog').close();
+            this.closest('dialog').remove();
+          }
+        "
+      >
+        Cancel
+      </button>
+    </footer>
+    <button
+      type="button"
+      class="btn"
+      data-variant="ghost"
+      data-size="icon-sm"
+      aria-label="Close dialog"
+      onclick="
+        {
+          this.closest('dialog').close();
+          this.closest('dialog').remove();
+        }
+      "
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-x-icon lucide-x"
+      >
+        <path d="M18 6 6 18" />
+        <path d="m6 6 12 12" />
+      </svg>
+    </button>
+  </div>
+</dialog>
