@@ -1,7 +1,7 @@
 export default function initToastSystem() {
   const div = document.createElement("div");
   div.id = "toaster";
-  div.className = "toaster";
+  div.classList = "toaster bg-transparent";
   document.getElementById("app").appendChild(div);
 }
 
@@ -20,6 +20,7 @@ export const showToast = (options) => {
   }
 
   toaster.toast({
+    duration: 3000,
     category: options?.category || "info",
     title: options?.title || "Default Title",
     description: options?.description || "Default Description",
