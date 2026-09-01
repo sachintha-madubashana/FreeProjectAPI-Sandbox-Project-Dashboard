@@ -11,35 +11,46 @@
     </header>
     <section>
       <form class="grid gap-6">
-        <div class="grid gap-2">
-          <label class="label" for="email">Full Name</label>
+        <div class="field">
+          <label class="label" for="registerFullNameInput"
+            >Full Name <span class="text-destructive">*</span></label
+          >
           <input
             class="input"
             type="text"
-            id="name"
+            id="registerFullNameInput"
             placeholder="Jane Doe"
             required
           />
+          <p id="registerFullNameInputError" class="text-destructive hidden">
+            This is an error.
+          </p>
         </div>
         <div class="grid gap-2">
           <div class="field">
-            <label class="label" for="email">Email</label>
+            <label class="label" for="registerEmailInput"
+              >Email <span class="text-destructive">*</span></label
+            >
             <input
               class="input"
               type="email"
-              id="email"
+              id="registerEmailInput"
               placeholder="email@example.com"
               required
             />
-            <p id="errorMsg" class="hidden">This is an Error message.</p>
+            <p id="registerEmailInputError" class="text-destructive hidden">
+              This is an Error message.
+            </p>
           </div>
         </div>
         <div class="grid gap-2">
           <div class="field">
-            <label class="label" for="password">Password</label>
+            <label class="label" for="registerPasswordInput"
+              >Password <span class="text-destructive">*</span></label
+            >
             <div class="input-group">
               <input
-                id="password"
+                id="registerPasswordInput"
                 type="password"
                 placeholder="Enter password"
               />
@@ -55,11 +66,42 @@
                 </button>
               </span>
             </div>
-            <p id="errorMsg" class="hidden">This is an Error message.</p>
+            <p id="registerPasswordInputError" class="text-destructive hidden">
+              This is an Error message.
+            </p>
           </div>
         </div>
       </form>
     </section>
+    <!-- <section>
+      <div
+        class="alert hidden"
+        data-variant="destructive"
+        id="registerErrorAlert"
+      >
+        <svg
+          class="lucide lucide-circle-alert"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" x2="12" y1="8" y2="12" />
+          <line x1="12" x2="12.01" y1="16" y2="16" />
+        </svg>
+        <h2>Error</h2>
+        <p>
+          Your payment could not be processed. Please check your payment method
+          and try again.
+        </p>
+      </div>
+    </section> -->
     <footer class="flex-col gap-2">
       <button type="button" class="btn w-full" id="registerBtn">
         Register

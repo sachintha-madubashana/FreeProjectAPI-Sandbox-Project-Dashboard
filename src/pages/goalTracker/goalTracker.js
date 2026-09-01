@@ -2,7 +2,10 @@ import login, {
   resetAllLogins,
   resetAllLoginBtns,
 } from "@/components/login/login.js";
-import register from "@/components/register/register.js";
+import register, {
+  resetAllRegisterBtns,
+  resetAllRegisters,
+} from "@/components/register/register.js";
 import goalTrackerHTML from "@/pages/goalTracker/goalTracker.html?raw";
 import goalTrakerDashboard from "@/pages/goalTracker/dashboard.js";
 import loadAndRenderIcon from "@/utils/loadAndRenderIcon.js";
@@ -77,15 +80,40 @@ export default function goalTracker(params) {
         }
       },
       onNavigateToSignup: () => {
-        template.innerHTML = "";
+        template.replaceChildren();
         template.appendChild(register(registerProps));
       },
     };
 
     const registerProps = {
       title: "Goal Tracker Register",
+      register: async (user) => {
+        try {
+          const response = await requestHandler(
+            "https://api.freeprojectapi.com/api/GoalTracker/register",
+            "POST",
+            user,
+          );
+
+          localStorage.setItem("goalTrackerUser", JSON.stringify(response));
+          showToast({
+            category: "success",
+            title: "Success",
+            description: "Registration successful! Welcome to Goal Tracker.",
+          });
+          resetAllRegisters();
+          refresh();
+        } catch (error) {
+          showToast({
+            category: "error",
+            title: "Error",
+            description: error.message,
+          });
+          resetAllRegisterBtns();
+        }
+      },
       onNavigateToLogin: () => {
-        template.innerHTML = "";
+        template.replaceChildren();
         template.appendChild(login(loginProps));
       },
     };

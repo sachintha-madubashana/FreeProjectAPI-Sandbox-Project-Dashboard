@@ -24,43 +24,46 @@ export default function register(props) {
 
   clone.querySelector("#registerBtn").addEventListener("click", () => {
     const registerBtn = document.querySelector("#registerBtn");
-    const email = document.querySelector("#email");
-    const password = document.querySelector("#password");
-    const name = document.querySelector("#name");
+    const email = document.querySelector("#registerEmailInput");
+    const password = document.querySelector("#registerPasswordInput");
+    const fullName = document.querySelector("#registerFullNameInput");
 
     registerBtn.disabled = true;
     registerBtn.innerHTML = `<svg aria-label="Loading" role="status" class="animate-spin lucide lucide-loader-circle" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56" /></svg> Registering ...`;
-    name.disabled = true;
+    fullName.disabled = true;
     email.disabled = true;
     password.disabled = true;
 
-    console.log("Name:", name.value);
-    console.log("Email:", email.value);
-    console.log("Password:", password.value);
+    const isNameValid = checkInputsEmpty(
+      fullName,
+      document.getElementById("registerFullNameInputError"),
+      "Full Name is required.",
+    );
+    const isEmailValid = checkInputsEmpty(
+      email,
+      document.getElementById("registerEmailInputError"),
+      "Email is required.",
+    );
+    const isPasswordValid = checkInputsEmpty(
+      password,
+      document.getElementById("registerPasswordInputError"),
+      "Password is required.",
+    );
+    if (
+      isNameValid &&
+      isEmailValid &&
+      isPasswordValid &&
+      typeof props?.register === "function"
+    ) {
+      const user = {
+        fullName: fullName.value,
+        emailId: email.value,
+        password: password.value,
+        mobileNo: "0000000000",
+      };
 
-    // localStorage.setItem(
-    //   "goalTrackerUser",
-    //   JSON.stringify({
-    //     userId: 1223,
-    //     email: "jane@abc.d",
-    //     fullName: "John Doe",
-    //     password: "123456",
-    //   }),
-    // );
-
-    setTimeout(() => {
-      email.value = "";
-      password.value = "";
-
-      email.disabled = false;
-      password.disabled = false;
-
-      registerBtn.disabled = false;
-      registerBtn.innerHTML = "Register";
-
-      refresh();
-      navigateToLogin(props);
-    }, 2000);
+      props?.register?.(user);
+    }
   });
 
   clone.querySelector("#goToLoginbtn").addEventListener("click", () => {
@@ -69,10 +72,28 @@ export default function register(props) {
 
   return clone;
 }
+const checkInputsEmpty = (inputTag, errorMsgTag, errorMsg) => {
+  if (inputTag.value.trim() === "") {
+    errorMsgTag.classList.remove("hidden");
+    errorMsgTag.textContent = errorMsg;
+
+    inputTag.addEventListener(
+      "input",
+      () => {
+        if (inputTag.value.trim() !== "") {
+          errorMsgTag.classList.add("hidden");
+        }
+      },
+      { once: true },
+    );
+    resetAllRegisterBtns();
+    return false;
+  }
+};
 
 const togglePasswordVisibility = () => {
   isPasswordVisible = !isPasswordVisible;
-  document.getElementById("password").type = isPasswordVisible
+  document.getElementById("registerPasswordInput").type = isPasswordVisible
     ? "text"
     : "password";
   document.getElementById("passwordVisibilityIcon").innerHTML =
@@ -83,4 +104,36 @@ const navigateToLogin = (props) => {
   if (typeof props?.onNavigateToLogin === "function") {
     props.onNavigateToLogin();
   }
+};
+
+export const resetAllRegisters = () => {
+  const registerBtn = document.querySelector("#registerBtn");
+  const email = document.querySelector("#registerEmailInput");
+  const password = document.querySelector("#registerPasswordInput");
+  const fullName = document.querySelector("#registerFullNameInput");
+
+  fullName.value = "";
+  email.value = "";
+  password.value = "";
+
+  fullName.disabled = false;
+  email.disabled = false;
+  password.disabled = false;
+
+  registerBtn.disabled = false;
+  registerBtn.innerHTML = "Register";
+};
+
+export const resetAllRegisterBtns = () => {
+  const registerBtn = document.querySelector("#registerBtn");
+  const email = document.querySelector("#registerEmailInput");
+  const password = document.querySelector("#registerPasswordInput");
+  const fullName = document.querySelector("#registerFullNameInput");
+
+  fullName.disabled = false;
+  email.disabled = false;
+  password.disabled = false;
+
+  registerBtn.disabled = false;
+  registerBtn.innerHTML = "Register";
 };
