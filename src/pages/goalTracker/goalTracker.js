@@ -11,6 +11,7 @@ import taskPage from "@/pages/goalTracker/task.js";
 import goalsPage from "@/pages/goalTracker/goals.js";
 import remindersPage from "@/pages/goalTracker/reminders.js";
 import { showToast } from "@/utils/toastSystem";
+import requestHandler from "@/utils/requestHandler.js";
 
 const TABS_CONFIG = {
   dashboard: {
@@ -50,34 +51,30 @@ export default function goalTracker(params) {
 
     const loginProps = {
       title: "Goal Tracker Login",
-      login: (user) => {
-        fetch("https://api.freeprojectapi.com/api/GoalTracker/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(user),
-        })
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error("Network response was not ok");
-            }
-            return response.json();
-          })
-          .then((data) => {
-            localStorage.setItem("goalTrackerUser", JSON.stringify(data));
-            resetAllLogins();
-            refresh();
-          })
-          .catch((error) => {
-            showToast({
-              category: "error",
-              title: "Error",
-              description: error.message,
-            });
-            resetAllLoginBtns();
-            console.error("Error:", error);
+      login: async (user) => {
+        try {
+          const response = await requestHandler(
+            "https://api.freeprojectapi.com/api/GoalTracker/login",
+            "POST",
+            user,
+          );
+
+          localStorage.setItem("goalTrackerUser", JSON.stringify(response));
+          showToast({
+            category: "success",
+            title: "Success",
+            description: "Login successful! Welcome back.",
           });
+          resetAllLogins();
+          refresh();
+        } catch (error) {
+          showToast({
+            category: "error",
+            title: "Error",
+            description: error.message,
+          });
+          resetAllLoginBtns();
+        }
       },
       onNavigateToSignup: () => {
         template.innerHTML = "";
