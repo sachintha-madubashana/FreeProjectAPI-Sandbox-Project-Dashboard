@@ -6,7 +6,10 @@ export default async function requestHandler(url, method = "GET", data = null) {
     },
   };
 
-  if (data && options.method !== "GET") {
+  if (data && options.method === "GET") {
+    const queryParams = new URLSearchParams(data).toString();
+    url = `${url}?${queryParams}`;
+  } else if (data) {
     options.body = JSON.stringify(data);
   }
 
