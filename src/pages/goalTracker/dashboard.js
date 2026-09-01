@@ -2,7 +2,10 @@ import Chart from "chart.js/auto";
 import "basecoat-css/chart";
 
 import dashboard from "@/pages/goalTracker/dashboard.html?raw";
-import statsCards from "@/components/statsCards/statsCards.js";
+import statsCards, {
+  statsCardSkeleton,
+} from "@/components/statsCards/statsCards.js";
+import requestHandler from "@/utils/requestHandler";
 
 export default function goalTrackerDashboard() {
   window.Chart = Chart;
@@ -10,6 +13,48 @@ export default function goalTrackerDashboard() {
   template.innerHTML = dashboard;
   const clone = document.importNode(template.content, true);
   const canvasTarget = clone.querySelector("#chart");
+  const loggedUser = JSON.parse(localStorage.getItem("goalTrackerUser"));
+
+  for (let i = 0; i < 4; i++) {
+    renderStatsCards(clone, null); // Render skeleton cards
+  }
+
+  getDashboardStats(loggedUser.userId).then((stats) => {
+    if (!stats) return;
+
+    console.log("Fetched dashboard stats:", stats);
+
+    const dashboardStatsObjArray = [
+      {
+        title: "Total Goals",
+        value: stats.totalTasks,
+        secondValue: "Completed Tasks : " + stats.completedTasks,
+        icon: "List",
+      },
+      {
+        title: "Active Goals",
+        value: stats.activeGoals,
+        secondValue: "InProgress Goals : " + stats.inProgressGoals,
+        icon: "Goal",
+      },
+      {
+        title: "Total Reminders",
+        value: stats.totalReminders,
+        secondValue: "Upcoming Reminders : " + stats.upcomingReminders,
+        icon: "Bell",
+      },
+      {
+        title: "Completion Rate",
+        value: stats.completionRate,
+        icon: "CircleCheck",
+      },
+    ];
+    clearStatsCardsContainer(document);
+    dashboardStatsObjArray.forEach((stat) => {
+      console.log("Rendering stat card:", stat);
+      renderStatsCards(document, stat);
+    });
+  });
 
   const recentActivity = [
     {
@@ -94,16 +139,6 @@ export default function goalTrackerDashboard() {
     },
   ];
 
-  const dashboardStats = {
-    totalTasks: 50,
-    completedTasks: 25,
-    activeGoals: 9,
-    inProgressGoals: 2,
-    totalReminders: 5,
-    upcomingReminders: 1,
-    completionRate: "10%",
-  };
-
   const chartData = [
     { date: "Aug 17", complete: 186, new: 80 },
     { date: "Aug 18", complete: 305, new: 200 },
@@ -112,39 +147,6 @@ export default function goalTrackerDashboard() {
     { date: "Aug 21", complete: 209, new: 130 },
     { date: "Aug 22", complete: 214, new: 140 },
   ];
-
-  // Render stats cards
-  clone.querySelector("#statsCardsContainer").appendChild(
-    statsCards({
-      title: "Total Goals",
-      value: dashboardStats.totalTasks,
-      secondValue: "Completed Tasks : " + dashboardStats.completedTasks,
-      icon: "List",
-    }),
-  );
-  clone.querySelector("#statsCardsContainer").appendChild(
-    statsCards({
-      title: "Active Goals",
-      value: dashboardStats.activeGoals,
-      secondValue: "InProgress Goals : " + dashboardStats.inProgressGoals,
-      icon: "Goal",
-    }),
-  );
-  clone.querySelector("#statsCardsContainer").appendChild(
-    statsCards({
-      title: "Total Reminders",
-      value: dashboardStats.totalReminders,
-      secondValue: "Upcoming Reminders : " + dashboardStats.upcomingReminders,
-      icon: "Bell",
-    }),
-  );
-  clone.querySelector("#statsCardsContainer").appendChild(
-    statsCards({
-      title: "Completion Rate",
-      value: dashboardStats.completionRate,
-      icon: "CircleCheck",
-    }),
-  );
 
   recentActivity.forEach((activity) => {
     clone.querySelector("#recentActivityContainer").innerHTML = recentActivity
@@ -171,6 +173,28 @@ export default function goalTrackerDashboard() {
 
   return clone;
 }
+const clearStatsCardsContainer = (domContext) => {
+  const statsCardsContainer = domContext.querySelector(
+    "#dashboardStatsCardsContainer",
+  );
+  if (!statsCardsContainer) return;
+  statsCardsContainer.innerHTML = "";
+};
+
+const renderStatsCards = (domContext, stats) => {
+  const statsCardsContainer = domContext.querySelector(
+    "#dashboardStatsCardsContainer",
+  );
+  if (!statsCardsContainer) return;
+
+  if (stats) {
+    console.log("Rendering cards ");
+    statsCardsContainer.appendChild(statsCards(stats));
+  } else {
+    console.log("Rendering scalatons ");
+    statsCardsContainer.appendChild(statsCardSkeleton());
+  }
+};
 
 const recentActivityLoader = (activity) => {
   const cleanTime = new Date(activity.timestamp).toLocaleString("en-US", {
@@ -185,4 +209,19 @@ const recentActivityLoader = (activity) => {
             <p class="text-gray-400">${activity.message}</p>
             <span class="text-gray-400 text-end">${cleanTime}</span>
           </div>`;
+};
+
+const getDashboardStats = async (userId) => {
+  console.log("Sending request to fetch dashboard stats for userId:", userId);
+  try {
+    const response = await requestHandler(
+      "https://api.freeprojectapi.com/api/GoalTracker/dashboard",
+      "GET",
+      { userId: userId },
+    );
+
+    return response;
+  } catch (error) {
+    console.error("Error fetching dashboard stats:", error);
+  }
 };
