@@ -1,5 +1,4 @@
 import loginTemplate from "@/components/login/login.html?raw";
-import { refresh } from "@/router/router.js";
 
 let isPasswordVisible = false;
 const eyeIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-icon lucide-eye"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>`;
@@ -29,31 +28,14 @@ export default function login(props) {
     email.disabled = true;
     password.disabled = true;
 
-    console.log("Email:", email.value);
-    console.log("Password:", password.value);
+    const user = {
+      emailId: email.value,
+      password: password.value,
+    };
 
-    localStorage.setItem(
-      "goalTrackerUser",
-      JSON.stringify({
-        userId: 1223,
-        email: "jane@abc.d",
-        fullName: "John Doe",
-        password: "123456",
-      }),
-    );
-
-    setTimeout(() => {
-      email.value = "";
-      password.value = "";
-
-      email.disabled = false;
-      password.disabled = false;
-
-      loginBtn.disabled = false;
-      loginBtn.innerHTML = "Login";
-
-      refresh();
-    }, 2000);
+    if (typeof props?.login === "function") {
+      props?.login?.(user);
+    }
 
     return true;
   });
@@ -74,4 +56,23 @@ const togglePasswordVisibility = () => {
     : "password";
   document.getElementById("passwordVisibilityIcon").innerHTML =
     isPasswordVisible ? eyeIcon : eyeOffIcon;
+};
+
+export const resetAllLogins = () => {
+  email.value = "";
+  password.value = "";
+
+  email.disabled = false;
+  password.disabled = false;
+
+  loginBtn.disabled = false;
+  loginBtn.innerHTML = "Login";
+};
+
+export const resetAllLoginBtns = () => {
+  email.disabled = false;
+  password.disabled = false;
+
+  loginBtn.disabled = false;
+  loginBtn.innerHTML = "Login";
 };

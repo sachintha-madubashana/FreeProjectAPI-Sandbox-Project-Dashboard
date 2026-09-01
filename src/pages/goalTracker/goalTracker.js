@@ -1,13 +1,16 @@
-import login from "@/components/login/login.js";
+import login, {
+  resetAllLogins,
+  resetAllLoginBtns,
+} from "@/components/login/login.js";
 import register from "@/components/register/register.js";
 import goalTrackerHTML from "@/pages/goalTracker/goalTracker.html?raw";
 import goalTrakerDashboard from "@/pages/goalTracker/dashboard.js";
 import loadAndRenderIcon from "@/utils/loadAndRenderIcon.js";
 import { refresh } from "@/router/router.js";
 import taskPage from "@/pages/goalTracker/task.js";
-import templatePage from "@/pages/projectTemp.js";
 import goalsPage from "@/pages/goalTracker/goals.js";
 import remindersPage from "@/pages/goalTracker/reminders.js";
+import { showToast } from "@/utils/toastSystem";
 
 const TABS_CONFIG = {
   dashboard: {
@@ -47,6 +50,35 @@ export default function goalTracker(params) {
 
     const loginProps = {
       title: "Goal Tracker Login",
+      login: (user) => {
+        fetch("https://api.freeprojectapi.com/api/GoalTracker/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(user),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            localStorage.setItem("goalTrackerUser", JSON.stringify(data));
+            resetAllLogins();
+            refresh();
+          })
+          .catch((error) => {
+            showToast({
+              category: "error",
+              title: "Error",
+              description: error.message,
+            });
+            resetAllLoginBtns();
+            console.error("Error:", error);
+          });
+      },
       onNavigateToSignup: () => {
         template.innerHTML = "";
         template.appendChild(register(registerProps));
