@@ -166,6 +166,9 @@ export default function goalTracker(params) {
     targetPanel?.setAttribute("data-state", "active");
   }
 
+  clone.querySelector("#loggedinUserName").textContent =
+    JSON.parse(logedInUser).fullName;
+
   clone.querySelector("#logoutBtn")?.addEventListener("click", () => {
     localStorage.removeItem("goalTrackerUser");
     refresh();

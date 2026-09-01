@@ -1,9 +1,36 @@
 <div class="tabs" id="tabs-with-icons">
   <div class="flex justify-between items-center">
     <h2 class="text-lg font-bold">Goal Tracker Dashboard</h2>
-    <button type="button" class="btn" data-variant="destructive" id="logoutBtn">
-      Logout
-    </button>
+    <div class="flex items-center gap-2">
+      <div
+        class="card p-2 max-w-20 md:max-w-60 flex flex-row items-center gap-2 rounded-lg"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-user-icon lucide-user"
+        >
+          <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>
+        <p class="truncate" id="loggedinUserName">Jane Doe</p>
+      </div>
+      <button
+        type="button"
+        class="btn"
+        data-variant="destructive"
+        id="logoutBtn"
+      >
+        Logout
+      </button>
+    </div>
   </div>
   <nav
     role="tablist"
