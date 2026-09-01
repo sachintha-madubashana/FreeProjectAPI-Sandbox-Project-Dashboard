@@ -20,24 +20,32 @@ export default function login(props) {
     });
   clone.querySelector("#loginBtn").addEventListener("click", () => {
     const loginBtn = document.querySelector("#loginBtn");
-    const email = document.querySelector("#email");
-    const password = document.querySelector("#password");
+    const email = document.querySelector("#loginEmailInput");
+    const password = document.querySelector("#loginPasswordInput");
 
     loginBtn.disabled = true;
     loginBtn.innerHTML = `<svg aria-label="Loading" role="status" class="animate-spin lucide lucide-loader-circle" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56" /></svg> Login in...`;
     email.disabled = true;
     password.disabled = true;
 
-    const user = {
-      emailId: email.value,
-      password: password.value,
-    };
+    const isEmailValid = checkInputsEmpty(
+      email,
+      document.getElementById("emailInputError"),
+      "Email is required.",
+    );
+    const isPasswordValid = checkInputsEmpty(
+      password,
+      document.getElementById("passwordInputError"),
+      "Password is required.",
+    );
 
-    if (typeof props?.login === "function") {
+    if (isEmailValid && isPasswordValid && typeof props?.login === "function") {
+      const user = {
+        emailId: email.value,
+        password: password.value,
+      };
       props?.login?.(user);
     }
-
-    return true;
   });
 
   clone.querySelector("#signUpbtn").addEventListener("click", () => {
@@ -58,7 +66,31 @@ const togglePasswordVisibility = () => {
     isPasswordVisible ? eyeIcon : eyeOffIcon;
 };
 
+const checkInputsEmpty = (inputTag, errorMsgTag, errorMsg) => {
+  if (inputTag.value.trim() === "") {
+    errorMsgTag.classList.remove("hidden");
+    errorMsgTag.textContent = errorMsg;
+
+    inputTag.addEventListener(
+      "input",
+      () => {
+        if (inputTag.value.trim() !== "") {
+          errorMsgTag.classList.add("hidden");
+        }
+      },
+      { once: true },
+    );
+    resetAllLoginBtns();
+    return false;
+  }
+  return true;
+};
+
 export const resetAllLogins = () => {
+  const loginBtn = document.querySelector("#loginBtn");
+  const email = document.querySelector("#loginEmailInput");
+  const password = document.querySelector("#loginPasswordInput");
+
   email.value = "";
   password.value = "";
 
@@ -70,6 +102,10 @@ export const resetAllLogins = () => {
 };
 
 export const resetAllLoginBtns = () => {
+  const loginBtn = document.querySelector("#loginBtn");
+  const email = document.querySelector("#loginEmailInput");
+  const password = document.querySelector("#loginPasswordInput");
+
   email.disabled = false;
   password.disabled = false;
 

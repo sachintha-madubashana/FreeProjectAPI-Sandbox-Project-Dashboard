@@ -11,22 +11,25 @@
     </header>
     <section>
       <form class="grid gap-6">
-        <div class="grid gap-2">
-          <label class="label" for="email">Email</label>
+        <div class="field">
+          <label class="label" for="loginEmailInput">Email</label>
           <input
             class="input"
             type="email"
-            id="email"
+            id="loginEmailInput"
             placeholder="email@example.com"
             required
           />
+          <p id="emailInputError" class="text-destructive hidden">
+            This is an Error message.
+          </p>
         </div>
         <div class="grid gap-2">
           <div class="field">
-            <label class="label" for="password">Password</label>
+            <label class="label" for="loginPasswordInput">Password</label>
             <div class="input-group">
               <input
-                id="password"
+                id="loginPasswordInput"
                 type="password"
                 placeholder="Enter password"
               />
@@ -42,7 +45,9 @@
                 </button>
               </span>
             </div>
-            <p id="errorMsg" class="hidden">This is an Error message.</p>
+            <p id="passwordInputError" class="text-destructive hidden">
+              This is an Error message.
+            </p>
           </div>
         </div>
       </form>
