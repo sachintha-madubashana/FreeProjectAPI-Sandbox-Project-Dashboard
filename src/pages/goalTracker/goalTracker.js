@@ -47,7 +47,7 @@ const TABS_CONFIG = {
   },
 };
 export default function goalTracker(params) {
-  const logedInUser = localStorage.getItem("goalTrackerUser") || false;
+  const logedInUser = getLoggedUser ?? false;
   if (logedInUser === false) {
     const template = document.createElement("div");
     template.classList.add("size-full");
@@ -211,3 +211,7 @@ function updateUrlParameter(key, value) {
   url.searchParams.set(key, value);
   window.history.pushState({}, "", url);
 }
+
+export const getLoggedUser = () => {
+  return JSON.parse(localStorage.getItem("goalTrackerUser"));
+};
