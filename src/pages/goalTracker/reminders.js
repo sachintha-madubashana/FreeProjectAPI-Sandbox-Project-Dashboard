@@ -105,10 +105,7 @@ const setupEventListeners = (page, reminders) => {
         // TODO: Call API to update reminder with reminderItem data
       },
     };
-    document
-      .getElementById("pageContent")
-      .appendChild(addAndEditReminder(data));
-    document.getElementById(data.dialogId).showModal();
+    generateDialogAndShow(addAndEditReminder, data);
   });
 
   page.querySelector("#searchRemindersInput").addEventListener("keyup", (e) => {
