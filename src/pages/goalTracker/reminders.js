@@ -1,5 +1,7 @@
 import remindersTemplate from "@/pages/goalTracker/reminders.html?raw";
-import simpleCards from "@/components/simpleStatsCards/simpleStatsCards.js";
+import simpleCard, {
+  simpleStatsCardSkeleton as reminderCardSkeleton,
+} from "@/components/simpleStatsCard/simpleStatsCard.js";
 import reminderCard from "@/components/cards/reminderCard/reminderCard.js";
 import addAndEditReminder from "@/components/dialogs/addAndEditReminder/addAndEditReminder.js";
 import confirmationDialog from "@/components/dialogs/confirmationDialog/confirmationDialog.js";
@@ -27,10 +29,12 @@ export default function remindersPage() {
   const loggedUser = getLoggedUser();
 
   const page = root.querySelector("#remindersPage");
+  renderReminderSkeletons(page);
 
   loadReminders(loggedUser.userId)
     .then((data) => {
       if (!data) {
+        // TODO: Add Error UI
         // renderReminderError(root);
         return;
       }
@@ -44,19 +48,9 @@ export default function remindersPage() {
     })
     .catch((error) => {
       console.error("Failed to load reminders:", error);
+      // TODO: Add Error UI
       // renderReminderError(root);
     });
-
-  // addStatusToReminders(reminders);
-
-  // const remindersStatus = reminderStatsGenerator(reminders);
-  // remindersStatus.forEach((stats) => {
-  //   root
-  //     .querySelector("#reminderStatsCardsContainer")
-  //     .appendChild(simpleCards(stats));
-  // });
-
-  // renderReminders(root, reminders, selectedStatus);
 
   root.querySelector("#searchReminderBtn").addEventListener("click", () => {
     const searchInput = document
@@ -115,6 +109,18 @@ export default function remindersPage() {
   return root;
 }
 
+const renderReminderSkeletons = (page) => {
+  const container = page.querySelector("#reminderStatsCardsContainer");
+
+  if (!container) return;
+
+  container.replaceChildren();
+
+  for (let i = 0; i < 4; i++) {
+    container.appendChild(reminderCardSkeleton());
+  }
+};
+
 const loadReminders = async (userId) => {
   try {
     const response = await requestHandler(
@@ -136,7 +142,7 @@ const updateRemindersStats = (root, reminders) => {
   );
   reminderStatsCardsContainer.replaceChildren();
   remindersStatus.forEach((stats) => {
-    reminderStatsCardsContainer.appendChild(simpleCards(stats));
+    reminderStatsCardsContainer.appendChild(simpleCard(stats));
   });
 };
 
@@ -261,17 +267,10 @@ const filterRemindersByStatus = (reminders, status) => {
 
 const remindersSearch = (reminders, searchInput, selectedStatus) => {
   if (searchInput) {
-    const filteredReminders = reminders.filter((reminder) => {
-      const matchesStatus =
-        selectedStatus === ReminderStatus.ALL ||
-        reminder.status === selectedStatus;
-      const matchesSearch = reminder.title
-        .toLowerCase()
-        .includes(searchInput.toLowerCase());
-
-      return matchesStatus && matchesSearch;
-    });
-    renderReminders(document, filteredReminders, selectedStatus);
+    const searchedReminders = reminders.filter((reminder) =>
+      reminder.title.toLowerCase().includes(searchInput.toLowerCase()),
+    );
+    renderReminders(document, searchedReminders, selectedStatus);
   } else {
     showToast({
       category: "warning",
