@@ -167,7 +167,7 @@ export default function goalTracker(params) {
   }
 
   clone.querySelector("#loggedinUserName").textContent =
-    JSON.parse(logedInUser).fullName;
+    getLoggedUser()?.fullName;
 
   clone.querySelector("#logoutBtn")?.addEventListener("click", () => {
     localStorage.removeItem("goalTrackerUser");
