@@ -424,9 +424,26 @@ const updateReminderToAPI = async (reminder, toastMsgData) => {
     console.error("Error fetching dashboard stats:", error);
   }
 };
-const deleteReminderFromAPI = (reminderId) => {
-  //TODO: Call API to delete reminder
-  console.log("Delete reminder from API for reminderId:", reminderId);
+const deleteReminderFromAPI = async (reminderId) => {
+  try {
+    await requestHandler(
+      "https://api.freeprojectapi.com/api/GoalTracker/deleteReminder/" +
+        reminderId,
+      "DELETE",
+    );
+    showToast({
+      category: "success",
+      title: "Reminder Deleted",
+      description: "The reminder has been successfully deleted.",
+    });
+  } catch (error) {
+    showToast({
+      category: "error",
+      title: "Delete Failed",
+      description: "Failed to delete the reminder. Please try again later.",
+    });
+    console.error("Error fetching dashboard stats:", error);
+  }
 };
 
 // Reminder Card Action functions
