@@ -1,8 +1,37 @@
 import showTaskInfoTemplate from "@/components/dialogs/showTaskInfo/showTaskInfo.html?raw";
-import simpleStatsCards from "@/components/simpleStatsCard/simpleStatsCard.js";
-import confirmationDialog from "@/components/dialogs/confirmationDialog/confirmationDialog.js";
-import addAndEditTask from "@/components/dialogs/addAndEditTask/addAndEditTask.js";
+import simpleStatsCards from "@/components/cards/simpleStatsCard/simpleStatsCard.js";
 
+const checkIcon = `<svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-circle-check-icon lucide-circle-check"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <path d="m9 12 2 2 4-4" />
+      </svg>`;
+const nonCheckIcon = `<svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-circle-x-icon lucide-circle-x"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <path d="m15 9-6 6" />
+        <path d="m9 9 6 6" />
+      </svg>`;
 export default function showTaskInfo(props) {
   const template = document.createElement("template");
   template.innerHTML = showTaskInfoTemplate;
@@ -29,41 +58,63 @@ export default function showTaskInfo(props) {
     });
   }
 
-  clone.querySelector("#editTaskBtn").addEventListener("click", () => {
-    const data = {
-      dialogId: "editTaskDialog",
-      confermButtonText: "Save Changes",
-      onConfirm: () => {
-        console.log("Task Edited:", props?.taskId);
-        dialog.close();
-        dialog.remove();
-      },
-      title: "Edit Task",
-      description:
-        "You can edit the task details here. Click save when you're done.",
-    };
-    document.getElementById("pageContent").appendChild(addAndEditTask(data));
-    document.getElementById("editTaskDialog").showModal();
-  });
+  const markAsCompleteBtn = clone.querySelector("#markAsCompleteBtn");
+  markAsCompleteBtnStateChanger(markAsCompleteBtn, props.data.isCompleted);
 
-  clone.querySelector("#deleteTaskBtn").addEventListener("click", () => {
-    const data = {
-      dialogId: "confirmationDialog",
-      confermButtonText: "Delete",
-      onConfirm: () => {
-        console.log("Task deleted:", props?.taskId);
-        dialog.close();
-        dialog.remove();
-      },
-      title: "Delete Task",
-      description:
-        "Are you sure you want to delete " + props?.taskName + " task?",
-    };
-    document
-      .getElementById("pageContent")
-      .appendChild(confirmationDialog(data));
-    document.getElementById("confirmationDialog").showModal();
+  markAsCompleteBtn.addEventListener("click", () => {
+    props.data.isCompleted = !props.data.isCompleted;
+    markAsCompleteBtnStateChanger(markAsCompleteBtn, props.data.isCompleted);
+    document.querySelector("#taskPage")?.dispatchEvent(
+      new CustomEvent("task", {
+        detail: { item: props.data, action: "markAsComplete" },
+        bubbles: true,
+      }),
+    );
   });
 
   return clone;
 }
+
+const markAsCompleteBtnStateChanger = (markAsCompleteBtn, isCompleted) => {
+  if (markAsCompleteBtn && isCompleted) {
+    markAsCompleteBtn.innerHTML = checkIcon + "Mark as Uncomplete";
+    markAsCompleteBtn.setAttribute("data-tooltip", "Mark as Uncomplete");
+    markAsCompleteBtn.classList.add(
+      "btn",
+      "bg-amber-100",
+      "dark:bg-amber-950",
+      "text-amber-950",
+      "dark:text-amber-400",
+      "hover:bg-amber-200",
+      "dark:hover:bg-amber-900",
+    );
+    markAsCompleteBtn.classList.remove(
+      "bg-green-100",
+      "dark:bg-green-950",
+      "text-green-950",
+      "dark:text-green-400",
+      "hover:bg-green-200",
+      "dark:hover:bg-green-900",
+    );
+  } else {
+    markAsCompleteBtn.innerHTML = checkIcon + "Mark as Complete";
+    markAsCompleteBtn.setAttribute("data-tooltip", "Mark as Complete");
+    markAsCompleteBtn.classList.add(
+      "btn",
+      "bg-green-100",
+      "dark:bg-green-950",
+      "text-green-950",
+      "dark:text-green-400",
+      "hover:bg-green-200",
+      "dark:hover:bg-green-900",
+    );
+    markAsCompleteBtn.classList.remove(
+      "bg-amber-100",
+      "dark:bg-amber-950",
+      "text-amber-950",
+      "dark:text-amber-400",
+      "hover:bg-amber-200",
+      "dark:hover:bg-amber-900",
+    );
+  }
+};

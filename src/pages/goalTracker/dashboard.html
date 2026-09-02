@@ -1,17 +1,19 @@
-<section
-  class="grid gap-4 md:grid-cols-2 lg:grid-cols-4 py-2"
-  id="dashboardStatsCardsContainer"
-></section>
-<section class="flex flex-col lg:flex-row py-2 flex-1 min-h-0">
-  <div class="w-full lg:w-4/5 h-fit lg:h-125">
-    <h1>Task Completion Chart</h1>
-    <canvas id="chart" aria-label="Task Completion Chart"></canvas>
-  </div>
-  <div class="w-full lg:w-1/5 h-40 lg:h-125">
-    <h1>Recent Activity</h1>
-    <div
-      class="flex flex-col gap-2 overflow-y-scroll overflow-x-hidden scrollbar-thumb-accent-foreground scrollbar-thin h-full py-2"
-      id="recentActivityContainer"
-    ></div>
-  </div>
-</section>
+<div id="goalTrackerDashboardPage">
+  <section
+    class="grid gap-4 md:grid-cols-2 lg:grid-cols-4 py-2"
+    id="dashboardStatsCardsContainer"
+  ></section>
+  <section class="flex flex-col lg:flex-row py-2 flex-1 min-h-0">
+    <div class="w-full lg:w-4/5 h-fit lg:h-125">
+      <h1>Task Completion Chart</h1>
+      <canvas id="chart" aria-label="Task Completion Chart"></canvas>
+    </div>
+    <div class="w-full lg:w-1/5 h-40 lg:h-125">
+      <h1>Recent Activity</h1>
+      <div
+        class="flex flex-col gap-2 overflow-y-scroll overflow-x-hidden scrollbar-thumb-accent-foreground scrollbar-thin h-full py-2"
+        id="recentActivityContainer"
+      ></div>
+    </div>
+  </section>
+</div>

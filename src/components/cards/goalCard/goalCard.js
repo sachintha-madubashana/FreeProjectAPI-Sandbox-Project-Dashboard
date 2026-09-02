@@ -43,16 +43,24 @@ export default function goalCard(props) {
       } || "Due Date",
     );
 
+  clone.querySelector(".card").addEventListener("click", () => {
+    openGoalDetailsDialog();
+  });
+
   clone.querySelector("#moreInfoBtn").addEventListener("click", () => {
-    const dialogData = {
-      dialogId: "showGoalInfo",
-      goalData: props,
-    };
-    generateDialogAndShow(goalMoreInfo, dialogData);
+    openGoalDetailsDialog();
   });
 
   return clone;
 }
+
+const openGoalDetailsDialog = (props) => {
+  const dialogData = {
+    dialogId: "showGoalInfo",
+    goalData: props,
+  };
+  generateDialogAndShow(goalMoreInfo, dialogData);
+};
 
 export const goalsCardSkeleton = () => {
   const clone = createTemplate(goalCardSkeletonTemplate);

@@ -4,7 +4,7 @@ import "basecoat-css/chart";
 import dashboard from "@/pages/goalTracker/dashboard.html?raw";
 import statsCard, {
   statsCardSkeleton,
-} from "@/components/statsCard/statsCard.js";
+} from "@/components/cards/statsCard/statsCard.js";
 import requestHandler from "@/utils/requestHandler";
 
 export default function goalTrackerDashboard() {
@@ -13,6 +13,7 @@ export default function goalTrackerDashboard() {
   template.innerHTML = dashboard;
 
   const root = document.importNode(template.content, true);
+  const page = root.querySelector("#goalTrackerDashboardPage");
 
   const canvasTarget = root.querySelector("#chart");
   const loggedUser = getLoggedUser();
@@ -24,88 +25,16 @@ export default function goalTrackerDashboard() {
     loadDashboardStats(statsContainer, loggedUser.userId);
   }
 
-  const recentActivity = [
-    {
-      type: "Reminder Added",
-      message: "Added reminder: fghjkl;'",
-      timestamp: "2026-08-24T01:43:00",
-    },
-    {
-      type: "Goal Created",
-      message: "New goal created: werty",
-      timestamp: "2026-08-22T11:43:04.897",
-    },
-    {
-      type: "Goal Created",
-      message: "New goal created: werty",
-      timestamp: "2026-08-22T11:43:04.897",
-    },
-    {
-      type: "Goal Created",
-      message: "New goal created: werty",
-      timestamp: "2026-08-22T11:43:04.897",
-    },
-    {
-      type: "Goal Created",
-      message: "New goal created: werty",
-      timestamp: "2026-08-22T11:43:04.897",
-    },
-    {
-      type: "Goal Created",
-      message: "New goal created: werty",
-      timestamp: "2026-08-22T11:43:04.897",
-    },
-    {
-      type: "Goal Created",
-      message: "New goal created: werty",
-      timestamp: "2026-08-22T11:43:04.897",
-    },
-    {
-      type: "Goal Created",
-      message: "New goal created: werty",
-      timestamp: "2026-08-22T11:43:04.897",
-    },
-    {
-      type: "Goal Created",
-      message: "New goal created: werty",
-      timestamp: "2026-08-22T11:43:04.897",
-    },
-    {
-      type: "Goal Created",
-      message: "New goal created: werty",
-      timestamp: "2026-08-22T11:43:04.897",
-    },
-    {
-      type: "Goal Created",
-      message: "New goal created: werty",
-      timestamp: "2026-08-22T11:43:04.897",
-    },
-    {
-      type: "Goal Created",
-      message: "New goal created: werty",
-      timestamp: "2026-08-22T11:43:04.897",
-    },
-    {
-      type: "Goal Created",
-      message: "New goal created: werty",
-      timestamp: "2026-08-22T11:43:04.897",
-    },
-    {
-      type: "Goal Created",
-      message: "New goal created: werty",
-      timestamp: "2026-08-22T11:43:04.897",
-    },
-    {
-      type: "Goal Created",
-      message: "New goal created: werty",
-      timestamp: "2026-08-22T11:43:04.897",
-    },
-    {
-      type: "Goal Created",
-      message: "New goal created: werty",
-      timestamp: "2026-08-22T11:43:04.897",
-    },
-  ];
+  loadRecentActivity(loggedUser?.userId)
+    .then((activities) => {
+      if (!activities) {
+        return;
+      }
+      renderRecentActivity(page, activities);
+    })
+    .catch((error) => {
+      console.error("Error loading recent activity:", error);
+    });
 
   const chartData = [
     { date: "Aug 17", complete: 186, new: 80 },
@@ -115,8 +44,6 @@ export default function goalTrackerDashboard() {
     { date: "Aug 21", complete: 209, new: 130 },
     { date: "Aug 22", complete: 214, new: 140 },
   ];
-
-  renderRecentActivity(root, recentActivity);
 
   requestAnimationFrame(() => {
     if (!canvasTarget) return;
@@ -244,4 +171,18 @@ const formatActivityTime = (timestamp) => {
     hour: "2-digit",
     minute: "2-digit",
   });
+};
+// Data fetching functions
+const loadRecentActivity = async (userId) => {
+  try {
+    const response = await requestHandler(
+      "https://api.freeprojectapi.com/api/GoalTracker/recent-activity",
+      "GET",
+      { userId: userId },
+    );
+
+    return response;
+  } catch (error) {
+    console.error("Error fetching dashboard stats:", error);
+  }
 };

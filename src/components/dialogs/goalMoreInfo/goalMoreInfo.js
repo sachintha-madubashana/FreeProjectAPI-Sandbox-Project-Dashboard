@@ -1,5 +1,5 @@
 import goalMoreInfoCardTemplate from "@/components/dialogs/goalMoreInfo/goalMoreInfo.html?raw";
-import simpleStatsCards from "@/components/simpleStatsCard/simpleStatsCard.js";
+import simpleStatsCards from "@/components/cards/simpleStatsCard/simpleStatsCard.js";
 import emptyComponent from "@/components/empty/empty.js";
 
 const checkIcon = `<svg

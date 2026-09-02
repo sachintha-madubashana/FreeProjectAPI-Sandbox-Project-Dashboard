@@ -13,11 +13,11 @@
     <section>
       <form class="grid gap-4">
         <div class="grid gap-3">
-          <label class="label" for="demo-dialog-edit-profile-name">Title</label>
+          <label class="label" for="addAndEditTaskName">Title</label>
           <input
             class="input"
             type="text"
-            value="Enter your task title"
+            placeholder="Enter your task title"
             id="addAndEditTaskName"
             autofocus
           />
@@ -70,7 +70,12 @@
                 </div>
               </div>
             </div>
-            <input type="hidden" name="frequencyInput" value="" />
+            <input
+              type="hidden"
+              name="frequencyInput"
+              value=""
+              id="frequencyInput"
+            />
           </div>
         </div>
         <div class="grid gap-3 md:grid-cols-2">
@@ -88,15 +93,36 @@
           </div>
         </div>
         <div class="grid gap-3">
-          <label for="startDateInput">
-            Description <span class="text-destructive">*</span>
-          </label>
+          <label for="addAndEditTaskDescriptionInput"> Description </label>
           <textarea
             class="textarea max-h-40 resize-y"
             placeholder="Type your message here"
+            id="addAndEditTaskDescriptionInput"
           ></textarea>
         </div>
       </form>
+    </section>
+    <section id="taskErrorSection" class="hidden" aria-hidden="true">
+      <div class="alert" data-variant="destructive">
+        <svg
+          class="lucide lucide-circle-alert"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" x2="12" y1="8" y2="12" />
+          <line x1="12" x2="12.01" y1="16" y2="16" />
+        </svg>
+        <h2>Error</h2>
+        <p>Error message</p>
+      </div>
     </section>
     <footer>
       <button class="btn" data-variant="outline" id="cancelButton">

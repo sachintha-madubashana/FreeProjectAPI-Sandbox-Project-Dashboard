@@ -1,7 +1,7 @@
 import goalsTemplate from "@/pages/goalTracker/goals.html?raw";
 import simpleCard, {
   simpleStatsCardSkeleton as goalsStatsCardSkeleton,
-} from "@/components/simpleStatsCard/simpleStatsCard.js";
+} from "@/components/cards/simpleStatsCard/simpleStatsCard.js";
 import goalCard, {
   goalsCardSkeleton,
 } from "@/components/cards/goalCard/goalCard.js";
@@ -58,7 +58,6 @@ export default function goals() {
     });
 
   setUpEventListeners(page, goals);
-  console.log("Goals Page Loaded", goals);
   return clone;
 }
 

@@ -1,7 +1,7 @@
-import cardContainerTemplate from "@/components/taskCardContainer/taskCardContainer.html?raw";
-import cardContainerSkeletonTemplate from "@/components/taskCardContainer/taskCardContainerSkeleton.html?raw";
+import cardContainerTemplate from "@/components/cards/taskCardContainer/taskCardContainer.html?raw";
+import cardContainerSkeletonTemplate from "@/components/cards/taskCardContainer/taskCardContainerSkeleton.html?raw";
 import loadAndRenderIcon from "@/utils/loadAndRenderIcon.js";
-import taskCard from "@/components/taskCard/taskCard.js";
+import taskCard from "@/components/cards/taskCard/taskCard.js";
 
 const createTemplate = (html) => {
   const template = document.createElement("template");
@@ -12,9 +12,6 @@ const createTemplate = (html) => {
 
 export default function taskCardContainer(props) {
   const clone = createTemplate(cardContainerTemplate);
-
-  console.log("taskCardContainer props:", props);
-
   clone.querySelector("#frequency").textContent = props?.frequency || "Title";
   loadAndRenderIcon(
     props?.frequencyIcon || "CircleX",

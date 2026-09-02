@@ -1,7 +1,7 @@
 import remindersTemplate from "@/pages/goalTracker/reminders.html?raw";
 import simpleCard, {
   simpleStatsCardSkeleton as reminderStatsCardSkeleton,
-} from "@/components/simpleStatsCard/simpleStatsCard.js";
+} from "@/components/cards/simpleStatsCard/simpleStatsCard.js";
 import reminderCard, {
   reminderCardSkeleton,
 } from "@/components/cards/reminderCard/reminderCard.js";

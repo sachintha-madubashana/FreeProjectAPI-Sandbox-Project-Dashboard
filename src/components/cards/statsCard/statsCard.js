@@ -1,5 +1,5 @@
-import statsCardTemplate from "@/components/statsCard/statsCard.html?raw";
-import statsCardSkeletonTemplate from "@/components/statsCard/statsCardSkeleton.html?raw";
+import statsCardTemplate from "@/components/cards/statsCard/statsCard.html?raw";
+import statsCardSkeletonTemplate from "@/components/cards/statsCard/statsCardSkeleton.html?raw";
 import loadAndRenderIcon from "@/utils/loadAndRenderIcon.js";
 
 const createTemplate = (html) => {
