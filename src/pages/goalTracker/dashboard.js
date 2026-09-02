@@ -11,50 +11,18 @@ export default function goalTrackerDashboard() {
   window.Chart = Chart;
   const template = document.createElement("template");
   template.innerHTML = dashboard;
-  const clone = document.importNode(template.content, true);
-  const canvasTarget = clone.querySelector("#chart");
-  const loggedUser = JSON.parse(localStorage.getItem("goalTrackerUser"));
 
-  for (let i = 0; i < 4; i++) {
-    renderStatsCards(clone, null); // Render skeleton cards
+  const root = document.importNode(template.content, true);
+
+  const canvasTarget = root.querySelector("#chart");
+  const loggedUser = getLoggedUser();
+
+  const statsContainer = root.querySelector("#dashboardStatsCardsContainer");
+  renderStatsSkeleton(statsContainer);
+
+  if (loggedUser?.userId) {
+    loadDashboardStats(statsContainer, loggedUser.userId);
   }
-
-  getDashboardStats(loggedUser.userId).then((stats) => {
-    if (!stats) return;
-
-    console.log("Fetched dashboard stats:", stats);
-
-    const dashboardStatsObjArray = [
-      {
-        title: "Total Goals",
-        value: stats.totalTasks,
-        secondValue: "Completed Tasks : " + stats.completedTasks,
-        icon: "List",
-      },
-      {
-        title: "Active Goals",
-        value: stats.activeGoals,
-        secondValue: "InProgress Goals : " + stats.inProgressGoals,
-        icon: "Goal",
-      },
-      {
-        title: "Total Reminders",
-        value: stats.totalReminders,
-        secondValue: "Upcoming Reminders : " + stats.upcomingReminders,
-        icon: "Bell",
-      },
-      {
-        title: "Completion Rate",
-        value: stats.completionRate,
-        icon: "CircleCheck",
-      },
-    ];
-    clearStatsCardsContainer(document);
-    dashboardStatsObjArray.forEach((stat) => {
-      console.log("Rendering stat card:", stat);
-      renderStatsCards(document, stat);
-    });
-  });
 
   const recentActivity = [
     {
@@ -148,11 +116,7 @@ export default function goalTrackerDashboard() {
     { date: "Aug 22", complete: 214, new: 140 },
   ];
 
-  recentActivity.forEach((activity) => {
-    clone.querySelector("#recentActivityContainer").innerHTML = recentActivity
-      .map((activity) => recentActivityLoader(activity))
-      .join("");
-  });
+  renderRecentActivity(root, recentActivity);
 
   requestAnimationFrame(() => {
     if (!canvasTarget) return;
@@ -171,44 +135,47 @@ export default function goalTrackerDashboard() {
     });
   });
 
-  return clone;
+  return root;
 }
-const clearStatsCardsContainer = (domContext) => {
-  const statsCardsContainer = domContext.querySelector(
-    "#dashboardStatsCardsContainer",
-  );
-  if (!statsCardsContainer) return;
-  statsCardsContainer.innerHTML = "";
-};
 
-const renderStatsCards = (domContext, stats) => {
-  const statsCardsContainer = domContext.querySelector(
-    "#dashboardStatsCardsContainer",
-  );
-  if (!statsCardsContainer) return;
+const renderStatsSkeleton = (dashboardElement) => {
+  if (!dashboardElement) return;
 
-  if (stats) {
-    console.log("Rendering cards ");
-    statsCardsContainer.appendChild(statsCards(stats));
-  } else {
-    console.log("Rendering scalatons ");
-    statsCardsContainer.appendChild(statsCardSkeleton());
+  for (let i = 0; i < 4; i++) {
+    dashboardElement.appendChild(statsCardSkeleton());
   }
 };
 
-const recentActivityLoader = (activity) => {
-  const cleanTime = new Date(activity.timestamp).toLocaleString("en-US", {
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+const getLoggedUser = () => {
+  return JSON.parse(localStorage.getItem("goalTrackerUser"));
+};
 
-  return `<div class="alert">
-            <h2>${activity.type}</h2>
-            <p class="text-gray-400">${activity.message}</p>
-            <span class="text-gray-400 text-end">${cleanTime}</span>
-          </div>`;
+const loadDashboardStats = async (dashboardElement, userId) => {
+  try {
+    const stats = await getDashboardStats(userId);
+
+    if (!stats) {
+      // renderDashboardError(dashboardElement);
+      return;
+    }
+
+    renderDashboardStats(dashboardElement, stats);
+  } catch (error) {
+    console.error("Failed to load dashboard stats:", error);
+    // renderDashboardError(dashboardElement);
+  }
+};
+
+const renderDashboardStats = (dashboardElement, stats) => {
+  if (!dashboardElement) return;
+
+  dashboardElement.innerHTML = "";
+
+  const dashboardStats = createDashboardStats(stats);
+
+  dashboardStats.forEach((stat) => {
+    dashboardElement.appendChild(statsCards(stat));
+  });
 };
 
 const getDashboardStats = async (userId) => {
@@ -224,4 +191,57 @@ const getDashboardStats = async (userId) => {
   } catch (error) {
     console.error("Error fetching dashboard stats:", error);
   }
+};
+
+const createDashboardStats = (stats) => [
+  {
+    title: "Total Goals",
+    value: stats.totalTasks,
+    secondValue: `Completed Tasks: ${stats.completedTasks}`,
+    icon: "List",
+  },
+  {
+    title: "Active Goals",
+    value: stats.activeGoals,
+    secondValue: `InProgress Goals: ${stats.inProgressGoals}`,
+    icon: "Goal",
+  },
+  {
+    title: "Total Reminders",
+    value: stats.totalReminders,
+    secondValue: `Upcoming Reminders: ${stats.upcomingReminders}`,
+    icon: "Bell",
+  },
+  {
+    title: "Completion Rate",
+    value: stats.completionRate,
+    icon: "CircleCheck",
+  },
+];
+
+const recentActivityLoader = (activity) => {
+  const cleanTime = formatActivityTime(activity.timestamp);
+
+  return `<div class="alert">
+            <h2>${activity.type}</h2>
+            <p class="text-gray-400">${activity.message}</p>
+            <span class="text-gray-400 text-end">${cleanTime}</span>
+          </div>`;
+};
+
+const renderRecentActivity = (domContext, activities) => {
+  const container = domContext.querySelector("#recentActivityContainer");
+
+  if (!container) return;
+
+  container.innerHTML = activities.map(recentActivityLoader).join("");
+};
+
+const formatActivityTime = (timestamp) => {
+  return new Date(timestamp).toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 };
