@@ -1,6 +1,7 @@
 import goalCardTemplate from "@/components/cards/goalCard/goalCard.html?raw";
 import goalCardSkeletonTemplate from "@/components/cards/goalCard/goalCardSkeleton.html?raw";
 import { generateDialogAndShow } from "@/pages/goalTracker/goalTracker.js";
+import goalMoreInfo from "@/components/dialogs/goalMoreInfo/goalMoreInfo.js";
 
 const createTemplate = (html) => {
   const template = document.createElement("template");

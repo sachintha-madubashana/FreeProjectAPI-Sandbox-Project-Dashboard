@@ -1,8 +1,19 @@
 import goalsTemplate from "@/pages/goalTracker/goals.html?raw";
-import simpleCards from "@/components/simpleStatsCard/simpleStatsCard.js";
-import goalCard from "@/components/cards/goalCard/goalCard.js";
+import simpleCard, {
+  simpleStatsCardSkeleton as goalsStatsCardSkeleton,
+} from "@/components/simpleStatsCard/simpleStatsCard.js";
+import goalCard, {
+  goalsCardSkeleton,
+} from "@/components/cards/goalCard/goalCard.js";
 import goalMoreInfo from "@/components/dialogs/goalMoreInfo/goalMoreInfo.js";
 import addAndEditGoal from "@/components/dialogs/addAndEditGoal/addAndEditGoal";
+import empty from "@/components/empty/empty.js";
+import {
+  getLoggedUser,
+  generateDialogAndShow,
+} from "@/pages/goalTracker/goalTracker.js";
+import requestHandler from "@/utils/requestHandler.js";
+import { showToast } from "@/utils/toastSystem.js";
 
 const GoalStatus = Object.freeze({
   ALL: "all",
@@ -16,75 +27,91 @@ export default function goals() {
   template.innerHTML = goalsTemplate;
   const clone = document.importNode(template.content, true);
 
-  const goals = [
-    {
-      goalId: 273,
-      goalName: "Goal 1 abc",
-      description: "Description for Goal 1",
-      startDate: "2026-08-27T02:07:31.82",
-      endDate: "2026-09-18T00:00:00",
-      userId: 9583,
-    },
-    {
-      goalId: 274,
-      goalName: "Goal 2 abc",
-      description: "Description for Goal 2",
-      startDate: "2026-08-27T02:08:48.223",
-      endDate: "2026-09-01T00:00:00",
-      userId: 9583,
-    },
-    {
-      goalId: 275,
-      goalName: "Goal 3 abc",
-      description: "Description for Goal 3",
-      startDate: "2026-08-20T02:09:01.223",
-      endDate: "2026-08-27T11:09:01.223",
-      userId: 9583,
-    },
-    {
-      goalId: 276,
-      goalName: "Goal 4",
-      description: "Description for Goal 4",
-      startDate: "2026-08-20T02:09:01.223",
-      endDate: "2026-08-27T11:09:01.223",
-      userId: 9583,
-    },
-  ];
-  addMileStonesToGoal(goals);
-  addStatusToGoal(goals);
+  const goals = [];
+  const loggedUser = getLoggedUser();
 
-  const goalsStatus = goalStatsGenerator(goals);
+  const page = clone.querySelector("#goalsPage");
+  renderGoalSkeletons(page);
 
-  goalsStatus.forEach((stats) => {
-    clone
-      .querySelector("#goalsStatsCardsContainer")
-      .appendChild(simpleCards(stats));
+  loadGoals(loggedUser.userId)
+    .then((data) => {
+      if (!data) {
+        return;
+      }
+
+      goals.push(...data);
+
+      addMilestonesToGoals(goals).then(() => {
+        updateGoalsStats(page, goals);
+        renderGoals(page, goals, selectedStatus);
+      });
+    })
+    .catch((error) => {
+      console.error("Failed to load goals:", error);
+      // TODO: Add Error UI
+      showToast({
+        category: "error",
+        title: "Failed to load goals",
+        description:
+          "An error occurred while loading goals. Please try again later.",
+      });
+    });
+
+  setUpEventListeners(page, goals);
+  return clone;
+}
+
+//Set up functions
+const renderGoalSkeletons = (page) => {
+  const container = page.querySelector("#goalsStatsCardsContainer");
+  const goalCardsContainer = page.querySelector("#goalCardsContainer");
+
+  if (!container) return;
+  container.replaceChildren();
+
+  for (let i = 0; i < 4; i++) {
+    container.appendChild(goalsStatsCardSkeleton());
+  }
+
+  if (!goalCardsContainer) return;
+  goalCardsContainer.replaceChildren();
+  for (let i = 0; i < 6; i++) {
+    goalCardsContainer.appendChild(goalsCardSkeleton());
+  }
+};
+const setUpEventListeners = (page, goals) => {
+  page.querySelector("#searchGoalBtn").addEventListener("click", () => {
+    const searchInput = page.querySelector("#searchGoalInput").value.trim();
+    searchGoals(page, goals, searchInput, selectedStatus);
   });
 
-  renderGoals(clone, goals, selectedStatus);
-
-  clone.querySelector("#searchGoalBtn").addEventListener("click", () => {
-    const searchInput = document.querySelector("#searchGoalInput").value.trim();
-    goalSearch(goals, searchInput, selectedStatus);
+  page.querySelector("#searchGoalInput").addEventListener("keyup", (e) => {
+    if (e.key === "Enter") {
+      const searchInput = e.target.value.trim();
+      searchGoals(page, goals, searchInput, selectedStatus);
+    }
+    if (e.key === "Backspace" && e.target.value.trim() === "") {
+      renderGoals(page, goals, selectedStatus);
+    }
   });
 
-  clone.querySelector("#filterAllBtn").addEventListener("click", (e) => {
+  page.querySelector("#filterAllBtn").addEventListener("click", (e) => {
     selectedStatus = GoalStatus.ALL;
-    filterBtnClickHandler(goals, selectedStatus, e.currentTarget);
+    filterBtnClickHandler(page, goals, selectedStatus, e.currentTarget);
   });
-  clone.querySelector("#filterCompletedBtn").addEventListener("click", (e) => {
+  page.querySelector("#filterCompletedBtn").addEventListener("click", (e) => {
     selectedStatus = GoalStatus.COMPLETED;
-    filterBtnClickHandler(goals, selectedStatus, e.currentTarget);
+    filterBtnClickHandler(page, goals, selectedStatus, e.currentTarget);
   });
-  clone.querySelector("#filterPendingBtn").addEventListener("click", (e) => {
+  page.querySelector("#filterPendingBtn").addEventListener("click", (e) => {
     selectedStatus = GoalStatus.PENDING;
-    filterBtnClickHandler(goals, selectedStatus, e.currentTarget);
+    filterBtnClickHandler(page, goals, selectedStatus, e.currentTarget);
   });
-  clone.querySelector("#filterOverdueBtn").addEventListener("click", (e) => {
+  page.querySelector("#filterOverdueBtn").addEventListener("click", (e) => {
     selectedStatus = GoalStatus.OVERDUE;
-    filterBtnClickHandler(goals, selectedStatus, e.currentTarget);
+    filterBtnClickHandler(page, goals, selectedStatus, e.currentTarget);
   });
-  clone.querySelector("#addGoalBtn").addEventListener("click", () => {
+  page.querySelector("#addGoalBtn").addEventListener("click", () => {
     const data = {
       dialogId: "addGoalDialog",
       confermButtonText: "Save Goal",
@@ -96,41 +123,28 @@ export default function goals() {
       title: "Add Goal",
       description: "You can add a new Goal here. Click save when you're done.",
     };
-    document.getElementById("pageContent").appendChild(addAndEditGoal(data));
-    document.getElementById("addGoalDialog").showModal();
-  });
-
-  return clone;
-}
-
-const addGoalToArray = (goals, goal) => {
-  goals.push(goal);
-  renderGoals(document, goals, selectedStatus);
-};
-
-const renderGoals = (clone, goals, selectedStatus) => {
-  const goalCardsContainer = clone.querySelector("#goalCardsContainer");
-  goalCardsContainer.replaceChildren();
-  filterGoalsByStatus(goals, selectedStatus).forEach((goal) => {
-    goalCardsContainer.appendChild(goalCard(goal));
+    generateDialogAndShow(addAndEditGoal, data);
   });
 };
+const addStatusToAGoal = (goal) => {
+  if (goal.milestones.length > 0) {
+    const allCompleted = goal.milestones.every(
+      (milestone) => milestone.isCompleted,
+    );
 
-const filterGoalsByStatus = (goals, status) => {
-  if (status === GoalStatus.ALL) {
-    return goals;
+    if (allCompleted) {
+      goal.status = GoalStatus.COMPLETED;
+      return;
+    }
   }
-  if (status === GoalStatus.COMPLETED) {
-    return goals.filter((goal) => goal.status === GoalStatus.COMPLETED);
+
+  if (new Date(goal.endDate) < new Date()) {
+    goal.status = GoalStatus.OVERDUE;
+    return;
   }
-  if (status === GoalStatus.PENDING) {
-    return goals.filter((goal) => goal.status === GoalStatus.PENDING);
-  }
-  if (status === GoalStatus.OVERDUE) {
-    return goals.filter((goal) => goal.status === GoalStatus.OVERDUE);
-  }
+
+  goal.status = GoalStatus.PENDING;
 };
-
 const goalStatsGenerator = (goals) => {
   const totalGoals = goals.length;
   const completedGoals = goals.filter(
@@ -167,99 +181,104 @@ const goalStatsGenerator = (goals) => {
   ];
 };
 
-const addMileStonesToGoal = (goals) => {
-  const milestones = [
-    [
-      {
-        milestoneId: 454,
-        milestoneName: "m1",
-        description: "asd",
-        targetDate: "2026-08-18T00:00:00",
-        isCompleted: false,
-      },
-      {
-        milestoneId: 455,
-        milestoneName: "m2",
-        description: "asdasd",
-        targetDate: "2026-08-18T00:00:00",
-        isCompleted: false,
-      },
-    ],
-    [
-      {
-        milestoneId: 450,
-        milestoneName: "m1",
-        description: "sdfg",
-        targetDate: "2026-08-27T00:00:00",
-        isCompleted: false,
-      },
-      {
-        milestoneId: 451,
-        milestoneName: "m2",
-        description: "sfdgsd",
-        targetDate: "2026-08-28T00:00:00",
-        isCompleted: false,
-      },
-    ],
-    [
-      {
-        milestoneId: 456,
-        milestoneName: "m1",
-        description: "asd",
-        targetDate: "2026-08-18T00:00:00",
-        isCompleted: true,
-      },
-      {
-        milestoneId: 457,
-        milestoneName: "m2",
-        description: "asdasd",
-        targetDate: "2026-08-18T00:00:00",
-        isCompleted: true,
-      },
-    ],
-  ];
+// Data fetching functions
+const loadGoals = async (userId) => {
+  try {
+    const response = await requestHandler(
+      "https://api.freeprojectapi.com/api/GoalTracker/getAllGoalsByUser",
+      "GET",
+      { userId: userId },
+    );
 
-  goals.forEach((goal, index) => {
-    const goalMilestones = milestones[index] || [];
-
-    goal.milestones = goalMilestones;
-    // goal.isCompleted = goalMilestones.every(
-    //   (milestone) => milestone.isCompleted,
-    // );
-  });
+    return response;
+  } catch (error) {
+    console.error("Error fetching dashboard stats:", error);
+  }
 };
+const addMilestonesToGoals = async (goals) => {
+  await Promise.all(
+    goals.map(async (goal) => {
+      const data = await loadMilestone(goal.goalId);
 
-const addStatusToGoal = (goals) => {
-  goals.forEach((goal) => {
-    if (goal.milestones.length === 0) {
-      goal.status = GoalStatus.PENDING;
-      return;
-    }
-    if (goal.milestones.every((milestone) => milestone.isCompleted)) {
-      goal.status = GoalStatus.COMPLETED;
-      return;
-    }
-    if (goal.milestones.some((milestone) => !milestone.isCompleted)) {
-      goal.status = GoalStatus.PENDING;
-      return;
-    }
-
-    if (new Date(goal.endDate) < new Date()) {
-      goal.status = GoalStatus.OVERDUE;
-    }
-  });
-};
-
-const filterBtnClickHandler = (goals, selectedStatus, clickedButton) => {
-  renderGoals(document, goals, selectedStatus);
-  document.querySelector("#searchGoalInput").value = "";
-  filterBtnStateHandler(clickedButton);
-};
-
-const filterBtnStateHandler = (clickedButton) => {
-  const filterButtons = document.querySelectorAll(
-    "#goalStatusFilterGroup button",
+      goal.milestones = data?.milestones || [];
+      addStatusToAGoal(goal);
+    }),
   );
+};
+const loadMilestone = async (goalId) => {
+  try {
+    const response = await requestHandler(
+      "https://api.freeprojectapi.com/api/GoalTracker/getGoal/" + goalId,
+      "GET",
+    );
+
+    return response;
+  } catch (error) {
+    console.error("Error fetching dashboard stats:", error);
+  }
+};
+
+// Stats Rendering functions
+const updateGoalsStats = (root, goals) => {
+  const goalsStatus = goalStatsGenerator(goals);
+  const goalStatsCardsContainer = root.querySelector(
+    "#goalsStatsCardsContainer",
+  );
+  goalStatsCardsContainer.replaceChildren();
+  goalsStatus.forEach((stats) => {
+    goalStatsCardsContainer.appendChild(simpleCard(stats));
+  });
+};
+const renderGoals = (root, goals, selectedStatus) => {
+  const goalCardsContainer = root.querySelector("#goalCardsContainer");
+  goalCardsContainer.replaceChildren();
+
+  const filteredGoals = filterGoalsByStatus(goals, selectedStatus);
+  if (filteredGoals.length === 0) {
+    const emptyData = {
+      title: "No Goals Found",
+      description: "You have no goals to display.",
+      icon: "Goal",
+    };
+    showEmptyUI(goalCardsContainer, emptyData);
+    return;
+  }
+
+  filteredGoals.forEach((goal) => {
+    goalCardsContainer.appendChild(goalCard(goal));
+  });
+};
+
+// Filtering and Searching functions
+const filterGoalsByStatus = (goals, status) => {
+  if (status === GoalStatus.ALL) {
+    return goals;
+  }
+  if (status === GoalStatus.COMPLETED) {
+    return goals.filter((goal) => goal.status === GoalStatus.COMPLETED);
+  }
+  if (status === GoalStatus.PENDING) {
+    return goals.filter((goal) => goal.status === GoalStatus.PENDING);
+  }
+  if (status === GoalStatus.OVERDUE) {
+    return goals.filter((goal) => goal.status === GoalStatus.OVERDUE);
+  }
+};
+const filterBtnClickHandler = (page, goals, selectedStatus, clickedButton) => {
+  filterBtnStateHandler(page, clickedButton);
+  if (page.querySelector("#searchGoalInput").value.trim() !== "") {
+    searchGoals(
+      page,
+      goals,
+      page.querySelector("#searchGoalInput").value,
+      selectedStatus,
+    );
+    return;
+  }
+  renderGoals(page, goals, selectedStatus);
+};
+const filterBtnStateHandler = (page, clickedButton) => {
+  const filterButtons = page.querySelectorAll("#goalStatusFilterGroup button");
 
   filterButtons.forEach((button) => {
     if (button === clickedButton) {
@@ -269,33 +288,27 @@ const filterBtnStateHandler = (clickedButton) => {
     }
   });
 };
-
-const goalSearch = (goals, searchInput, selectedStatus) => {
+const searchGoals = (page, goals, searchInput, selectedStatus) => {
   if (searchInput) {
-    console.log("Searching ...");
-    const filteredGoals = goals.filter((goal) => {
-      const matchesStatus =
-        selectedStatus === GoalStatus.ALL || goal.status === selectedStatus;
-      const matchesSearch = goal.goalName
-        .toLowerCase()
-        .includes(searchInput.toLowerCase());
+    const searchedGoals = goals.filter((goal) =>
+      goal.goalName.toLowerCase().includes(searchInput.toLowerCase()),
+    );
 
-      return matchesStatus && matchesSearch;
-    });
-    const goalCardsContainer = document.querySelector("#goalCardsContainer");
-    goalCardsContainer.replaceChildren();
-    filteredGoals.forEach((goal) => {
-      goalCardsContainer.appendChild(goalCard(goal));
-    });
-    console.log("selectedStatus:", selectedStatus);
-    console.log("filteredGoals:", filteredGoals);
+    renderGoals(page, searchedGoals, selectedStatus);
   } else {
-    //add a message to the user that the search input is empty
-    console.log("Search input is empty.");
+    showToast({
+      category: "info",
+      title: "Search Input Empty",
+      description: "Please enter a search term to find goals.",
+    });
   }
 };
 
-export function showMoreInfoDialog(prams) {
-  document.getElementById("pageContent").appendChild(goalMoreInfo(prams));
-  document.getElementById(prams.dialogId).showModal();
-}
+// UI functions
+const showEmptyUI = (container, emptyData) => {
+  const emptyTemplate = empty(emptyData);
+  emptyTemplate
+    .querySelector(".empty")
+    .classList.add("col-span-1", "md:col-span-2", "lg:col-span-3");
+  container.appendChild(emptyTemplate);
+};
