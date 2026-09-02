@@ -156,7 +156,6 @@ const setupEventListeners = (page, reminders) => {
     });
 
   page.addEventListener("reminder", (event) => {
-    console.log("Received reminder:update event:", event.detail);
     if (event.detail.action === "update") {
       updateReminders(page, reminders, event.detail.item);
       return;

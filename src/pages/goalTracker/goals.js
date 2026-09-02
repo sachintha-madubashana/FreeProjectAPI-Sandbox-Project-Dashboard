@@ -119,16 +119,41 @@ const setUpEventListeners = (page, goals) => {
       placeholder: "goal",
       onConfirm: (goal) => {
         addStatusToAGoal(goal);
-        console.log("New Goal Added:", goal);
-        goals.push(goal);
-        renderGoals(page, goals, selectedStatus);
-        updateGoalsStats(page, goals);
-        // TODO: add to the api and get the goal id
+        addGoalToAPI(goal)
+          .then((response) => {
+            if (response) {
+              goal.goalId = response?.goalId;
+            }
+
+            goals.push(goal);
+            renderGoals(page, goals, selectedStatus);
+            updateGoalsStats(page, goals);
+          })
+          .catch((error) => {
+            console.error("Failed to add goal:", error);
+            showToast({
+              category: "error",
+              title: "Failed to add goal",
+              description:
+                "An error occurred while adding the goal. Please try again later.",
+            });
+          });
       },
       title: "Add Goal",
       description: "You can add a new Goal here. Click save when you're done.",
     };
     generateDialogAndShow(addAndEditGoal, data);
+  });
+
+  page.addEventListener("goal", (event) => {
+    if (event.detail.action === "update") {
+      updateGoal(page, goals, event.detail.item);
+      return;
+    }
+    if (event.detail.action === "delete") {
+      deleteGoal(page, goals, event.detail.item);
+      return;
+    }
   });
 };
 const addStatusToAGoal = (goal) => {
@@ -316,4 +341,38 @@ const showEmptyUI = (container, emptyData) => {
     .querySelector(".empty")
     .classList.add("col-span-1", "md:col-span-2", "lg:col-span-3");
   container.appendChild(emptyTemplate);
+};
+
+// API Interaction functions
+const addGoalToAPI = async (goal) => {
+  try {
+    const response = await requestHandler(
+      "https://api.freeprojectapi.com/api/GoalTracker/createGoalWithMilestones",
+      "POST",
+      {
+        goalName: goal.goalName,
+        description: goal.description,
+        startDate: goal.startDate,
+        endDate: goal.endDate,
+        milestones: goal.milestones,
+        userId: getLoggedUser().userId,
+      },
+    );
+    showToast({
+      category: "success",
+      title: "Goal Added",
+      description: "The Goal has been successfully added.",
+    });
+
+    return response;
+  } catch (error) {
+    console.error("Error fetching dashboard stats:", error);
+  }
+};
+// Card Action functions
+const updateGoal = (page, goals, goaleItem) => {
+  console.log("Goal Updated:", goaleItem);
+};
+const deleteGoal = (page, goals, goaleItem) => {
+  console.log("Goal Updated:", goaleItem);
 };

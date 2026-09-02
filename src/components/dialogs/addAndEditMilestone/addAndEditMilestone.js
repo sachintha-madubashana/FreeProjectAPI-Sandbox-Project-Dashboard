@@ -5,6 +5,8 @@ export default function addAndEditMilestone(props) {
   template.innerHTML = addAndEditMilestoneTemplate;
   const clone = document.importNode(template.content, true);
 
+  console.log("addAndEditMilestone props:", props);
+
   const dialog = clone.querySelector("dialog");
   dialog.id = props?.dialogId || "dialogId";
   clone.querySelector("#addAndEditMilestoneTitle").textContent =
@@ -18,22 +20,22 @@ export default function addAndEditMilestone(props) {
   const milestoneErrorSection = clone.querySelector("#milestoneErrorSection");
 
   clone.querySelector("#saveBtn").addEventListener("click", () => {
-    const title = titleImput.value;
-    const date = dateInput.value;
+    const milestoneName = titleImput.value;
+    const targetDate = dateInput.value;
     const description = descriptionInput.value;
 
     const milestoneItem = {
-      title: title,
-      date: date,
+      milestoneName: milestoneName,
+      targetDate: targetDate,
       description: description,
     };
 
     if (props?.onConfirm) {
-      if (!title || !date) {
+      if (!milestoneName || !targetDate) {
         setError(milestoneErrorSection, "Title and Date are required fields.");
         return;
       }
-      if (new Date(date) < new Date()) {
+      if (new Date(targetDate) < new Date()) {
         setError(
           milestoneErrorSection,
           "Please select a future date and time.",

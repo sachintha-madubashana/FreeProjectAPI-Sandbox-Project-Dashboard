@@ -106,6 +106,10 @@ export default function addAndEditGoal(props) {
 }
 
 const refreshMilestoneContainer = (milestoneContainer, milestoneArray) => {
+  console.log(
+    "Refreshing milestone container with array:",
+    milestoneArray.length,
+  );
   if (milestoneArray.length === 0) {
     const emptyTemplate = empty({
       title: "No Milestones Yet",
@@ -126,8 +130,9 @@ const addMilestoneCard = (
   milestoneItem,
 ) => {
   const clone = milestoneCard.cloneNode(true);
-  clone.querySelector("h2").textContent = milestoneItem.title;
+  clone.querySelector("h2").textContent = milestoneItem.milestoneName;
   clone.querySelector("p").textContent = milestoneItem.description;
+  clone.querySelector("span").textContent = milestoneItem.targetDate;
 
   clone.querySelector("#deleteMilestoneBtn").addEventListener("click", () => {
     const index = milestoneArray.findIndex(

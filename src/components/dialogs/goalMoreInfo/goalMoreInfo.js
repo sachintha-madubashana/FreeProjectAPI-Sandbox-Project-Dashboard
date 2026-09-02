@@ -2,10 +2,44 @@ import goalMoreInfoCardTemplate from "@/components/dialogs/goalMoreInfo/goalMore
 import simpleStatsCards from "@/components/simpleStatsCard/simpleStatsCard.js";
 import emptyComponent from "@/components/empty/empty.js";
 
+const checkIcon = `<svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-circle-check-icon lucide-circle-check"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <path d="m9 12 2 2 4-4" />
+      </svg>`;
+const nonCheckIcon = `<svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-circle-x-icon lucide-circle-x"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <path d="m15 9-6 6" />
+        <path d="m9 9 6 6" />
+      </svg>`;
+
 export default function goalMoreInfoCard(props) {
   const template = document.createElement("template");
   template.innerHTML = goalMoreInfoCardTemplate;
   const clone = document.importNode(template.content, true);
+
+  const page = clone.querySelector("dialog");
 
   const dialog = clone.querySelector("dialog");
   dialog.id = props?.dialogId || "dialogId";
@@ -26,8 +60,7 @@ export default function goalMoreInfoCard(props) {
   milestoneContainer.replaceChildren();
   if (props?.goalData?.milestones.length > 0) {
     props?.goalData?.milestones?.forEach((milestone) => {
-      const cardClone = milestoneCard.cloneNode(true);
-      milestoneContainer.appendChild(cardClone);
+      milestoneCardLoader(page, milestoneContainer, milestoneCard, milestone);
     });
 
     return clone;
@@ -47,8 +80,26 @@ export default function goalMoreInfoCard(props) {
   };
   milestoneContainer.appendChild(emptyComponent(emptyProps));
 
+  setupEventListeners(page, props);
+
   return clone;
 }
+
+const setupEventListeners = (page, props) => {
+  page.querySelector("#editGoalBtn").addEventListener("click", (e) => {
+    console.log("Edit Goal button clicked");
+  });
+
+  page.querySelector("#deleteGoalBtn").addEventListener("click", (e) => {
+    e.stopPropagation();
+    page.dispatchEvent(
+      new CustomEvent("goal", {
+        detail: { item: props, action: "delete" },
+        bubbles: true,
+      }),
+    );
+  });
+};
 
 const goalStatus = (goalData) => {
   let status = [];
@@ -94,4 +145,76 @@ const goalStatus = (goalData) => {
   }
 
   return status;
+};
+
+const milestoneCardLoader = (
+  page,
+  milestoneContainer,
+  milestoneCard,
+  milestone,
+) => {
+  const cardClone = milestoneCard.cloneNode(true);
+  cardClone.querySelector("h2").textContent =
+    milestone?.milestoneName || "unknown milestone";
+  cardClone.querySelector("p").textContent =
+    milestone?.description || "undefined description";
+  const markAsCompleteBtn = cardClone.querySelector("#markAsComplete");
+  if (markAsCompleteBtn) {
+    const isCompleted = milestone?.isCompleted;
+    markAsCompleteBtn.innerHTML = isCompleted ? nonCheckIcon : checkIcon;
+    if (isCompleted) {
+      markAsCompleteBtn.setAttribute("data-tooltip", "Mark as Uncomplete");
+      markAsCompleteBtn.classList.add(
+        "btn",
+        "bg-amber-100",
+        "dark:bg-amber-950",
+        "text-amber-950",
+        "dark:text-amber-400",
+        "hover:bg-amber-200",
+        "dark:hover:bg-amber-900",
+      );
+      markAsCompleteBtn.classList.remove(
+        "bg-green-100",
+        "dark:bg-green-950",
+        "text-green-950",
+        "dark:text-green-400",
+        "hover:bg-green-200",
+        "dark:hover:bg-green-900",
+      );
+    } else {
+      markAsCompleteBtn.classList.add(
+        "btn",
+        "bg-green-100",
+        "dark:bg-green-950",
+        "text-green-950",
+        "dark:text-green-400",
+        "hover:bg-green-200",
+        "dark:hover:bg-green-900",
+      );
+      markAsCompleteBtn.classList.remove(
+        "bg-amber-100",
+        "dark:bg-amber-950",
+        "text-amber-950",
+        "dark:text-amber-400",
+        "hover:bg-amber-200",
+        "dark:hover:bg-amber-900",
+      );
+    }
+  }
+
+  cardClone.querySelector("#markAsComplete").addEventListener("click", (e) => {
+    e.stopPropagation();
+    const isCompleted = !milestone?.isCompleted;
+
+    milestone.isCompleted = !isCompleted;
+
+    page.dispatchEvent(
+      new CustomEvent("goal", {
+        detail: { action: "markAsComplete" },
+        bubbles: true,
+      }),
+    );
+  });
+
+  milestoneContainer.appendChild(cardClone);
 };
