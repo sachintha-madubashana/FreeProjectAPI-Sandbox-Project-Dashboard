@@ -17,6 +17,7 @@ const TaskStatus = Object.freeze({
   COMPLETED: "completed",
   OVERDUE: "overdue",
 });
+let selectedStatus = TaskStatus.ALL;
 export default function task() {
   const template = document.createElement("template");
   template.innerHTML = taskTemplate;
@@ -37,7 +38,7 @@ export default function task() {
       tasksSeperatedByFrequency.push(
         ...taskSeperatedByFrequencyGenerator(fetchedTasks),
       );
-      taskRenderer(page, tasksSeperatedByFrequency);
+      renderTasks(page, tasksSeperatedByFrequency);
     })
     .catch((error) => {
       console.error("Error loading tasks:", error);
@@ -108,6 +109,48 @@ const setupEventListeners = (page, tasksSeperatedByFrequency) => {
     document.getElementById("pageContent").appendChild(addAndEditTask(data));
     document.getElementById("addTaskDialog").showModal();
   });
+  page.querySelector("#filterAllTasksBtn").addEventListener("click", (e) => {
+    selectedStatus = TaskStatus.ALL;
+    filterBtnClickHandler(
+      page,
+      tasksSeperatedByFrequency,
+      selectedStatus,
+      e.currentTarget,
+    );
+  });
+  page
+    .querySelector("#filterPendingTasksBtn")
+    .addEventListener("click", (e) => {
+      selectedStatus = TaskStatus.PENDING;
+      filterBtnClickHandler(
+        page,
+        tasksSeperatedByFrequency,
+        selectedStatus,
+        e.currentTarget,
+      );
+    });
+  page
+    .querySelector("#filterCompletedTasksBtn")
+    .addEventListener("click", (e) => {
+      selectedStatus = TaskStatus.COMPLETED;
+      filterBtnClickHandler(
+        page,
+        tasksSeperatedByFrequency,
+        selectedStatus,
+        e.currentTarget,
+      );
+    });
+  page
+    .querySelector("#filterOverdueOverdueBtn")
+    .addEventListener("click", (e) => {
+      selectedStatus = TaskStatus.OVERDUE;
+      filterBtnClickHandler(
+        page,
+        tasksSeperatedByFrequency,
+        selectedStatus,
+        e.currentTarget,
+      );
+    });
 };
 const addStatusToTasks = (tasks) => {
   tasks.forEach((task) => {
@@ -220,11 +263,66 @@ const updateTasksStats = (root, tasks) => {
     taskStatsCardsContainer.appendChild(statsCards(stats));
   });
 };
-const taskRenderer = (root, tasksSeperatedByFrequency) => {
+const renderTasks = (root, tasksSeperatedByFrequency) => {
   const taskCardsContainer = root.querySelector("#taskCardsContainer");
   taskCardsContainer.replaceChildren();
   tasksSeperatedByFrequency.forEach((taskSeperatedByFrequency) => {
     taskCardsContainer.appendChild(taskCardContainer(taskSeperatedByFrequency));
+  });
+};
+
+// Filtering and Searching functions
+const filterTasksByStatus = (tasks, status) => {
+  if (status === TaskStatus.ALL) {
+    return tasks;
+  }
+  if (status === TaskStatus.COMPLETED) {
+    return tasks.filter((tasks) => tasks.status === TaskStatus.COMPLETED);
+  }
+  if (status === TaskStatus.PENDING) {
+    return tasks.filter((task) => task.status === TaskStatus.PENDING);
+  }
+  if (status === TaskStatus.OVERDUE) {
+    return tasks.filter((task) => task.status === TaskStatus.OVERDUE);
+  }
+};
+const searchTasks = (page, tasks, searchInput, selectedStatus) => {
+  if (searchInput) {
+    const searchedTasks = tasks.filter((tasks) =>
+      tasks.title.toLowerCase().includes(searchInput.toLowerCase()),
+    );
+    renderTasks(page, searchedTasks, selectedStatus);
+  } else {
+    showToast({
+      category: "warning",
+      title: "Search input is empty",
+      description: "Search input is empty. Please enter a search term.",
+    });
+  }
+};
+const filterBtnClickHandler = (
+  page,
+  tasksSeperatedByFrequency,
+  selectedStatus,
+  clickedButton,
+) => {
+  filterBtnStateHandler(page, clickedButton);
+  const inputValue = page.querySelector("#tasksSearchInput").value.trim();
+  if (inputValue !== "") {
+    searchTasks(page, tasksSeperatedByFrequency, inputValue, selectedStatus);
+    return;
+  }
+  renderTasks(page, tasksSeperatedByFrequency, selectedStatus);
+};
+const filterBtnStateHandler = (page, clickedButton) => {
+  const filterButtons = page.querySelectorAll("#taskStatusFilterGroup button");
+
+  filterButtons.forEach((button) => {
+    if (button === clickedButton) {
+      button.setAttribute("data-variant", "primary");
+    } else {
+      button.setAttribute("data-variant", "outline");
+    }
   });
 };
 
