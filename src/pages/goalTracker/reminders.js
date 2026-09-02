@@ -97,10 +97,19 @@ const setupEventListeners = (page, reminders) => {
       saveBtnText: "Add Reminder",
       onAction: (reminderItem) => {
         addStatusToAReminder(reminderItem);
-        addReminderToAPI(reminderItem);
-        reminders.push(reminderItem);
-        renderReminders(page, reminders, selectedStatus);
-        updateRemindersStats(page, reminders);
+        addReminderToAPI(reminderItem)
+          .then((apiResponse) => {
+            if (apiResponse) {
+              reminderItem.reminderId = apiResponse.reminderId;
+            }
+            reminders.push(reminderItem);
+            renderReminders(page, reminders, selectedStatus);
+            updateRemindersStats(page, reminders);
+          })
+          .catch((error) => {
+            console.error("Failed to add reminder:", error);
+          });
+
         console.log("Reminder item saved:", reminderItem);
         // TODO: Call API to update reminder with reminderItem data
       },
@@ -361,17 +370,32 @@ const filterBtnStateHandler = (page, clickedButton) => {
 };
 
 // API Interaction functions
-const addReminderToAPI = (reminder) => {
-  reminder.userId = 9583; //TODO: Get the userId from the logged in user
-  //TODO: Call API to add reminder
-  console.log("Add reminder to API");
-
-  console.log("Get reminder from API");
-  reminder.reminderId = 233; //TODO: Get the reminderId from the API response
-};
-const updateReminderToAPI = async (reminder) => {
+const addReminderToAPI = async (reminder) => {
   try {
     const response = await requestHandler(
+      "https://api.freeprojectapi.com/api/GoalTracker/createReminder",
+      "POST",
+      {
+        title: reminder.title,
+        description: reminder.description,
+        reminderDateTime: reminder.reminderDateTime,
+        isAcknowledged: reminder.isAcknowledged,
+        userId: getLoggedUser().userId,
+      },
+    );
+    showToast({
+      category: "success",
+      title: "Reminder Added",
+      description: "The reminder has been successfully added.",
+    });
+    return response;
+  } catch (error) {
+    console.error("Error fetching dashboard stats:", error);
+  }
+};
+const updateReminderToAPI = async (reminder, toastMsgData) => {
+  try {
+    await requestHandler(
       "https://api.freeprojectapi.com/api/GoalTracker/updateReminder/" +
         reminder.reminderId,
       "PUT",
@@ -384,10 +408,21 @@ const updateReminderToAPI = async (reminder) => {
         userId: getLoggedUser().userId,
       },
     );
+    showToast(
+      toastMsgData || {
+        category: "success",
+        title: "Reminder Updated",
+        description: "The reminder has been successfully updated.",
+      },
+    );
   } catch (error) {
+    showToast({
+      category: "error",
+      title: "Update Failed",
+      description: "Failed to update the reminder. Please try again later.",
+    });
     console.error("Error fetching dashboard stats:", error);
   }
-  console.log("Update reminder to API");
 };
 const deleteReminderFromAPI = (reminderId) => {
   //TODO: Call API to delete reminder
@@ -458,9 +493,7 @@ const markAsComplete = (page, reminders, reminderItem) => {
     toastData.title = "Reminder Uncompleted";
     toastData.description = "The reminder has been marked as uncompleted.";
   }
-  updateReminderToAPI(reminderItem);
-
+  updateReminderToAPI(reminderItem, toastData);
   renderReminders(page, reminders, selectedStatus);
   updateRemindersStats(page, reminders);
-  showToast(toastData);
 };
