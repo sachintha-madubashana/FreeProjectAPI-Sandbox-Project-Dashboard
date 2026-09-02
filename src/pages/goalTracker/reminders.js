@@ -6,6 +6,8 @@ import confirmationDialog from "@/components/dialogs/confirmationDialog/confirma
 import reminderMoreInfo from "@/components/dialogs/reminderMoreInfo/reminderMoreInfo.js";
 import empty from "@/components/empty/empty.js";
 import { showToast } from "@/utils/toastSystem.js";
+import requestHandler from "@/utils/requestHandler.js";
+import { getLoggedUser } from "@/pages/goalTracker/goalTracker.js";
 
 const ReminderStatus = Object.freeze({
   ALL: "all",
@@ -16,64 +18,54 @@ const ReminderStatus = Object.freeze({
 
 let selectedStatus = ReminderStatus.ALL;
 
-const reminders = [
-  {
-    reminderId: 229,
-    title: "Reminder 1",
-    description: "Description for Reminder 1",
-    reminderDateTime: "2026-08-27T16:10:00",
-    isAcknowledged: true,
-    userId: 9583,
-  },
-  {
-    reminderId: 230,
-    title: "Reminder 2",
-    description: "Description for Reminder 2",
-    reminderDateTime: "2026-08-30T20:10:00",
-    isAcknowledged: false,
-    userId: 9583,
-  },
-  {
-    reminderId: 231,
-    title: "Reminder 3",
-    description: "Description for Reminder 3",
-    reminderDateTime: "2026-08-27T16:10:00",
-    isAcknowledged: false,
-    userId: 9583,
-  },
-  {
-    reminderId: 232,
-    title: "Reminder 4",
-    description: "Description for Reminder 4",
-    reminderDateTime: "2026-08-30T20:10:00",
-    isAcknowledged: false,
-    userId: 9583,
-  },
-];
 export default function remindersPage() {
   const template = document.createElement("template");
   template.innerHTML = remindersTemplate;
-  const clone = document.importNode(template.content, true);
+  const root = document.importNode(template.content, true);
 
-  addStatusToReminders(reminders);
+  const reminders = [];
+  const loggedUser = getLoggedUser();
 
-  const remindersStatus = reminderStatsGenerator(reminders);
-  remindersStatus.forEach((stats) => {
-    clone
-      .querySelector("#reminderStatsCardsContainer")
-      .appendChild(simpleCards(stats));
-  });
+  const page = root.querySelector("#remindersPage");
 
-  renderReminders(clone, reminders, selectedStatus);
+  loadReminders(loggedUser.userId)
+    .then((data) => {
+      if (!data) {
+        // renderReminderError(root);
+        return;
+      }
 
-  clone.querySelector("#searchReminderBtn").addEventListener("click", () => {
+      reminders.push(...data);
+
+      addStatusToReminders(reminders);
+
+      updateRemindersStats(page, reminders);
+      renderReminders(page, reminders, selectedStatus);
+    })
+    .catch((error) => {
+      console.error("Failed to load reminders:", error);
+      // renderReminderError(root);
+    });
+
+  // addStatusToReminders(reminders);
+
+  // const remindersStatus = reminderStatsGenerator(reminders);
+  // remindersStatus.forEach((stats) => {
+  //   root
+  //     .querySelector("#reminderStatsCardsContainer")
+  //     .appendChild(simpleCards(stats));
+  // });
+
+  // renderReminders(root, reminders, selectedStatus);
+
+  root.querySelector("#searchReminderBtn").addEventListener("click", () => {
     const searchInput = document
       .querySelector("#searchRemindersInput")
       .value.trim();
     remindersSearch(reminders, searchInput, selectedStatus);
   });
 
-  clone.querySelector("#addReminderBtn").addEventListener("click", () => {
+  root.querySelector("#addReminderBtn").addEventListener("click", () => {
     const data = {
       dialogId: "addReminderDialog",
       title: "Add Reminder",
@@ -96,36 +88,50 @@ export default function remindersPage() {
     document.getElementById(data.dialogId).showModal();
   });
 
-  clone
+  root
     .querySelector("#filterAllRemindersBtn")
     .addEventListener("click", (e) => {
       selectedStatus = ReminderStatus.ALL;
       filterBtnClickHandler(reminders, selectedStatus, e.currentTarget);
     });
-  clone
+  root
     .querySelector("#filterCompletedRemindersBtn")
     .addEventListener("click", (e) => {
       selectedStatus = ReminderStatus.COMPLETED;
       filterBtnClickHandler(reminders, selectedStatus, e.currentTarget);
     });
-  clone
+  root
     .querySelector("#filterPendingRemindersBtn")
     .addEventListener("click", (e) => {
       selectedStatus = ReminderStatus.PENDING;
       filterBtnClickHandler(reminders, selectedStatus, e.currentTarget);
     });
-  clone
+  root
     .querySelector("#filterOverdueRemindersBtn")
     .addEventListener("click", (e) => {
       selectedStatus = ReminderStatus.OVERDUE;
       filterBtnClickHandler(reminders, selectedStatus, e.currentTarget);
     });
-  return clone;
+  return root;
 }
 
-const updateRemindersStats = (clone, reminders) => {
+const loadReminders = async (userId) => {
+  try {
+    const response = await requestHandler(
+      "https://api.freeprojectapi.com/api/GoalTracker/getReminders",
+      "GET",
+      { userId: userId },
+    );
+
+    return response;
+  } catch (error) {
+    console.error("Error fetching dashboard stats:", error);
+  }
+};
+
+const updateRemindersStats = (root, reminders) => {
   const remindersStatus = reminderStatsGenerator(reminders);
-  const reminderStatsCardsContainer = clone.querySelector(
+  const reminderStatsCardsContainer = root.querySelector(
     "#reminderStatsCardsContainer",
   );
   reminderStatsCardsContainer.replaceChildren();
@@ -212,8 +218,8 @@ const reminderStatsGenerator = (reminders) => {
   ];
 };
 
-const renderReminders = (clone, reminders, selectedStatus) => {
-  const reminderCardsContainer = clone.querySelector("#reminderCardsContainer");
+const renderReminders = (root, reminders, selectedStatus) => {
+  const reminderCardsContainer = root.querySelector("#reminderCardsContainer");
   reminderCardsContainer.replaceChildren();
   const filteredReminders = filterRemindersByStatus(reminders, selectedStatus);
 

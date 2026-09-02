@@ -179,7 +179,7 @@ const renderDashboardStats = (dashboardElement, stats) => {
 };
 
 const getDashboardStats = async (userId) => {
-  console.log("Sending request to fetch dashboard stats for userId:", userId);
+  // console.log("Sending request to fetch dashboard stats for userId:", userId);
   try {
     const response = await requestHandler(
       "https://api.freeprojectapi.com/api/GoalTracker/dashboard",
