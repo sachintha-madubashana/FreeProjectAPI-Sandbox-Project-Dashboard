@@ -1,11 +1,19 @@
 import cardContainerTemplate from "@/components/taskCardContainer/taskCardContainer.html?raw";
+import cardContainerSkeletonTemplate from "@/components/taskCardContainer/taskCardContainerSkeleton.html?raw";
 import loadAndRenderIcon from "@/utils/loadAndRenderIcon.js";
 import taskCard from "@/components/taskCard/taskCard.js";
 
-export default function taskCardContainer(props) {
+const createTemplate = (html) => {
   const template = document.createElement("template");
-  template.innerHTML = cardContainerTemplate;
-  const clone = document.importNode(template.content, true);
+  template.innerHTML = html;
+
+  return document.importNode(template.content, true);
+};
+
+export default function taskCardContainer(props) {
+  const clone = createTemplate(cardContainerTemplate);
+
+  console.log("taskCardContainer props:", props);
 
   clone.querySelector("#frequency").textContent = props?.frequency || "Title";
   loadAndRenderIcon(
@@ -36,4 +44,8 @@ export default function taskCardContainer(props) {
   });
 
   return clone;
+}
+
+export function taskCardContainerSkeleton() {
+  return createTemplate(cardContainerSkeletonTemplate);
 }
