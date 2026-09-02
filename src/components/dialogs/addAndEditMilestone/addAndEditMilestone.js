@@ -15,6 +15,7 @@ export default function addAndEditMilestone(props) {
   const titleImput = clone.querySelector("#milestoneInputTitle");
   const dateInput = clone.querySelector("#milestoneInputDate");
   const descriptionInput = clone.querySelector("#milestoneDescriptionInput");
+  const milestoneErrorSection = clone.querySelector("#milestoneErrorSection");
 
   clone.querySelector("#saveBtn").addEventListener("click", () => {
     const title = titleImput.value;
@@ -28,6 +29,17 @@ export default function addAndEditMilestone(props) {
     };
 
     if (props?.onConfirm) {
+      if (!title || !date) {
+        setError(milestoneErrorSection, "Title and Date are required fields.");
+        return;
+      }
+      if (new Date(date) < new Date()) {
+        setError(
+          milestoneErrorSection,
+          "Please select a future date and time.",
+        );
+        return;
+      }
       props.onConfirm(milestoneItem);
       dialog.close();
       dialog.remove();
@@ -36,3 +48,9 @@ export default function addAndEditMilestone(props) {
 
   return clone;
 }
+
+const setError = (container, errorMessage) => {
+  container.querySelector("h2").textContent = "Error";
+  container.querySelector("p").textContent = errorMessage;
+  container.classList.remove("hidden");
+};

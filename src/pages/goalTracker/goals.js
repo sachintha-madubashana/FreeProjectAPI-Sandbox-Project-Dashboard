@@ -58,6 +58,7 @@ export default function goals() {
     });
 
   setUpEventListeners(page, goals);
+  console.log("Goals Page Loaded", goals);
   return clone;
 }
 
@@ -117,8 +118,12 @@ const setUpEventListeners = (page, goals) => {
       confermButtonText: "Save Goal",
       placeholder: "goal",
       onConfirm: (goal) => {
+        addStatusToAGoal(goal);
+        console.log("New Goal Added:", goal);
+        goals.push(goal);
+        renderGoals(page, goals, selectedStatus);
+        updateGoalsStats(page, goals);
         // TODO: add to the api and get the goal id
-        addGoalToArray(goals, goal);
       },
       title: "Add Goal",
       description: "You can add a new Goal here. Click save when you're done.",

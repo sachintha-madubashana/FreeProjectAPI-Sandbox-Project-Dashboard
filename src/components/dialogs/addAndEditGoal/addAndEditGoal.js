@@ -1,22 +1,24 @@
 import addAndEditGoalTemplate from "@/components/dialogs/addAndEditGoal/addAndEditGoal.html?raw";
 import empty from "@/components/empty/empty.js";
 import addAndEditMilestone from "@/components/dialogs/addAndEditMilestone/addAndEditMilestone.js";
+import { generateDialogAndShow } from "@/pages/goalTracker/goalTracker.js";
 
 let count = 1;
 export default function addAndEditGoal(props) {
   const template = document.createElement("template");
   template.innerHTML = addAndEditGoalTemplate;
   const clone = document.importNode(template.content, true);
+  const page = clone.querySelector(".dialog");
 
   const goalObject = {};
   let milestoneArray = [];
 
   const dialog = clone.querySelector("dialog");
-  dialog.id = props?.dialogId || "dialogId";
+  dialog.id = props?.dialogId ?? "dialogId";
   clone.querySelector("#addAndEditGoalTitle").textContent =
-    props?.title || "Goal Details";
+    props?.title ?? "Goal Details";
   clone.querySelector("#addAndEditGoalDescription").textContent =
-    props?.description ||
+    props?.description ??
     "Hi, I am the new dialog. Make changes to your profile here. Click save when you're done.";
 
   clone.querySelector("#titleInput").placeholder =
@@ -52,10 +54,7 @@ export default function addAndEditGoal(props) {
       description:
         "You can add a new milestone here. Click add when you're done.",
     };
-    document
-      .getElementById("pageContent")
-      .appendChild(addAndEditMilestone(data));
-    document.getElementById("addMilestoneDialog").showModal();
+    generateDialogAndShow(addAndEditMilestone, data);
   });
 
   clone.querySelector("#cancelButton").addEventListener("click", () => {
@@ -70,6 +69,7 @@ export default function addAndEditGoal(props) {
   const descriptionInput = clone.querySelector("#descriptionInput");
   const startDateInput = clone.querySelector("#startDateInput");
   const endDateInput = clone.querySelector("#endDateInput");
+  const goalErrorSection = clone.querySelector("#goalErrorSection");
 
   clone.querySelector("#confirmButton").addEventListener("click", () => {
     goalObject.goalName = titleInput.value;
@@ -79,6 +79,23 @@ export default function addAndEditGoal(props) {
     goalObject.milestones = milestoneArray;
 
     if (typeof props?.onConfirm === "function") {
+      if (
+        !goalObject.goalName ||
+        !goalObject.startDate ||
+        !goalObject.endDate
+      ) {
+        setError(
+          goalErrorSection,
+          "Title, Start Date and End Date are required fields.",
+        );
+        return;
+      }
+
+      if (new Date(goalObject.startDate) > new Date(goalObject.endDate)) {
+        setError(goalErrorSection, "Start Date cannot be later than End Date.");
+        return;
+      }
+
       props?.onConfirm(goalObject);
       dialog.close();
       dialog.remove();
@@ -125,4 +142,10 @@ const addMilestoneCard = (
   milestoneContainer.appendChild(clone);
 
   milestoneArray.push(milestoneItem);
+};
+
+const setError = (container, errorMessage) => {
+  container.querySelector("h2").textContent = "Error";
+  container.querySelector("p").textContent = errorMessage;
+  container.classList.remove("hidden");
 };
