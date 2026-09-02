@@ -341,13 +341,17 @@ const addReminderToAPI = (reminder) => {
   console.log("Get reminder from API");
   reminder.reminderId = 233; //TODO: Get the reminderId from the API response
 };
-
 const updateReminderToAPI = (reminder) => {
   reminder.userId = 9583; //TODO: Get the userId from the logged in user
   //TODO: Call API to add reminder
   console.log("Update reminder to API");
 };
+const deleteReminderFromAPI = (reminderId) => {
+  //TODO: Call API to delete reminder
+  console.log("Delete reminder from API for reminderId:", reminderId);
+};
 
+// Reminder Card Action functions
 const updateReminders = (reminderItem) => {
   addStatusToAReminder(reminderItem);
   updateReminderToAPI(reminderItem);
@@ -360,12 +364,6 @@ const updateReminders = (reminderItem) => {
   renderReminders(document, reminders, selectedStatus);
   updateRemindersStats(document, reminders);
 };
-
-const deleteReminderFromAPI = (reminderId) => {
-  //TODO: Call API to delete reminder
-  console.log("Delete reminder from API for reminderId:", reminderId);
-};
-
 const deleteReminder = (reminderId) => {
   const data = {
     dialogId: "confirmationDialog",
@@ -387,7 +385,6 @@ const deleteReminder = (reminderId) => {
   document.getElementById("pageContent").appendChild(confirmationDialog(data));
   document.getElementById("confirmationDialog").showModal();
 };
-
 const seeReminderDetails = (reminderId) => {
   const reminder = reminders.find((r) => r.reminderId === reminderId);
   if (reminder) {
