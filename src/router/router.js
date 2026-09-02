@@ -5,6 +5,7 @@ import busBookingPage from "@/pages/busBooking.js";
 import goalTracker from "@/pages/goalTracker/goalTracker.js";
 import templatePage from "@/pages/projectTemp.js";
 import data from "@/assets/data.json" with { type: "json" };
+import emptyPage from "@/components/empty/empty.js";
 
 const routes = {
   "/": dashboardPage,
@@ -50,10 +51,13 @@ function router() {
   }
 
   if (!page) {
-    pageContent.innerHTML = `
-      <h1>404</h1>
-      <p>Page not found.</p>
-    `;
+    pageContent.replaceChildren(
+      emptyPage({
+        title: "404 - Page Not Found",
+        description: `The page you are looking for does not exist. Please check the URL or navigate to a valid page.`,
+        icon: "Bug",
+      }),
+    );
 
     updateData(path);
     return;
