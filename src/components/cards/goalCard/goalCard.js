@@ -1,10 +1,16 @@
 import goalCardTemplate from "@/components/cards/goalCard/goalCard.html?raw";
-import { showMoreInfoDialog } from "@/pages/goalTracker/goals.js";
+import goalCardSkeletonTemplate from "@/components/cards/goalCard/goalCardSkeleton.html?raw";
+import { generateDialogAndShow } from "@/pages/goalTracker/goalTracker.js";
+
+const createTemplate = (html) => {
+  const template = document.createElement("template");
+  template.innerHTML = html;
+
+  return document.importNode(template.content, true);
+};
 
 export default function goalCard(props) {
-  const template = document.createElement("template");
-  template.innerHTML = goalCardTemplate;
-  const clone = document.importNode(template.content, true);
+  const clone = createTemplate(goalCardTemplate);
 
   clone.querySelector("#goalTitle").textContent = props?.goalName || "";
   clone.querySelector("#goalDescription").textContent =
@@ -41,8 +47,13 @@ export default function goalCard(props) {
       dialogId: "showGoalInfo",
       goalData: props,
     };
-    showMoreInfoDialog(dialogData);
+    generateDialogAndShow(goalMoreInfo, dialogData);
   });
 
   return clone;
 }
+
+export const goalsCardSkeleton = () => {
+  const clone = createTemplate(goalCardSkeletonTemplate);
+  return clone;
+};
