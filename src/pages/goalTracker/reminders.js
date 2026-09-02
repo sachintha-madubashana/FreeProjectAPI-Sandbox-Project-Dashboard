@@ -52,14 +52,32 @@ export default function remindersPage() {
       // renderReminderError(root);
     });
 
-  root.querySelector("#searchReminderBtn").addEventListener("click", () => {
-    const searchInput = document
+  setupEventListeners(page, reminders);
+
+  return root;
+}
+
+//Set up functions
+const renderReminderSkeletons = (page) => {
+  const container = page.querySelector("#reminderStatsCardsContainer");
+
+  if (!container) return;
+
+  container.replaceChildren();
+
+  for (let i = 0; i < 4; i++) {
+    container.appendChild(reminderCardSkeleton());
+  }
+};
+const setupEventListeners = (page, reminders) => {
+  page.querySelector("#searchReminderBtn").addEventListener("click", () => {
+    const searchInput = page
       .querySelector("#searchRemindersInput")
       .value.trim();
-    remindersSearch(reminders, searchInput, selectedStatus);
+    searchReminders(reminders, searchInput, selectedStatus);
   });
 
-  root.querySelector("#addReminderBtn").addEventListener("click", () => {
+  page.querySelector("#addReminderBtn").addEventListener("click", () => {
     const data = {
       dialogId: "addReminderDialog",
       title: "Add Reminder",
@@ -82,70 +100,41 @@ export default function remindersPage() {
     document.getElementById(data.dialogId).showModal();
   });
 
-  root
+  page.querySelector("#searchRemindersInput").addEventListener("keyup", (e) => {
+    if (e.key === "Enter") {
+      const searchInput = e.target.value.trim();
+      searchReminders(reminders, searchInput, selectedStatus);
+    }
+    if (e.key === "Backspace" && e.target.value.trim() === "") {
+      renderReminders(page, reminders, selectedStatus);
+    }
+  });
+
+  page
     .querySelector("#filterAllRemindersBtn")
     .addEventListener("click", (e) => {
       selectedStatus = ReminderStatus.ALL;
-      filterBtnClickHandler(reminders, selectedStatus, e.currentTarget);
+      filterBtnClickHandler(page, reminders, selectedStatus, e.currentTarget);
     });
-  root
+  page
     .querySelector("#filterCompletedRemindersBtn")
     .addEventListener("click", (e) => {
       selectedStatus = ReminderStatus.COMPLETED;
-      filterBtnClickHandler(reminders, selectedStatus, e.currentTarget);
+      filterBtnClickHandler(page, reminders, selectedStatus, e.currentTarget);
     });
-  root
+  page
     .querySelector("#filterPendingRemindersBtn")
     .addEventListener("click", (e) => {
       selectedStatus = ReminderStatus.PENDING;
-      filterBtnClickHandler(reminders, selectedStatus, e.currentTarget);
+      filterBtnClickHandler(page, reminders, selectedStatus, e.currentTarget);
     });
-  root
+  page
     .querySelector("#filterOverdueRemindersBtn")
     .addEventListener("click", (e) => {
       selectedStatus = ReminderStatus.OVERDUE;
-      filterBtnClickHandler(reminders, selectedStatus, e.currentTarget);
+      filterBtnClickHandler(page, reminders, selectedStatus, e.currentTarget);
     });
-  return root;
-}
-
-const renderReminderSkeletons = (page) => {
-  const container = page.querySelector("#reminderStatsCardsContainer");
-
-  if (!container) return;
-
-  container.replaceChildren();
-
-  for (let i = 0; i < 4; i++) {
-    container.appendChild(reminderCardSkeleton());
-  }
 };
-
-const loadReminders = async (userId) => {
-  try {
-    const response = await requestHandler(
-      "https://api.freeprojectapi.com/api/GoalTracker/getReminders",
-      "GET",
-      { userId: userId },
-    );
-
-    return response;
-  } catch (error) {
-    console.error("Error fetching dashboard stats:", error);
-  }
-};
-
-const updateRemindersStats = (root, reminders) => {
-  const remindersStatus = reminderStatsGenerator(reminders);
-  const reminderStatsCardsContainer = root.querySelector(
-    "#reminderStatsCardsContainer",
-  );
-  reminderStatsCardsContainer.replaceChildren();
-  remindersStatus.forEach((stats) => {
-    reminderStatsCardsContainer.appendChild(simpleCard(stats));
-  });
-};
-
 const addStatusToReminders = (reminders) => {
   reminders.forEach((reminder) => {
     if (
@@ -167,7 +156,6 @@ const addStatusToReminders = (reminders) => {
     }
   });
 };
-
 const addStatusToAReminder = (reminder) => {
   if (
     !reminder.isAcknowledged &&
@@ -187,7 +175,6 @@ const addStatusToAReminder = (reminder) => {
     reminder.status = ReminderStatus.OVERDUE;
   }
 };
-
 const reminderStatsGenerator = (reminders) => {
   const totalReminders = reminders.length;
   const completedReminders = reminders.filter(
@@ -224,6 +211,32 @@ const reminderStatsGenerator = (reminders) => {
   ];
 };
 
+// Data fetching functions
+const loadReminders = async (userId) => {
+  try {
+    const response = await requestHandler(
+      "https://api.freeprojectapi.com/api/GoalTracker/getReminders",
+      "GET",
+      { userId: userId },
+    );
+
+    return response;
+  } catch (error) {
+    console.error("Error fetching dashboard stats:", error);
+  }
+};
+
+// Stats Rendering functions
+const updateRemindersStats = (root, reminders) => {
+  const remindersStatus = reminderStatsGenerator(reminders);
+  const reminderStatsCardsContainer = root.querySelector(
+    "#reminderStatsCardsContainer",
+  );
+  reminderStatsCardsContainer.replaceChildren();
+  remindersStatus.forEach((stats) => {
+    reminderStatsCardsContainer.appendChild(simpleCard(stats));
+  });
+};
 const renderReminders = (root, reminders, selectedStatus) => {
   const reminderCardsContainer = root.querySelector("#reminderCardsContainer");
   reminderCardsContainer.replaceChildren();
@@ -244,6 +257,7 @@ const renderReminders = (root, reminders, selectedStatus) => {
   });
 };
 
+// Filtering and Searching functions
 const filterRemindersByStatus = (reminders, status) => {
   if (status === ReminderStatus.ALL) {
     return reminders;
@@ -264,8 +278,7 @@ const filterRemindersByStatus = (reminders, status) => {
     );
   }
 };
-
-const remindersSearch = (reminders, searchInput, selectedStatus) => {
+const searchReminders = (reminders, searchInput, selectedStatus) => {
   if (searchInput) {
     const searchedReminders = reminders.filter((reminder) =>
       reminder.title.toLowerCase().includes(searchInput.toLowerCase()),
@@ -279,7 +292,25 @@ const remindersSearch = (reminders, searchInput, selectedStatus) => {
     });
   }
 };
+const filterBtnClickHandler = (
+  page,
+  reminders,
+  selectedStatus,
+  clickedButton,
+) => {
+  filterBtnStateHandler(page, clickedButton);
+  if (page.querySelector("#searchRemindersInput").value.trim() !== "") {
+    searchReminders(
+      reminders,
+      page.querySelector("#searchRemindersInput").value,
+      selectedStatus,
+    );
+    return;
+  }
+  renderReminders(document, reminders, selectedStatus);
+};
 
+// UI functions
 const showEmptyUI = (container, emptyData) => {
   const emptyTemplate = empty(emptyData);
   emptyTemplate
@@ -287,15 +318,8 @@ const showEmptyUI = (container, emptyData) => {
     .classList.add("col-span-1", "md:col-span-2", "lg:col-span-3");
   container.appendChild(emptyTemplate);
 };
-
-const filterBtnClickHandler = (reminders, selectedStatus, clickedButton) => {
-  renderReminders(document, reminders, selectedStatus);
-  document.querySelector("#searchRemindersInput").value = "";
-  filterBtnStateHandler(clickedButton);
-};
-
-const filterBtnStateHandler = (clickedButton) => {
-  const filterButtons = document.querySelectorAll(
+const filterBtnStateHandler = (page, clickedButton) => {
+  const filterButtons = page.querySelectorAll(
     "#reminderStatusFilterGroup button",
   );
 
@@ -308,6 +332,7 @@ const filterBtnStateHandler = (clickedButton) => {
   });
 };
 
+// API Interaction functions
 const addReminderToAPI = (reminder) => {
   reminder.userId = 9583; //TODO: Get the userId from the logged in user
   //TODO: Call API to add reminder
