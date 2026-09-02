@@ -1,8 +1,10 @@
 import remindersTemplate from "@/pages/goalTracker/reminders.html?raw";
 import simpleCard, {
-  simpleStatsCardSkeleton as reminderCardSkeleton,
+  simpleStatsCardSkeleton as reminderStatsCardSkeleton,
 } from "@/components/simpleStatsCard/simpleStatsCard.js";
-import reminderCard from "@/components/cards/reminderCard/reminderCard.js";
+import reminderCard, {
+  reminderCardSkeleton,
+} from "@/components/cards/reminderCard/reminderCard.js";
 import addAndEditReminder from "@/components/dialogs/addAndEditReminder/addAndEditReminder.js";
 import confirmationDialog from "@/components/dialogs/confirmationDialog/confirmationDialog.js";
 import reminderMoreInfo from "@/components/dialogs/reminderMoreInfo/reminderMoreInfo.js";
@@ -60,13 +62,19 @@ export default function remindersPage() {
 //Set up functions
 const renderReminderSkeletons = (page) => {
   const container = page.querySelector("#reminderStatsCardsContainer");
+  const reminderCardsContainer = page.querySelector("#reminderCardsContainer");
 
   if (!container) return;
-
   container.replaceChildren();
 
   for (let i = 0; i < 4; i++) {
-    container.appendChild(reminderCardSkeleton());
+    container.appendChild(reminderStatsCardSkeleton());
+  }
+
+  if (!reminderCardsContainer) return;
+  reminderCardsContainer.replaceChildren();
+  for (let i = 0; i < 6; i++) {
+    reminderCardsContainer.appendChild(reminderCardSkeleton());
   }
 };
 const setupEventListeners = (page, reminders) => {
@@ -398,5 +406,14 @@ const seeReminderDetails = (reminderId) => {
     document.getElementById("reminderDetailsDialog" + reminderId).showModal();
   }
 };
+const markAsComplete = (reminderId) => {
+  // TODO: Call API to mark reminder as complete
+  console.log("Mark reminder as complete for reminderId:", props?.reminderId);
+  showToast({
+    category: "success",
+    title: "Reminder Completed",
+    description: "The reminder has been marked as completed.",
+  });
+};
 
-export { updateReminders, deleteReminder, seeReminderDetails };
+export { updateReminders, deleteReminder, seeReminderDetails, markAsComplete };

@@ -1,21 +1,29 @@
 import reminderCardTemplate from "@/components/cards/reminderCard/reminderCard.html?raw";
+import reminderCardSkeletonTemplate from "@/components/cards/reminderCard/reminderCardSkeleton.html?raw";
 import addAndEditReminder from "@/components/dialogs/addAndEditReminder/addAndEditReminder.js";
 import {
   updateReminders,
   deleteReminder,
   seeReminderDetails,
+  markAsComplete,
 } from "@/pages/goalTracker/reminders.js";
-import { showToast } from "@/utils/toastSystem.js";
+
+const createTemplate = (html) => {
+  const template = document.createElement("template");
+  template.innerHTML = html;
+
+  return document.importNode(template.content, true);
+};
 
 export default function reminderCard(props) {
-  const template = document.createElement("template");
-  template.innerHTML = reminderCardTemplate;
-  const clone = document.importNode(template.content, true);
+  const clone = createTemplate(reminderCardTemplate);
+  const page = clone.querySelector(".card");
 
-  clone.querySelector("#reminderTitle").textContent = props?.title || "";
-  clone.querySelector("#reminderDescription").textContent =
+  page.querySelector(".reminder-title").textContent =
+    props?.title ?? "Reminder Title";
+  page.querySelector(".reminder-description").textContent =
     props?.description || "";
-  clone.querySelector("#reminderStartDate").textContent =
+  page.querySelector(".reminder-start-date").textContent =
     "Reminder Time : " +
     new Date(props?.reminderDateTime).toLocaleString(
       "en-US",
@@ -29,45 +37,43 @@ export default function reminderCard(props) {
       } || "Due Date",
     );
 
-  clone.querySelector("#reminderCardHeader").append(badge(props?.status));
+  page.querySelector(".reminder-card-header").append(badge(props?.status));
 
-  const dropdown = clone.querySelector("#moreActionDropdown");
-  clone.querySelector(".card").addEventListener("mouseleave", () => {
+  setupEventListeners(page, props);
+
+  return clone;
+}
+
+// Set up Functions
+const setupEventListeners = (page, props) => {
+  const dropdown = page.querySelector("#moreActionDropdown");
+  page.addEventListener("mouseleave", () => {
     dropdown.close();
   });
 
-  clone.querySelector(".card").addEventListener("click", () => {
+  page.addEventListener("click", () => {
     seeReminderDetails(props?.reminderId);
   });
 
-  clone
+  page
     .querySelector("#moreActionDropdownTrigger")
     .addEventListener("click", (e) => {
       e.stopPropagation();
     });
 
-  clone.querySelector("#moreInfoReminderBtn").addEventListener("click", (e) => {
+  page.querySelector("#moreInfoReminderBtn").addEventListener("click", (e) => {
     e.stopPropagation();
     seeReminderDetails(props?.reminderId);
   });
 
-  clone
+  page
     .querySelector("#markAsCompleteReminderBtn")
     .addEventListener("click", (e) => {
       e.stopPropagation();
-      // TODO: Call API to mark reminder as complete
-      console.log(
-        "Mark reminder as complete for reminderId:",
-        props?.reminderId,
-      );
-      showToast({
-        category: "success",
-        title: "Reminder Completed",
-        description: "The reminder has been marked as completed.",
-      });
+      markAsComplete(props?.reminderId);
     });
 
-  clone.querySelector("#editReminderBtn").addEventListener("click", (e) => {
+  page.querySelector("#editReminderBtn").addEventListener("click", (e) => {
     e.stopPropagation();
     const data = {
       dialogId: "reminderId" + props?.reminderId,
@@ -86,14 +92,11 @@ export default function reminderCard(props) {
     document.getElementById("reminderId" + props?.reminderId).showModal();
   });
 
-  clone.querySelector("#deleteReminderBtn").addEventListener("click", (e) => {
+  page.querySelector("#deleteReminderBtn").addEventListener("click", (e) => {
     e.stopPropagation();
     deleteReminder(props?.reminderId);
   });
-
-  return clone;
-}
-
+};
 const badge = (type) => {
   const template = document.createElement("template");
 
@@ -111,8 +114,12 @@ const badge = (type) => {
 
   return template.content.firstElementChild;
 };
-
 const capitalizeFirstLetter = (str) => {
   if (!str) return str;
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
+
+// Skeleton
+export function reminderCardSkeleton() {
+  return createTemplate(reminderCardSkeletonTemplate);
+}
