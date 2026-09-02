@@ -14,7 +14,7 @@ export default function statsCard(props) {
 
   root.querySelector("#cardTitle").textContent = props?.title ?? "Card Title";
   root.querySelector("#cardValue").textContent = props?.value ?? "0";
-  root.querySelector("#cardSecondValue").textContent = props?.secondValue || "";
+  root.querySelector("#cardSecondValue").textContent = props?.secondValue ?? "";
 
   loadAndRenderIcon(
     props?.icon || "Bug",
