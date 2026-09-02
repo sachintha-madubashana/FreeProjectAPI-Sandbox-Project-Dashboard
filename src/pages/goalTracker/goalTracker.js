@@ -215,3 +215,8 @@ function updateUrlParameter(key, value) {
 export const getLoggedUser = () => {
   return JSON.parse(localStorage.getItem("goalTrackerUser"));
 };
+
+export const generateDialogAndShow = (dialogComponent, data) => {
+  document.getElementById("pageContent").appendChild(dialogComponent(data));
+  document.getElementById(data.dialogId).showModal();
+};

@@ -7,6 +7,7 @@ import {
   seeReminderDetails,
   markAsComplete,
 } from "@/pages/goalTracker/reminders.js";
+import { generateDialogAndShow } from "@/pages/goalTracker/goalTracker.js";
 
 const createTemplate = (html) => {
   const template = document.createElement("template");
@@ -45,10 +46,7 @@ export default function reminderCard(props) {
 
 // Set up Functions
 const setupEventListeners = (page, props) => {
-  const dropdown = page.querySelector("#moreActionDropdown");
-  page.addEventListener("mouseleave", () => {
-    dropdown.close();
-  });
+  setupMouseEventListener(page);
 
   page.addEventListener("click", () => {
     seeReminderDetails(props?.reminderId);
@@ -62,7 +60,7 @@ const setupEventListeners = (page, props) => {
 
   page.querySelector("#moreInfoReminderBtn").addEventListener("click", (e) => {
     e.stopPropagation();
-    seeReminderDetails(props?.reminderId);
+    seeReminderDetails(props);
   });
 
   page
@@ -85,15 +83,18 @@ const setupEventListeners = (page, props) => {
         updateReminders(reminderItem);
       },
     };
-    document
-      .getElementById("pageContent")
-      .appendChild(addAndEditReminder(data));
-    document.getElementById("reminderId" + props?.reminderId).showModal();
+    generateDialogAndShow(addAndEditReminder, data);
   });
 
   page.querySelector("#deleteReminderBtn").addEventListener("click", (e) => {
     e.stopPropagation();
     deleteReminder(props?.reminderId);
+  });
+};
+const setupMouseEventListener = (page) => {
+  const dropdown = page.querySelector("#moreActionDropdown");
+  page.addEventListener("mouseleave", () => {
+    dropdown.close();
   });
 };
 const badge = (type) => {
@@ -120,5 +121,8 @@ const capitalizeFirstLetter = (str) => {
 
 // Skeleton
 export function reminderCardSkeleton() {
-  return createTemplate(reminderCardSkeletonTemplate);
+  const clone = createTemplate(reminderCardSkeletonTemplate);
+  const page = clone.querySelector(".card");
+  setupMouseEventListener(page);
+  return clone;
 }

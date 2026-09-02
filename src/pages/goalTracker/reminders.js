@@ -11,7 +11,10 @@ import reminderMoreInfo from "@/components/dialogs/reminderMoreInfo/reminderMore
 import empty from "@/components/empty/empty.js";
 import { showToast } from "@/utils/toastSystem.js";
 import requestHandler from "@/utils/requestHandler.js";
-import { getLoggedUser } from "@/pages/goalTracker/goalTracker.js";
+import {
+  getLoggedUser,
+  generateDialogAndShow,
+} from "@/pages/goalTracker/goalTracker.js";
 
 const ReminderStatus = Object.freeze({
   ALL: "all",
@@ -82,7 +85,7 @@ const setupEventListeners = (page, reminders) => {
     const searchInput = page
       .querySelector("#searchRemindersInput")
       .value.trim();
-    searchReminders(reminders, searchInput, selectedStatus);
+    searchReminders(page, reminders, searchInput, selectedStatus);
   });
 
   page.querySelector("#addReminderBtn").addEventListener("click", () => {
@@ -96,8 +99,8 @@ const setupEventListeners = (page, reminders) => {
         addStatusToAReminder(reminderItem);
         addReminderToAPI(reminderItem);
         reminders.push(reminderItem);
-        renderReminders(document, reminders, selectedStatus);
-        updateRemindersStats(document, reminders);
+        renderReminders(page, reminders, selectedStatus);
+        updateRemindersStats(page, reminders);
         console.log("Reminder item saved:", reminderItem);
         // TODO: Call API to update reminder with reminderItem data
       },
@@ -111,7 +114,7 @@ const setupEventListeners = (page, reminders) => {
   page.querySelector("#searchRemindersInput").addEventListener("keyup", (e) => {
     if (e.key === "Enter") {
       const searchInput = e.target.value.trim();
-      searchReminders(reminders, searchInput, selectedStatus);
+      searchReminders(page, reminders, searchInput, selectedStatus);
     }
     if (e.key === "Backspace" && e.target.value.trim() === "") {
       renderReminders(page, reminders, selectedStatus);
@@ -286,12 +289,12 @@ const filterRemindersByStatus = (reminders, status) => {
     );
   }
 };
-const searchReminders = (reminders, searchInput, selectedStatus) => {
+const searchReminders = (page, reminders, searchInput, selectedStatus) => {
   if (searchInput) {
     const searchedReminders = reminders.filter((reminder) =>
       reminder.title.toLowerCase().includes(searchInput.toLowerCase()),
     );
-    renderReminders(document, searchedReminders, selectedStatus);
+    renderReminders(page, searchedReminders, selectedStatus);
   } else {
     showToast({
       category: "warning",
@@ -309,13 +312,14 @@ const filterBtnClickHandler = (
   filterBtnStateHandler(page, clickedButton);
   if (page.querySelector("#searchRemindersInput").value.trim() !== "") {
     searchReminders(
+      page,
       reminders,
       page.querySelector("#searchRemindersInput").value,
       selectedStatus,
     );
     return;
   }
-  renderReminders(document, reminders, selectedStatus);
+  renderReminders(page, reminders, selectedStatus);
 };
 
 // UI functions
@@ -393,17 +397,15 @@ const deleteReminder = (reminderId) => {
   document.getElementById("pageContent").appendChild(confirmationDialog(data));
   document.getElementById("confirmationDialog").showModal();
 };
-const seeReminderDetails = (reminderId) => {
-  const reminder = reminders.find((r) => r.reminderId === reminderId);
+const seeReminderDetails = (reminder) => {
   if (reminder) {
     const data = {
-      dialogId: "reminderDetailsDialog" + reminderId,
+      dialogId: "reminderDetailsDialog" + reminder.id,
       title: "Reminder Details",
       description: "Here are the details of your reminder.",
       data: reminder,
     };
-    document.getElementById("pageContent").appendChild(reminderMoreInfo(data));
-    document.getElementById("reminderDetailsDialog" + reminderId).showModal();
+    generateDialogAndShow(reminderMoreInfo, data);
   }
 };
 const markAsComplete = (reminderId) => {
