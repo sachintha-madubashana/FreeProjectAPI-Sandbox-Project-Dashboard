@@ -1,12 +1,6 @@
 import reminderCardTemplate from "@/components/cards/reminderCard/reminderCard.html?raw";
 import reminderCardSkeletonTemplate from "@/components/cards/reminderCard/reminderCardSkeleton.html?raw";
 import addAndEditReminder from "@/components/dialogs/addAndEditReminder/addAndEditReminder.js";
-import {
-  updateReminders,
-  deleteReminder,
-  seeReminderDetails,
-  markAsComplete,
-} from "@/pages/goalTracker/reminders.js";
 import { generateDialogAndShow } from "@/pages/goalTracker/goalTracker.js";
 
 const createTemplate = (html) => {
@@ -49,7 +43,12 @@ const setupEventListeners = (page, props) => {
   setupMouseEventListener(page);
 
   page.addEventListener("click", () => {
-    seeReminderDetails(props?.reminderId);
+    page.dispatchEvent(
+      new CustomEvent("reminder", {
+        detail: { item: props, action: "viewDetails" },
+        bubbles: true,
+      }),
+    );
   });
 
   page
@@ -60,14 +59,24 @@ const setupEventListeners = (page, props) => {
 
   page.querySelector("#moreInfoReminderBtn").addEventListener("click", (e) => {
     e.stopPropagation();
-    seeReminderDetails(props);
+    page.dispatchEvent(
+      new CustomEvent("reminder", {
+        detail: { item: props, action: "viewDetails" },
+        bubbles: true,
+      }),
+    );
   });
 
   page
     .querySelector("#markAsCompleteReminderBtn")
     .addEventListener("click", (e) => {
       e.stopPropagation();
-      markAsComplete(props?.reminderId);
+      page.dispatchEvent(
+        new CustomEvent("reminder", {
+          detail: { item: props, action: "markAsComplete" },
+          bubbles: true,
+        }),
+      );
     });
 
   page.querySelector("#editReminderBtn").addEventListener("click", (e) => {
@@ -80,7 +89,12 @@ const setupEventListeners = (page, props) => {
       saveBtnText: "Save Changes",
       data: props,
       onAction: (reminderItem) => {
-        updateReminders(reminderItem);
+        page.dispatchEvent(
+          new CustomEvent("reminder", {
+            detail: { item: reminderItem, action: "update" },
+            bubbles: true,
+          }),
+        );
       },
     };
     generateDialogAndShow(addAndEditReminder, data);
@@ -88,7 +102,12 @@ const setupEventListeners = (page, props) => {
 
   page.querySelector("#deleteReminderBtn").addEventListener("click", (e) => {
     e.stopPropagation();
-    deleteReminder(props?.reminderId);
+    page.dispatchEvent(
+      new CustomEvent("reminder", {
+        detail: { item: props, action: "delete" },
+        bubbles: true,
+      }),
+    );
   });
 };
 const setupMouseEventListener = (page) => {

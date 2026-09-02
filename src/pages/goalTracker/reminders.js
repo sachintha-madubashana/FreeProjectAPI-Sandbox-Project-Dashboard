@@ -142,6 +142,26 @@ const setupEventListeners = (page, reminders) => {
       selectedStatus = ReminderStatus.OVERDUE;
       filterBtnClickHandler(page, reminders, selectedStatus, e.currentTarget);
     });
+
+  page.addEventListener("reminder", (event) => {
+    console.log("Received reminder:update event:", event.detail);
+    if (event.detail.action === "update") {
+      updateReminders(page, reminders, event.detail.item);
+      return;
+    }
+    if (event.detail.action === "delete") {
+      deleteReminder(page, reminders, event.detail.item);
+      return;
+    }
+    if (event.detail.action === "viewDetails") {
+      seeReminderDetails(event.detail.item);
+      return;
+    }
+    if (event.detail.action === "markAsComplete") {
+      markAsComplete(page, reminders, event.detail.item);
+      return;
+    }
+  });
 };
 const addStatusToReminders = (reminders) => {
   reminders.forEach((reminder) => {
@@ -170,11 +190,9 @@ const addStatusToAReminder = (reminder) => {
     new Date(reminder.reminderDateTime) > new Date()
   ) {
     reminder.status = ReminderStatus.PENDING;
-    return;
   }
   if (reminder.isAcknowledged) {
     reminder.status = ReminderStatus.COMPLETED;
-    return;
   }
   if (
     !reminder.isAcknowledged &&
@@ -182,6 +200,7 @@ const addStatusToAReminder = (reminder) => {
   ) {
     reminder.status = ReminderStatus.OVERDUE;
   }
+  return reminder;
 };
 const reminderStatsGenerator = (reminders) => {
   const totalReminders = reminders.length;
@@ -359,21 +378,20 @@ const deleteReminderFromAPI = (reminderId) => {
   //TODO: Call API to delete reminder
   console.log("Delete reminder from API for reminderId:", reminderId);
 };
+const updateReminderStatusToAPI = (reminderId) => {};
 
 // Reminder Card Action functions
-const updateReminders = (reminderItem) => {
-  addStatusToAReminder(reminderItem);
-  updateReminderToAPI(reminderItem);
-  const index = reminders.findIndex(
-    (r) => r.reminderId === reminderItem.reminderId,
-  );
+const updateReminders = (page, reminders, reminderItem) => {
+  const item = addStatusToAReminder(reminderItem);
+  updateReminderToAPI(item);
+  const index = reminders.findIndex((r) => r.reminderId === item.reminderId);
   if (index !== -1) {
-    reminders[index] = reminderItem;
+    reminders[index] = item;
   }
-  renderReminders(document, reminders, selectedStatus);
-  updateRemindersStats(document, reminders);
+  renderReminders(page, reminders, selectedStatus);
+  updateRemindersStats(page, reminders);
 };
-const deleteReminder = (reminderId) => {
+const deleteReminder = (page, reminders, reminderItem) => {
   const data = {
     dialogId: "confirmationDialog",
     title: "Delete Reminder",
@@ -381,13 +399,15 @@ const deleteReminder = (reminderId) => {
       "Are you sure you want to delete this reminder? This action cannot be undone.",
     confermButtonText: "Delete",
     onConfirm: () => {
-      deleteReminderFromAPI(reminderId);
-      const index = reminders.findIndex((r) => r.reminderId === reminderId);
+      deleteReminderFromAPI(reminderItem.reminderId);
+      const index = reminders.findIndex(
+        (r) => r.reminderId === reminderItem.reminderId,
+      );
       if (index !== -1) {
         reminders.splice(index, 1);
       }
-      renderReminders(document, reminders, selectedStatus);
-      updateRemindersStats(document, reminders);
+      renderReminders(page, reminders, selectedStatus);
+      updateRemindersStats(page, reminders);
     },
   };
 
@@ -405,14 +425,27 @@ const seeReminderDetails = (reminder) => {
     generateDialogAndShow(reminderMoreInfo, data);
   }
 };
-const markAsComplete = (reminderId) => {
-  // TODO: Call API to mark reminder as complete
-  console.log("Mark reminder as complete for reminderId:", props?.reminderId);
+const markAsComplete = (page, reminders, reminderItem) => {
+  reminderItem.isAcknowledged = !reminderItem.isAcknowledged;
+
+  if (reminderItem.isAcknowledged) {
+    reminderItem.status = ReminderStatus.COMPLETED;
+  } else {
+    reminderItem = addStatusToAReminder(reminderItem);
+    const index = reminders.findIndex(
+      (r) => r.reminderId === reminderItem.reminderId,
+    );
+    if (index !== -1) {
+      reminders[index] = reminderItem;
+    }
+  }
+  updateReminderStatusToAPI(reminderItem.reminderId);
+
+  renderReminders(page, reminders, selectedStatus);
+  updateRemindersStats(page, reminders);
   showToast({
     category: "success",
     title: "Reminder Completed",
     description: "The reminder has been marked as completed.",
   });
 };
-
-export { updateReminders, deleteReminder, seeReminderDetails, markAsComplete };
