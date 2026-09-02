@@ -115,9 +115,6 @@ const setupEventListeners = (page, reminders) => {
           .catch((error) => {
             console.error("Failed to add reminder:", error);
           });
-
-        console.log("Reminder item saved:", reminderItem);
-        // TODO: Call API to update reminder with reminderItem data
       },
     };
     generateDialogAndShow(addAndEditReminder, data);
