@@ -14,6 +14,38 @@ export default function reminderCard(props) {
   const clone = createTemplate(reminderCardTemplate);
   const page = clone.querySelector(".card");
 
+  const checkIcon = `<svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-circle-check-icon lucide-circle-check"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <path d="m9 12 2 2 4-4" />
+      </svg>`;
+  const nonCheckIcon = `<svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-circle-x-icon lucide-circle-x"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <path d="m15 9-6 6" />
+        <path d="m9 9 6 6" />
+      </svg>`;
+
   page.querySelector(".reminder-title").textContent =
     props?.title ?? "Reminder Title";
   page.querySelector(".reminder-description").textContent =
@@ -31,6 +63,53 @@ export default function reminderCard(props) {
         hour12: false,
       } || "Due Date",
     );
+
+  const markAsCompleteBtn = page.querySelector("#markAsCompleteReminderBtn");
+  if (markAsCompleteBtn) {
+    const isCompleted = props?.status === "completed";
+    markAsCompleteBtn.innerHTML = isCompleted ? nonCheckIcon : checkIcon;
+    if (isCompleted) {
+      markAsCompleteBtn.classList.add(
+        "btn",
+        "bg-amber-100",
+        "dark:bg-amber-950",
+        "text-amber-950",
+        "dark:text-amber-400",
+        "hover:bg-amber-200",
+        "dark:hover:bg-amber-900",
+      );
+      markAsCompleteBtn.classList.remove(
+        "bg-green-100",
+        "dark:bg-green-950",
+        "text-green-950",
+        "dark:text-green-400",
+        "hover:bg-green-200",
+        "dark:hover:bg-green-900",
+      );
+    } else {
+      markAsCompleteBtn.classList.add(
+        "btn",
+        "bg-green-100",
+        "dark:bg-green-950",
+        "text-green-950",
+        "dark:text-green-400",
+        "hover:bg-green-200",
+        "dark:hover:bg-green-900",
+      );
+      markAsCompleteBtn.classList.remove(
+        "bg-amber-100",
+        "dark:bg-amber-950",
+        "text-amber-950",
+        "dark:text-amber-400",
+        "hover:bg-amber-200",
+        "dark:hover:bg-amber-900",
+      );
+    }
+  }
+
+  // page
+  //   .querySelector("#markAsCompleteReminderBtn")
+  //   .classList.toggle("hidden", props?.status === "completed");
 
   page.querySelector(".reminder-card-header").append(badge(props?.status));
 
