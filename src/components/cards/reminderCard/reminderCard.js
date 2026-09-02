@@ -22,7 +22,7 @@ export default function reminderCard(props) {
   page.querySelector(".reminder-title").textContent =
     props?.title ?? "Reminder Title";
   page.querySelector(".reminder-description").textContent =
-    props?.description || "";
+    props?.description ?? "No description provided.";
   page.querySelector(".reminder-start-date").textContent =
     "Reminder Time : " +
     new Date(props?.reminderDateTime).toLocaleString(
@@ -40,7 +40,6 @@ export default function reminderCard(props) {
   page.querySelector(".reminder-card-header").append(badge(props?.status));
 
   setupEventListeners(page, props);
-
   return clone;
 }
 
