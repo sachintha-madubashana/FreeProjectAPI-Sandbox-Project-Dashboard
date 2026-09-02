@@ -55,6 +55,12 @@ export default function remindersPage() {
       console.error("Failed to load reminders:", error);
       // TODO: Add Error UI
       // renderReminderError(root);
+      showToast({
+        category: "error",
+        title: "Failed to load reminders",
+        description:
+          "An error occurred while loading reminders. Please try again later.",
+      });
     });
 
   setupEventListeners(page, reminders);
