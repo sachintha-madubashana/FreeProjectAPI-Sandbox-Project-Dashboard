@@ -2,9 +2,9 @@ import Chart from "chart.js/auto";
 import "basecoat-css/chart";
 
 import dashboard from "@/pages/goalTracker/dashboard.html?raw";
-import statsCards, {
+import statsCard, {
   statsCardSkeleton,
-} from "@/components/statsCards/statsCards.js";
+} from "@/components/statsCard/statsCard.js";
 import requestHandler from "@/utils/requestHandler";
 
 export default function goalTrackerDashboard() {
@@ -174,7 +174,7 @@ const renderDashboardStats = (dashboardElement, stats) => {
   const dashboardStats = createDashboardStats(stats);
 
   dashboardStats.forEach((stat) => {
-    dashboardElement.appendChild(statsCards(stat));
+    dashboardElement.appendChild(statsCard(stat));
   });
 };
 
