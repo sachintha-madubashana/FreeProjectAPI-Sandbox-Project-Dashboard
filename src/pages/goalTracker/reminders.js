@@ -369,16 +369,30 @@ const addReminderToAPI = (reminder) => {
   console.log("Get reminder from API");
   reminder.reminderId = 233; //TODO: Get the reminderId from the API response
 };
-const updateReminderToAPI = (reminder) => {
-  reminder.userId = 9583; //TODO: Get the userId from the logged in user
-  //TODO: Call API to add reminder
+const updateReminderToAPI = async (reminder) => {
+  try {
+    const response = await requestHandler(
+      "https://api.freeprojectapi.com/api/GoalTracker/updateReminder/" +
+        reminder.reminderId,
+      "PUT",
+      {
+        reminderId: reminder.reminderId,
+        title: reminder.title,
+        description: reminder.description,
+        reminderDateTime: reminder.reminderDateTime,
+        isAcknowledged: reminder.isAcknowledged,
+        userId: getLoggedUser().userId,
+      },
+    );
+  } catch (error) {
+    console.error("Error fetching dashboard stats:", error);
+  }
   console.log("Update reminder to API");
 };
 const deleteReminderFromAPI = (reminderId) => {
   //TODO: Call API to delete reminder
   console.log("Delete reminder from API for reminderId:", reminderId);
 };
-const updateReminderStatusToAPI = (reminderId) => {};
 
 // Reminder Card Action functions
 const updateReminders = (page, reminders, reminderItem) => {
@@ -426,10 +440,13 @@ const seeReminderDetails = (reminder) => {
   }
 };
 const markAsComplete = (page, reminders, reminderItem) => {
+  const toastData = { category: "success" };
   reminderItem.isAcknowledged = !reminderItem.isAcknowledged;
 
   if (reminderItem.isAcknowledged) {
     reminderItem.status = ReminderStatus.COMPLETED;
+    toastData.title = "Reminder Completed";
+    toastData.description = "The reminder has been marked as completed.";
   } else {
     reminderItem = addStatusToAReminder(reminderItem);
     const index = reminders.findIndex(
@@ -438,14 +455,12 @@ const markAsComplete = (page, reminders, reminderItem) => {
     if (index !== -1) {
       reminders[index] = reminderItem;
     }
+    toastData.title = "Reminder Uncompleted";
+    toastData.description = "The reminder has been marked as uncompleted.";
   }
-  updateReminderStatusToAPI(reminderItem.reminderId);
+  updateReminderToAPI(reminderItem);
 
   renderReminders(page, reminders, selectedStatus);
   updateRemindersStats(page, reminders);
-  showToast({
-    category: "success",
-    title: "Reminder Completed",
-    description: "The reminder has been marked as completed.",
-  });
+  showToast(toastData);
 };

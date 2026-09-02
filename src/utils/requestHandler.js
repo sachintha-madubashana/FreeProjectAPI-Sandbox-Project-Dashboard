@@ -1,15 +1,20 @@
 export default async function requestHandler(url, method = "GET", data = null) {
+  const httpMethod = method.toUpperCase();
+
   const options = {
-    method: method.toUpperCase(),
-    headers: {
-      "Content-Type": "application/json",
-    },
+    method: httpMethod,
+    headers: {},
   };
 
-  if (data && options.method === "GET") {
+  // GET and HEAD requests use query parameters
+  if (httpMethod === "GET" && data) {
     const queryParams = new URLSearchParams(data).toString();
-    url = `${url}?${queryParams}`;
+
+    if (queryParams) {
+      url += `?${queryParams}`;
+    }
   } else if (data) {
+    options.headers["Content-Type"] = "application/json";
     options.body = JSON.stringify(data);
   }
 
@@ -19,14 +24,22 @@ export default async function requestHandler(url, method = "GET", data = null) {
     if (!response.ok) {
       let errorMessage = `HTTP error! status: ${response.status}`;
 
-      const errorData = await response.json();
-      errorMessage = errorData.message || errorMessage;
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.message || errorMessage;
+      } catch {
+        console.error("Error response is not JSON:", await response.text());
+      }
 
       throw new Error(errorMessage);
     }
 
-    const responseData = await response.json();
-    return responseData;
+    // 204 No Content has no response body
+    if (response.status === 204) {
+      return null;
+    }
+
+    return await response.json();
   } catch (error) {
     console.error("Error in requestHandler:", error.message);
     throw error;

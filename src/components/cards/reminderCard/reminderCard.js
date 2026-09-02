@@ -69,6 +69,7 @@ export default function reminderCard(props) {
     const isCompleted = props?.status === "completed";
     markAsCompleteBtn.innerHTML = isCompleted ? nonCheckIcon : checkIcon;
     if (isCompleted) {
+      markAsCompleteBtn.setAttribute("data-tooltip", "Mark as Uncomplete");
       markAsCompleteBtn.classList.add(
         "btn",
         "bg-amber-100",
@@ -106,11 +107,6 @@ export default function reminderCard(props) {
       );
     }
   }
-
-  // page
-  //   .querySelector("#markAsCompleteReminderBtn")
-  //   .classList.toggle("hidden", props?.status === "completed");
-
   page.querySelector(".reminder-card-header").append(badge(props?.status));
 
   setupEventListeners(page, props);
