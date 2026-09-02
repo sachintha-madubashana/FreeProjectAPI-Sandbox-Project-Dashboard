@@ -1,5 +1,5 @@
 import showTaskInfoTemplate from "@/components/dialogs/showTaskInfo/showTaskInfo.html?raw";
-import simpleStatsCards from "@/components/simpleStatsCards/simpleStatsCards.js";
+import simpleStatsCards from "@/components/simpleStatsCard/simpleStatsCard.js";
 import confirmationDialog from "@/components/dialogs/confirmationDialog/confirmationDialog.js";
 import addAndEditTask from "@/components/dialogs/addAndEditTask/addAndEditTask.js";
 

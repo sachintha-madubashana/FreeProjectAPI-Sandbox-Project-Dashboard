@@ -1,5 +1,5 @@
 import goalsTemplate from "@/pages/goalTracker/goals.html?raw";
-import simpleCards from "@/components/simpleStatsCards/simpleStatsCards.js";
+import simpleCards from "@/components/simpleStatsCard/simpleStatsCard.js";
 import goalCard from "@/components/cards/goalCard/goalCard.js";
 import goalMoreInfo from "@/components/dialogs/goalMoreInfo/goalMoreInfo.js";
 import addAndEditGoal from "@/components/dialogs/addAndEditGoal/addAndEditGoal";

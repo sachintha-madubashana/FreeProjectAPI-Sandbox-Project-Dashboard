@@ -1,5 +1,5 @@
 import goalMoreInfoCardTemplate from "@/components/dialogs/goalMoreInfo/goalMoreInfo.html?raw";
-import simpleStatsCards from "@/components/simpleStatsCards/simpleStatsCards.js";
+import simpleStatsCards from "@/components/simpleStatsCard/simpleStatsCard.js";
 import emptyComponent from "@/components/empty/empty.js";
 
 export default function goalMoreInfoCard(props) {

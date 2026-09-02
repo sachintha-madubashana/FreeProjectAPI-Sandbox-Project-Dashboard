@@ -1,5 +1,5 @@
 import taskTemplate from "@/pages/goalTracker/task.html?raw";
-import statsCards from "@/components/simpleStatsCards/simpleStatsCards.js";
+import statsCards from "@/components/simpleStatsCard/simpleStatsCard.js";
 import loadAndRenderIcon from "@/utils/loadAndRenderIcon.js";
 import taskCardContainer from "@/components/taskCardContainer/taskCardContainer.js";
 import showTaskInfo from "@/components/dialogs/showTaskInfo/showTaskInfo.js";
