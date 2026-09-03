@@ -1,4 +1,4 @@
-import "basecoat-css/all";
+// import "basecoat-css/all";
 import "@/styles/style.css";
 
 import { HeaderComponent } from "@/components/header.js";
