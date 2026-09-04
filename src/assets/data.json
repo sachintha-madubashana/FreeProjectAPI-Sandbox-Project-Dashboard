@@ -31,7 +31,8 @@
       "icon": "Landmark",
       "iconColor": "#1E90FF",
       "path": "/bank-loan",
-      "apiEndpoints": "./"
+      "apiEndpoints": "./",
+      "status": "unavilable"
     },
     {
       "id": 3,
@@ -40,7 +41,8 @@
       "icon": "Bus",
       "iconColor": "#FFD700",
       "path": "/bus-booking",
-      "apiEndpoints": "./test"
+      "apiEndpoints": "./test",
+      "status": "unavilable"
     },
     {
       "id": 4,
@@ -49,7 +51,8 @@
       "icon": "GraduationCap",
       "iconColor": "#FF69B4",
       "path": "/college-project",
-      "apiEndpoints": "./"
+      "apiEndpoints": "./",
+      "status": "unavilable"
     },
     {
       "id": 5,
@@ -58,7 +61,8 @@
       "icon": "ShoppingCart",
       "iconColor": "#32CD32",
       "path": "/ecommerce",
-      "apiEndpoints": "./"
+      "apiEndpoints": "./",
+      "status": "unavilable"
     },
     {
       "id": 6,
@@ -67,7 +71,8 @@
       "icon": "Users",
       "iconColor": "#4285F4",
       "path": "/employee-app",
-      "apiEndpoints": "./"
+      "apiEndpoints": "./",
+      "status": "unavilable"
     },
     {
       "id": 7,
@@ -76,7 +81,8 @@
       "icon": "UserPlus",
       "iconColor": "#34A853",
       "path": "/onboarding",
-      "apiEndpoints": "./"
+      "apiEndpoints": "./",
+      "status": "unavilable"
     },
     {
       "id": 8,
@@ -85,7 +91,8 @@
       "icon": "MessageSquare",
       "iconColor": "#EA4335",
       "path": "/enquiry",
-      "apiEndpoints": "./"
+      "apiEndpoints": "./",
+      "status": "unavilable"
     },
     {
       "id": 9,
@@ -94,7 +101,8 @@
       "icon": "HandCoins",
       "iconColor": "#FBBC05",
       "path": "/fees-tracking",
-      "apiEndpoints": "./"
+      "apiEndpoints": "./",
+      "status": "unavilable"
     },
     {
       "id": 10,
@@ -103,7 +111,8 @@
       "icon": "Target",
       "iconColor": "#AA00FF",
       "path": "/goal-tracker",
-      "apiEndpoints": "./"
+      "apiEndpoints": "./",
+      "status": "active"
     },
     {
       "id": 11,
@@ -112,7 +121,8 @@
       "icon": "CalendarDays",
       "iconColor": "#4285F4",
       "path": "/leave-tracker",
-      "apiEndpoints": "./"
+      "apiEndpoints": "./",
+      "status": "unavilable"
     },
     {
       "id": 12,
@@ -121,7 +131,8 @@
       "icon": "Trophy",
       "iconColor": "#FBBC05",
       "path": "/competition",
-      "apiEndpoints": "./"
+      "apiEndpoints": "./",
+      "status": "unavilable"
     },
     {
       "id": 13,
@@ -130,7 +141,8 @@
       "icon": "CircleParking",
       "iconColor": "#34A853",
       "path": "/smart-parking",
-      "apiEndpoints": "./"
+      "apiEndpoints": "./",
+      "status": "unavilable"
     },
     {
       "id": 14,
@@ -139,7 +151,8 @@
       "icon": "ClipboardList",
       "iconColor": "#AA00FF",
       "path": "/survey",
-      "apiEndpoints": "./"
+      "apiEndpoints": "./",
+      "status": "unavilable"
     },
     {
       "id": 15,
@@ -148,7 +161,8 @@
       "icon": "User",
       "iconColor": "#4285F4",
       "path": "/user-app",
-      "apiEndpoints": "./"
+      "apiEndpoints": "./",
+      "status": "unavilable"
     }
   ]
 }

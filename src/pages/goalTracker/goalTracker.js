@@ -47,7 +47,7 @@ const TABS_CONFIG = {
   },
 };
 export default function goalTracker(params) {
-  const logedInUser = getLoggedUser ?? false;
+  const logedInUser = getLoggedUser() ?? false;
   if (logedInUser === false) {
     const template = document.createElement("div");
     template.classList.add("size-full");

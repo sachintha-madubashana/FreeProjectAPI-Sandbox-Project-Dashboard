@@ -2,21 +2,33 @@ import sidebar from "@/components/sideBar.html?raw";
 import data from "@/assets/data.json" with { type: "json" };
 import loadAndRenderIcon from "@/utils/loadAndRenderIcon";
 import { navigate } from "@/router/router.js";
+import { sortingFunction } from "@/pages/dashboard.js";
 
 function SideBarComponent() {
   const template = document.createElement("template");
   template.innerHTML = sidebar;
   const clone = template.content.cloneNode(true);
+  const root = clone.querySelector("#sidebar");
 
-  // Populate the sidebar menu with items from data
-  const sidebarMenu = clone.querySelector("#sideberMenu");
-  const sideberMenuItem = clone.querySelector("#sideberMenuItem");
+  const sidebarMenu = root.querySelector("#sideberMenu");
+  const sideberMenuItem = root.querySelector("#sideberMenuItem");
   sidebarMenu.replaceChildren();
   const currentPath = window.location.pathname;
 
-  data.pages.forEach((project) => {
+  const sortedPages = sortingFunction(data.pages);
+  const homeProject = sortedPages.find((project) => project.id === 1);
+  const otherProjects = sortedPages.filter((project) => project.id !== 1);
+  const finalSidebarPages = homeProject
+    ? [homeProject, ...otherProjects]
+    : otherProjects;
+
+  root.querySelector("#activeProjectCount").textContent =
+    `${otherProjects.filter((project) => project.status == "active").length} Sandbox Applications`;
+
+  finalSidebarPages.forEach((project) => {
     const menuItem = sideberMenuItem.cloneNode(true);
     const link = menuItem.querySelector("a");
+    const badgeElement = menuItem.querySelector("#badge");
 
     menuItem.querySelector("span").textContent = project.title;
 
@@ -32,6 +44,10 @@ function SideBarComponent() {
       "color: " + project.iconColor;
 
     loadAndRenderIcon(project.icon, menuItem, menuItem.querySelector("#icon"));
+
+    if (project.status) {
+      badgeElement.appendChild(badge(project.status));
+    }
     sidebarMenu.appendChild(menuItem);
   });
 
@@ -47,3 +63,22 @@ const updateActiveItem = (path) => {
 };
 
 export { SideBarComponent, updateActiveItem };
+
+const badge = (type) => {
+  const template = document.createElement("template");
+
+  const classMapping = {
+    developing:
+      "badge bg-sky-50 text-sky-700 dark:bg-sky-950 dark:text-sky-300",
+    active:
+      "badge bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300",
+    unavilable:
+      "badge bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300",
+  };
+
+  let htmlString = `<span class="${classMapping[type]}">${type}</span>`;
+
+  template.innerHTML = htmlString.trim();
+
+  return template.content.firstElementChild;
+};

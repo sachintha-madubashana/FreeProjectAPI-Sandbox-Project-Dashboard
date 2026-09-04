@@ -6,8 +6,8 @@
 >
   <nav aria-label="Sidebar navigation">
     <section class="scrollbar-thin scrollbar-thumb-accent">
-      <div role="group" aria-labelledby="group-label-content-1">
-        <div id="group-label-content-1" class="p-4">
+      <div role="group" aria-labelledby="sideBarTitleGroup">
+        <div id="sideBarTitleGroup" class="p-4">
           <div class="flex items-center">
             <svg
               width="32"
@@ -22,15 +22,22 @@
                 aria-hidden="true"
               />
             </svg>
-            <h3 id="group-label-content-1" class="text-lg">FreeProjectAPI</h3>
+            <h3 id="sideBarTitleGroup" class="text-lg">FreeProjectAPI</h3>
           </div>
-          <span class="text-xs font-normal">14 Sandbox Applications</span>
+          <span class="text-xs font-normal" id="activeProjectCount"
+            >14 Sandbox Applications</span
+          >
         </div>
         <ul id="sideberMenu">
           <li id="sideberMenuItem">
             <a href="#" class="">
-              <i data-lucide="Bus" id="icon" class="size-4"></i>
-              <span class="font-normal">Dashboard</span>
+              <div class="flex justify-between w-full">
+                <div class="flex items-center gap-2">
+                  <i data-lucide="Bus" id="icon" class="size-4"></i>
+                  <span class="font-normal">Dashboard</span>
+                </div>
+                <span id="badge"></span>
+              </div>
             </a>
           </li>
         </ul>
