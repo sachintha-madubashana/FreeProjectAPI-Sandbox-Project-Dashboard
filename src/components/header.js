@@ -1,6 +1,5 @@
 import header from "@/components/header.html?raw";
-import data from "@/assets/data.json" with { type: "json" };
-
+import { getPages } from "@/utils/settings.js";
 let isAdminMode = false;
 
 // Init admin mode button functionality
@@ -80,7 +79,7 @@ function HeaderComponent() {
   });
 
   setPageTitle(
-    data.pages.find((page) => page.path === window.location.pathname)?.title ||
+    getPages().find((page) => page.path === window.location.pathname)?.title ||
       "Page Not Found",
   );
 

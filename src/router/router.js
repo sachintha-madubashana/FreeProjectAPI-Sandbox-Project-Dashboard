@@ -3,8 +3,9 @@ import { updateActiveItem } from "@/components/sideBar.js";
 import dashboardPage from "@/pages/dashboard.js";
 import busBookingPage from "@/pages/busBooking.js";
 import goalTracker from "@/pages/goalTracker/goalTracker.js";
+import employeeApp from "@/pages/employeeApp/employeeApp.js";
 import templatePage from "@/pages/projectTemp.js";
-import data from "@/assets/data.json" with { type: "json" };
+import { getPages } from "@/utils/settings.js";
 import emptyPage from "@/components/empty/empty.js";
 
 const routes = {
@@ -13,7 +14,7 @@ const routes = {
   "/bank-loan": templatePage,
   "/college-project": templatePage,
   "/ecommerce": templatePage,
-  "/employee-app": templatePage,
+  "/employee-app": employeeApp,
   "/onboarding": templatePage,
   "/enquiry": templatePage,
   "/fees-tracking": templatePage,
@@ -84,7 +85,7 @@ export function startRouter() {
 
 function updateData(path) {
   setPageTitle(
-    data.pages.find((page) => page.path === path)?.title || "Page Not Found",
+    getPages().find((page) => page.path === path)?.title || "Page Not Found",
   );
 
   updateActiveItem(path);

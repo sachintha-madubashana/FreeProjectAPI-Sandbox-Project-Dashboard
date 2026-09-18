@@ -1,7 +1,13 @@
 import dashbord from "@/pages/html/dashboard.html?raw";
 import dashboardBannerComponent from "@/components/dashboard/dashboard-banner.js";
 import projectCardComponent from "@/components/dashboard/card.js";
-import data from "@/assets/data.json" with { type: "json" };
+import {
+  getApplicationTitle,
+  getApplicationDescription,
+  getApplicationBadges,
+  getPages,
+} from "@/utils/settings.js";
+import { sortingFunction } from "@/utils/utilityFunctions.js";
 
 // Create a template element and set its innerHTML to the imported dashboard HTML
 const template = document.createElement("template");
@@ -10,9 +16,15 @@ template.innerHTML = dashbord;
 export default function dashboardPage() {
   const clone = template.content.cloneNode(true);
   const root = clone.querySelector("#cardsConteiner");
-  const pages = data.pages;
+  const pages = getPages();
 
-  root.appendChild(dashboardBannerComponent(data.banner));
+  root.appendChild(
+    dashboardBannerComponent({
+      title: getApplicationTitle(),
+      description: getApplicationDescription(),
+      badges: getApplicationBadges(),
+    }),
+  );
 
   const gridContainer = document.createElement("div");
   gridContainer.className =
@@ -35,21 +47,21 @@ export default function dashboardPage() {
   return clone;
 }
 
-export const sortingFunction = (pages) => {
-  const projectStatusOrder = {
-    active: 1,
-    developing: 2,
-    unavilable: 3,
-  };
+// export const sortingFunction = (pages) => {
+//   const projectStatusOrder = {
+//     active: 1,
+//     developing: 2,
+//     unavilable: 3,
+//   };
 
-  return [...pages].sort((a, b) => {
-    const statusA = projectStatusOrder[a.status] || 4;
-    const statusB = projectStatusOrder[b.status] || 4;
+//   return [...pages].sort((a, b) => {
+//     const statusA = projectStatusOrder[a.status] || 4;
+//     const statusB = projectStatusOrder[b.status] || 4;
 
-    if (statusA !== statusB) {
-      return statusA - statusB;
-    } else {
-      return a.title.localeCompare(b.title);
-    }
-  });
-};
+//     if (statusA !== statusB) {
+//       return statusA - statusB;
+//     } else {
+//       return a.title.localeCompare(b.title);
+//     }
+//   });
+// };

@@ -1,8 +1,9 @@
 import sidebar from "@/components/sideBar.html?raw";
-import data from "@/assets/data.json" with { type: "json" };
+import { getPages } from "@/utils/settings.js";
 import loadAndRenderIcon from "@/utils/loadAndRenderIcon";
 import { navigate } from "@/router/router.js";
-import { sortingFunction } from "@/pages/dashboard.js";
+import { sortingFunction } from "@/utils/utilityFunctions.js";
+import { getProjectStatusBadge } from "@/utils/utilityFunctions.js";
 
 function SideBarComponent() {
   const template = document.createElement("template");
@@ -15,7 +16,7 @@ function SideBarComponent() {
   sidebarMenu.replaceChildren();
   const currentPath = window.location.pathname;
 
-  const sortedPages = sortingFunction(data.pages);
+  const sortedPages = sortingFunction(getPages());
   const homeProject = sortedPages.find((project) => project.id === 1);
   const otherProjects = sortedPages.filter((project) => project.id !== 1);
   const finalSidebarPages = homeProject
@@ -46,7 +47,7 @@ function SideBarComponent() {
     loadAndRenderIcon(project.icon, menuItem, menuItem.querySelector("#icon"));
 
     if (project.status) {
-      badgeElement.appendChild(badge(project.status));
+      badgeElement.appendChild(getProjectStatusBadge(project.status));
     }
     sidebarMenu.appendChild(menuItem);
   });
@@ -63,22 +64,3 @@ const updateActiveItem = (path) => {
 };
 
 export { SideBarComponent, updateActiveItem };
-
-const badge = (type) => {
-  const template = document.createElement("template");
-
-  const classMapping = {
-    developing:
-      "badge bg-sky-50 text-sky-700 dark:bg-sky-950 dark:text-sky-300",
-    active:
-      "badge bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300",
-    unavilable:
-      "badge bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300",
-  };
-
-  let htmlString = `<span class="${classMapping[type]}">${type}</span>`;
-
-  template.innerHTML = htmlString.trim();
-
-  return template.content.firstElementChild;
-};
