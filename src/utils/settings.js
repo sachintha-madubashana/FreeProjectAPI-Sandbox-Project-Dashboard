@@ -171,3 +171,8 @@ export const getPages = () => {
     },
   ];
 };
+
+export const getPageByPath = (path) => {
+  const pages = getPages();
+  return pages.find((page) => page.path === path) ?? null;
+};
