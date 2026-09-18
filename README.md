@@ -9,7 +9,7 @@ The project is designed to practice and demonstrate frontend development skills,
 
 ## 🌐 Live Demo
 
-[Visit the Live Application](https://sachintha-madubashana.github.io/FreeProjectAPI-Sandbox-Project-Dashboard/)
+<a href="https://sachintha-madubashana.github.io/FreeProjectAPI-Sandbox-Project-Dashboard/" target="_blank" rel="noopener noreferrer">Visit the Live Application</a>
 
 ## 📖 Overview
 
@@ -129,7 +129,7 @@ API requests are handled using the browser's native **Fetch API**, with common r
 
 ### API Documentation
 
-[FreeProjectAPI Documentation](https://www.freeprojectapi.com/api.html)
+<a href="https://www.freeprojectapi.com/api.html" target="_blank" rel="noopener noreferrer">FreeProjectAPI Documentation</a>
 
 No API key is currently required.
 
@@ -139,7 +139,7 @@ No API key is currently required.
 
 Make sure you have:
 
-- [Node.js](https://nodejs.org/)
+- <a href="https://nodejs.org/" target="_blank" rel="noopener noreferrer">Node.js</a>
 - npm
 - A modern web browser
 - An internet connection for API requests
@@ -263,7 +263,7 @@ The project is intended for **learning, experimentation, academic work, and port
 
 ## 🙏 Acknowledgements
 
-This project uses [FreeProjectAPI](https://www.freeprojectapi.com/api.html) as its public API source for the sandbox applications.
+This project uses <a href="https://www.freeprojectapi.com/api.html" target="_blank" rel="noopener noreferrer">FreeProjectAPI</a> as its public API source for the sandbox applications.
 
 ## 📄 License
 
