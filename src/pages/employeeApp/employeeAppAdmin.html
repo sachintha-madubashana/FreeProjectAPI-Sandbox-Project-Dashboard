@@ -1,114 +1,177 @@
 <section class="flex gap-4" id="pageHeader">
-  <div class="flex items-center">
-    <i data-lucide="bus" id="icon" class="size-8"></i>
-  </div>
-  <div class="flex flex-col gap-1">
-    <h1 class="text-lg font-bold">Employee App Admin</h1>
-    <p class="text-sm">Search and view all employees</p>
-  </div>
+    <div class="flex items-center">
+        <i data-lucide="users-round" id="icon" class="size-8"></i>
+    </div>
+    <div class="flex flex-col gap-1">
+        <h1 class="text-lg font-bold">Employee App Admin</h1>
+        <p class="text-sm">Add, update, remove, search, and view employees</p>
+    </div>
 </section>
-<section class="card mt-4 py-0" id="tableContainer">
-  <header class="card-hedder flex items-center justify-between pt-4">
-    <div class="flex items-center gap-2">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-        class="lucide lucide-users-round preview-icon">
-        <path d="M18 21a8 8 0 0 0-16 0" />
-        <circle cx="10" cy="8" r="5" />
-        <path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3" />
-      </svg>
-      <h2 class="text-lg font-bold">Employee List</h2>
-    </div>
-    <div class="flex items-center gap-2">
-      <input type="text" placeholder="Search" class="input input-bordered input-sm w-full max-w-xs" />
-      <button type="button" class="btn btn-sm" data-variant="primary">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-          class="lucide lucide-search preview-icon">
-          <path d="m21 21-4.34-4.34" />
-          <circle cx="11" cy="11" r="8" />
-        </svg>
-        Search
-      </button>
-    </div>
-  </header>
-  <div class="skeleton h-96 w-auto m-4" id="loadingSkeleton">
-    <div class="flex justify-center items-center h-full"><svg aria-label="Loading" role="status"
-        class="size-8 animate-spin lucide lucide-loader-circle" xmlns="http://www.w3.org/2000/svg" width="24"
-        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-        stroke-linejoin="round">
-        <path d="M21 12a9 9 0 1 1-6.219-8.56" />
-      </svg>
-      <p class="text-sm">Loading...</p>
-    </div>
-  </div>
-  <!-- <div class="table-container">
-    <table class="table">
-      <thead class="sticky top-0 bg-base-100 bg-accent/50 backdrop-blur">
-        <tr>
-          <th>Product</th>
-          <th>Price</th>
-          <th class="text-end">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="font-medium">Wireless Mouse</td>
-          <td>$29.99</td>
-          <td class="text-end">
-            <div class="inline-flex gap-2">
-              <button type="button" class="btn" data-variant="outline" data-size="sm">
-                Edit
-              </button>
-              <button type="button" class="btn" data-variant="destructive" data-size="sm">
-                Delete
-              </button>
+
+<section class="mt-4 grid gap-4 grid-cols-1 lg:grid-cols-4">
+    <section class="card h-fit overflow-visible col-span-1 p-0" id="employeeFormCard">
+        <header class="flex items-center gap-4 border-b px-4 py-4">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-user-round-plus preview-icon">
+                <path d="M2 21a8 8 0 0 1 13.292-6" />
+                <circle cx="10" cy="8" r="5" />
+                <path d="M19 16v6" />
+                <path d="M22 19h-6" />
+            </svg>
+            <h2 id="formTitle" class="text-lg font-bold">Create Employee</h2>
+        </header>
+        <form id="employeeForm" class="grid gap-3 p-4" novalidate>
+            <div role="group" class="field" data-field="fullName">
+                <label for="fullName">Full Name</label>
+                <input id="fullName" name="fullName" class="input input-bordered" aria-describedby="fullName-error" />
+                <p id="fullName-error" role="alert" hidden>Please enter the employee's full name.</p>
             </div>
-          </td>
-        </tr>
-        <tr>
-          <td class="font-medium">Mechanical Keyboard</td>
-          <td>$129.99</td>
-          <td class="text-end">
-            <div class="inline-flex gap-2">
-              <button type="button" class="btn" data-variant="outline" data-size="sm">
-                Edit
-              </button>
-              <button type="button" class="btn" data-variant="destructive" data-size="sm">
-                Delete
-              </button>
+            <div role="group" class="field" data-field="email">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" class="input input-bordered"
+                    aria-describedby="email-error" />
+                <p id="email-error" role="alert" hidden>Enter a valid email address.</p>
             </div>
-          </td>
-        </tr>
-        <tr>
-          <td class="font-medium">USB-C Hub</td>
-          <td>$49.99</td>
-          <td class="text-end">
-            <div class="inline-flex gap-2">
-              <button type="button" class="btn" data-variant="outline" data-size="sm">
-                Edit
-              </button>
-              <button type="button" class="btn" data-variant="destructive" data-size="sm">
-                Delete
-              </button>
+            <div role="group" class="field" data-field="phone">
+                <label for="phone">Phone</label>
+                <input id="phone" name="phone" class="input input-bordered" aria-describedby="phone-error" />
+                <p id="phone-error" role="alert" hidden>Enter a phone number.</p>
             </div>
-          </td>
-        </tr>
-        <tr>
-          <td class="font-medium">Wireless Mouse</td>
-          <td>$29.99</td>
-          <td class="text-end">
-            <div class="inline-flex gap-2">
-              <button type="button" class="btn" data-variant="outline" data-size="sm">
-                Edit
-              </button>
-              <button type="button" class="btn" data-variant="destructive" data-size="sm">
-                Delete
-              </button>
+            <div class="field" data-field="gender">
+                <label for="gender-trigger">Gender</label>
+                <div id="gender-select" class="select" data-placeholder="Select gender">
+                    <button type="button" class="w-full" id="gender-trigger" aria-haspopup="listbox"
+                        aria-expanded="false" aria-controls="gender-listbox">
+                        <span class="truncate">Select gender</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-chevron-down text-muted-foreground opacity-50 shrink-0">
+                            <path d="m6 9 6 6 6-6" />
+                        </svg>
+                    </button>
+                    <div id="gender-popover" data-popover aria-hidden="true">
+                        <div role="listbox" id="gender-listbox" aria-orientation="vertical"
+                            aria-labelledby="gender-trigger"></div>
+                    </div>
+                    <input type="hidden" id="gender" name="gender" value="" />
+                </div>
+                <p id="gender-error" role="alert" hidden>Please select a gender.</p>
             </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div> -->
+            <div role="group" class="field" data-field="dateOfJoining">
+                <label for="dateOfJoining">Date of Joining</label>
+                <input id="dateOfJoining" name="dateOfJoining" type="date" class="input input-bordered"
+                    aria-describedby="dateOfJoining-error" />
+                <p id="dateOfJoining-error" role="alert" hidden>Please select a joining date.</p>
+            </div>
+            <div class="field" data-field="employeeType">
+                <label for="employeeType-trigger">Employee Type</label>
+                <div id="employeeType-select" class="select" data-placeholder="Select type">
+                    <button type="button" class="w-full" id="employeeType-trigger" aria-haspopup="listbox"
+                        aria-expanded="false" aria-controls="employeeType-listbox"><span class="truncate">Select
+                            type</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-chevron-down text-muted-foreground opacity-50 shrink-0">
+                            <path d="m6 9 6 6 6-6" />
+                        </svg></button>
+                    <div id="employeeType-popover" data-popover aria-hidden="true">
+                        <div role="listbox" id="employeeType-listbox" aria-orientation="vertical"
+                            aria-labelledby="employeeType-trigger"></div>
+                    </div>
+                    <input type="hidden" id="employeeType" name="employeeType" value="" />
+                </div>
+                <p id="employeeType-error" role="alert" hidden>Please select an employee type.</p>
+            </div>
+            <div role="group" class="field" data-field="salary">
+                <label for="salary">Salary</label>
+                <input id="salary" name="salary" type="number" min="0" step="0.01" class="input input-bordered"
+                    aria-describedby="salary-error" />
+                <p id="salary-error" role="alert" hidden>Enter a valid salary.</p>
+            </div>
+            <div class="field" data-field="departmentId">
+                <label for="departmentId-trigger">Department</label>
+                <div id="departmentId-select" class="select" data-placeholder="Loading departments...">
+                    <button type="button" class="w-full" id="departmentId-trigger" aria-haspopup="listbox"
+                        aria-expanded="false" aria-controls="departmentId-listbox"><span class="truncate">Loading
+                            departments...</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-chevron-down text-muted-foreground opacity-50 shrink-0">
+                            <path d="m6 9 6 6 6-6" />
+                        </svg></button>
+                    <div id="departmentId-popover" data-popover aria-hidden="true">
+                        <div role="listbox" id="departmentId-listbox" aria-orientation="vertical"
+                            aria-labelledby="departmentId-trigger"></div>
+                    </div>
+                    <input type="hidden" id="departmentId" name="departmentId" value="" />
+                </div>
+                <p id="departmentId-error" role="alert" hidden>Please select a department.</p>
+            </div>
+            <div class="field" data-field="designationId">
+                <label for="designationId-trigger">Designation</label>
+                <div id="designationId-select" class="select" data-placeholder="Select department first">
+                    <button type="button" class="w-full" id="designationId-trigger" aria-haspopup="listbox"
+                        aria-expanded="false" aria-controls="designationId-listbox" disabled><span
+                            class="truncate">Select
+                            department first</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-chevron-down text-muted-foreground opacity-50 shrink-0">
+                            <path d="m6 9 6 6 6-6" />
+                        </svg></button>
+                    <div id="designationId-popover" data-popover aria-hidden="true">
+                        <div role="listbox" id="designationId-listbox" aria-orientation="vertical"
+                            aria-labelledby="designationId-trigger"></div>
+                    </div>
+                    <input type="hidden" id="designationId" name="designationId" value="" />
+                </div>
+                <p id="designationId-error" role="alert" hidden>Please select a designation.</p>
+            </div>
+            <div class="flex gap-2 pt-2">
+                <button id="saveEmployeeButton" type="submit" class="btn flex-1" data-variant="primary">
+                    <i data-lucide="user-round-plus" class="size-4"></i>
+                    <span id="saveEmployeeText">Register Employee</span>
+                </button>
+                <button id="cancelEditButton" type="button" class="btn" data-variant="outline" hidden>Cancel</button>
+            </div>
+        </form>
+    </section>
+
+    <section class="card h-fit min-w-0 col-span-1 lg:col-span-3 p-0" id="registryCard">
+        <header class="flex flex-wrap items-center justify-between gap-4 border-b px-4 py-4">
+            <div class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-scroll-text preview-icon">
+                    <path d="M15 12h-5" />
+                    <path d="M15 8h-5" />
+                    <path d="M19 17V5a2 2 0 0 0-2-2H4" />
+                    <path
+                        d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3" />
+                </svg>
+                <h2 class="text-lg font-bold">Employee Registry</h2>
+            </div>
+            <div class="flex items-center gap-2">
+                <input id="searchInput" type="search" placeholder="Search employees"
+                    class="input input-bordered input-sm w-full max-w-xs" />
+                <button id="searchButton" type="button" class="btn btn-sm" data-variant="primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-search preview-icon">
+                        <path d="m21 21-4.34-4.34" />
+                        <circle cx="11" cy="11" r="8" />
+                    </svg>
+                    Search
+                </button>
+            </div>
+        </header>
+        <div class="skeleton h-96 w-auto m-4" id="loadingSkeleton">
+            <div class="flex justify-center items-center h-full"><span class="loading loading-spinner"></span>
+                <p class="text-sm">Loading...</p>
+            </div>
+        </div>
+        <div id="tableContent" class="card py-0 mx-4"></div>
+        <footer id="pagination" class="flex flex-wrap items-center justify-between gap-4 border-t p-4"></footer>
+    </section>
 </section>

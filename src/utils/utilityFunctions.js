@@ -43,3 +43,8 @@ export const sortingFunction = (pages) => {
     }
   });
 };
+
+export const generateDialogAndShow = (dialogComponent, data) => {
+  document.getElementById("pageContent").appendChild(dialogComponent(data));
+  document.getElementById(data.dialogId).showModal();
+};

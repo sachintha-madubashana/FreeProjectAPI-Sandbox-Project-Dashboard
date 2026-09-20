@@ -7,7 +7,7 @@ export default async function requestHandler(url, method = "GET", data = null) {
   };
 
   // GET and HEAD requests use query parameters
-  if (httpMethod === "GET" && data) {
+  if ((httpMethod === "GET" || httpMethod === "DELETE") && data) {
     const queryParams = new URLSearchParams(data).toString();
 
     if (queryParams) {
