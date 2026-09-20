@@ -1,155 +1,121 @@
 # FreeProjectAPI Sandbox Project Dashboard
 
-A frontend-focused sandbox dashboard built with **HTML, CSS, and JavaScript**, using the public **FreeProjectAPI** as a backend API source.
+![Repository Banner](docs/screenshots/banner.png)
 
-The project is designed to practice and demonstrate frontend development skills, with a particular focus on **JavaScript, API integration, modular architecture, SPA routing, reusable components, and responsive UI development**.
-
-> 🚧 **Status:** Work in Progress  
-> The **Goal Tracker** is currently the completed and functional project. Additional sandbox projects will be developed progressively.
+A Vite single-page dashboard that brings several frontend application ideas into one workspace. It uses native JavaScript ES modules, Tailwind CSS, Basecoat CSS, Lucide icons, Chart.js, and the public [FreeProjectAPI](https://www.freeprojectapi.com/api.html) service.
 
 ## 🌐 Live Demo
 
-<a href="https://sachintha-madubashana.github.io/FreeProjectAPI-Sandbox-Project-Dashboard/" target="_blank" rel="noopener noreferrer">Visit the Live Application</a>
+[Open the FreeProjectAPI Sandbox Dashboard](https://sachintha-madubashana.github.io/FreeProjectAPI-Sandbox-Project-Dashboard/)
 
 ## 📖 Overview
 
-The FreeProjectAPI Sandbox Project Dashboard is a collection of frontend applications built around the public APIs provided by FreeProjectAPI.
+The dashboard is a learning and demonstration project for modular frontend development, client-side routing, reusable UI components, local state, and API integration.
 
-Instead of building one large application, this project provides a central dashboard where different application ideas can be developed and experimented with over time.
+The currently implemented applications are:
 
-The home page displays the available sandbox projects and their current status.
+- **Goal Tracker**: API-backed goals, milestones, tasks, reminders, charts, and productivity data.
+- **Employee App**: employee search and pagination, and frontend admin CRUD flows.
+- **Other projects**: dashboard cards and placeholder routes for planned applications.
 
-Currently, **Goal Tracker** is the active project, while the other projects are planned for future development.
+Admin mode changes the frontend experience only. It is not an authentication or authorization system.
 
-## ✨ Features
+## 🧩 Features
 
-### Project Dashboard
+- Single-page navigation with repository-base-path support
+- Responsive dashboard layout
+- Light and dark themes
+- Local storage for theme, admin-mode, and Goal Tracker session state
+- Reusable HTML-template and JavaScript components
+- Toast notifications and loading, empty, and error states
+- API requests through a shared request utility
 
-- Overview of planned sandbox applications
-- Project availability/status indicators
-- Centralized navigation
-- Dynamic breadcrumbs
+## 📸 Screenshots
 
-### Goal Tracker
+### Project Dashboard - Light Mode
 
-The currently completed application includes:
+![Project Dashboard - Light Mode](docs/screenshots/home-light.png)
 
-- Goal Tracker Dashboard
-- Goals management
-- Task management
-- Reminders
-- Productivity statistics
-- Task completion chart
-- Recent activity
-- API-driven data
+### Project Dashboard - Dark Mode
 
-### Application Features
+![Project Dashboard - Dark Mode](docs/screenshots/home-dark.png)
 
-- Custom Single Page Application (SPA) routing
-- Reusable JavaScript components
-- Light and dark mode
-- Responsive dashboard interface
-- Fetch API integration
-- Local Storage
-- Toast notifications
-- Admin Mode UI simulation
+## 📊 Project Status
 
-> **Note:** Admin Mode is only a frontend UI simulation. It is intended for projects that require different user/admin interfaces and does not provide real authentication or authorization.
+| Project         | Status         |
+| --------------- | -------------- |
+| Goal Tracker    | 🟢 Active      |
+| Employee App    | 🟢 Active      |
+| Bank Loan       | 🔴 Unavailable |
+| Bus Booking     | 🔴 Unavailable |
+| College Project | 🔴 Unavailable |
+| Competition     | 🔴 Unavailable |
+| Ecommerce       | 🔴 Unavailable |
+| Enquiry         | 🔴 Unavailable |
+| Fees Tracking   | 🔴 Unavailable |
+| Leave Tracker   | 🔴 Unavailable |
+| Onboarding      | 🔴 Unavailable |
+| Smart Parking   | 🔴 Unavailable |
+| Survey          | 🔴 Unavailable |
+| User App        | 🔴 Unavailable |
+
+- 🟢 Active — implemented and available
+- 🟡 Developing — currently being implemented
+- 🔴 Unavailable — planned but not currently implemented
+
+> Unavailable projects are planned applications that will be implemented progressively.
+
+## 🧭 Main Routes
+
+| Route           | Description                             |
+| --------------- | --------------------------------------- |
+| `/`             | Project dashboard                       |
+| `/goal-tracker` | Goal Tracker application                |
+| `/employee-app` | Employee directory and admin management |
+
+> The remaining project cards currently lead to planned or placeholder pages.
 
 ## 🛠️ Tech Stack
 
-- HTML5
-- CSS3
-- JavaScript (ES Modules)
-- Vite
-- Tailwind CSS
-- Basecoat CSS
-- Lucide Icons
-- Chart.js
-- Fetch API
-- Local Storage
-- FreeProjectAPI
-- GitHub Actions
-- GitHub Pages
+| Technology                                   | Purpose                                    |
+| -------------------------------------------- | ------------------------------------------ |
+| **HTML5**                                    | Application structure                      |
+| **CSS3**                                     | Styling and responsive UI                  |
+| **JavaScript ES Modules**                    | Application logic and modular architecture |
+| [**Vite**](https://vite.dev/)                | Development server and build tooling       |
+| [**Tailwind CSS**](https://tailwindcss.com/) | Utility-first styling                      |
+| [**Basecoat CSS**](https://basecoatui.com/)  | UI components and styling                  |
+| [**Lucide**](https://lucide.dev/)            | Interface icons                            |
+| [**Chart.js**](https://www.chartjs.org/)     | Data visualization                         |
+| **Fetch API**                                | API communication                          |
+| **Local Storage**                            | Client-side persistence                    |
+| **FreeProjectAPI**                           | Public API backend                         |
+| **GitHub Actions**                           | Automated deployment                       |
+| **GitHub Pages**                             | Hosting                                    |
 
-## 🏗️ Project Structure
+## 🔌 API
 
-```text
-FreeProjectAPI-Sandbox-Project-Dashboard/
-│
-├── public/
-│
-├── src/
-│   ├── assets/
-│   │   └── data.json
-│   │
-│   ├── components/
-│   │   ├── headers/
-│   │   ├── sidebar/
-│   │   ├── cards/
-│   │   ├── dialogs/
-│   │   └── ...
-│   │
-│   ├── pages/
-│   │   └── goalTracker/
-│   │
-│   ├── router/
-│   │
-│   ├── styles/
-│   │
-│   ├── utils/
-│   │   ├── loadAndRenderIcon.js
-│   │   ├── requestHandler.js
-│   │   ├── toastSystem.js
-│   │   └── ...
-│   │
-│   └── main.js
-│
-├── index.html
-├── package.json
-├── vite.config.js
-└── README.md
-```
+Goal Tracker and Employee App data is loaded from the public FreeProjectAPI endpoints. No API key is required by the endpoints currently used by this project. API availability can affect loading and CRUD operations at runtime.
 
-The project is organized into reusable **components, pages, routing, styles, and utility modules** to keep the application maintainable as more sandbox projects are added.
-
-## 🔌 API Integration
-
-The project uses **FreeProjectAPI** as its public backend API.
-
-The current Goal Tracker application uses the API for:
-
-- Goals
-- Tasks
-- Reminders
-
-The frontend communicates with the API to retrieve and manage application data through CRUD operations.
-
-API requests are handled using the browser's native **Fetch API**, with common request functionality organized in a reusable request handler.
-
-### API Documentation
-
-<a href="https://www.freeprojectapi.com/api.html" target="_blank" rel="noopener noreferrer">FreeProjectAPI Documentation</a>
-
-No API key is currently required.
+Full API documentation: [FreeProjectAPI API Documentation](https://www.freeprojectapi.com/api.html)
 
 ## 🚀 Getting Started
 
-### Prerequisites
+### 1. Prerequisites
 
 Make sure you have:
 
-- <a href="https://nodejs.org/" target="_blank" rel="noopener noreferrer">Node.js</a>
+- Node.js
 - npm
 - A modern web browser
-- An internet connection for API requests
+- Internet access for FreeProjectAPI requests
 
-### Installation
+### 2. Installation
 
 Clone the repository:
 
 ```bash
-gh repo clone sachintha-madubashana/FreeProjectAPI-Sandbox-Project-Dashboard
+git clone https://github.com/sachintha-madubashana/FreeProjectAPI-Sandbox-Project-Dashboard
 ```
 
 Navigate to the project:
@@ -164,7 +130,9 @@ Install dependencies:
 npm install
 ```
 
-### Run the Development Server
+### 3. Development
+
+Start the Vite development server:
 
 ```bash
 npm run dev
@@ -172,107 +140,47 @@ npm run dev
 
 Vite will provide a local development URL in the terminal.
 
-### Build for Production
+### 4. Production Build
+
+Create a production build:
 
 ```bash
 npm run build
 ```
 
-### Preview the Production Build
+Preview the production build locally:
 
 ```bash
 npm run preview
 ```
 
-## 📸 Screenshots
+## 🚢 Deployment
 
-### Project Dashboard — Dark Mode
-
-![Project Dashboard - Dark Mode](docs/screenshots/home-dark.png)
-
-### Project Dashboard — Light Mode
-
-![Project Dashboard - Light Mode](docs/screenshots/home-light.png)
-
-### Goal Tracker Dashboard
-
-![Goal Tracker Dashboard](docs/screenshots/goal-tracker-dashboard.png)
-
-## 📊 Project Status
-
-| Project         | Status         |
-| --------------- | -------------- |
-| Goal Tracker    | 🟢 Active      |
-| Bank Loan       | 🔴 Unavailable |
-| Bus Booking     | 🔴 Unavailable |
-| College Project | 🔴 Unavailable |
-| Competition     | 🔴 Unavailable |
-| Ecommerce       | 🔴 Unavailable |
-| Employee App    | 🔴 Unavailable |
-| Enquiry         | 🔴 Unavailable |
-| Fees Tracking   | 🔴 Unavailable |
-| Leave Tracker   | 🔴 Unavailable |
-| Onboarding      | 🔴 Unavailable |
-| Smart Parking   | 🔴 Unavailable |
-| Survey          | 🔴 Unavailable |
-| User App        | 🔴 Unavailable |
-
-The unavailable projects are planned applications that will be implemented progressively.
-
-## 🎯 Learning & Development Goals
-
-This project is being developed as a combination of:
-
-- Academic project
-- Learning project
-- Practice project
-- Portfolio project
-
-It provides practical experience with:
-
-- JavaScript and ES Modules
-- REST API integration
-- Asynchronous programming
-- SPA routing
-- Reusable components
-- DOM manipulation
-- Client-side state management
-- Responsive UI development
-- Light/dark themes
-- Data visualization
-- GitHub Actions and GitHub Pages
-
-## 🔮 Future Plans
-
-- Implement additional sandbox projects
-- Expand API integrations
-- Add appropriate Admin Mode interfaces
-- Improve responsive/mobile layouts
-- Add more reusable components
-- Improve accessibility
-- Add additional data visualizations
-- Continue improving the SPA architecture
+The Vite configuration uses the GitHub Pages base path `/FreeProjectAPI-Sandbox-Project-Dashboard/`. The router supports both the repository base path in deployment and the root path during local development.
 
 ## ⚠️ Project Scope
 
-This is primarily a **frontend sandbox project**.
+This is primarily a frontend sandbox project.
 
-The backend functionality is provided by the public FreeProjectAPI service. Therefore, API availability and behavior depend on the external service.
+The backend functionality is provided by the public FreeProjectAPI service rather than a backend developed specifically for this repository.
 
-The project is intended for **learning, experimentation, academic work, and portfolio demonstration**, rather than production use.
+Therefore, the project is intended for:
+
+- Learning
+- Experimentation
+- Academic work
+- Portfolio demonstration
+
+It is not intended to be used as a production platform.
 
 ## 🙏 Acknowledgements
 
-This project uses <a href="https://www.freeprojectapi.com/api.html" target="_blank" rel="noopener noreferrer">FreeProjectAPI</a> as its public API source for the sandbox applications.
+This project uses FreeProjectAPI as the public API source for its applications.
 
 ## 📄 License
-
-This project is licensed under the **MIT License**.
 
 See the [LICENSE](LICENSE) file for details.
 
 ## 👨‍💻 Author
 
-**Sachintha Madubashana**
-
-Frontend development and JavaScript projects.
+Sachintha Madubashana

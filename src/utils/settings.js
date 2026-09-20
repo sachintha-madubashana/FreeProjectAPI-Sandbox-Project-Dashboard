@@ -77,7 +77,7 @@ export const getPages = () => {
       iconColor: "#4285F4",
       path: "/employee-app",
       apiEndpoints: "./",
-      status: status[1],
+      status: status[2],
     },
     {
       id: 7,
